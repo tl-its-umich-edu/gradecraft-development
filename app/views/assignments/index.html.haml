@@ -4,7 +4,7 @@
     = content_nav do
       = render "tabs"
 
-    .pagetitle= @title
+    %h3.pagetitle= @title
 
     .small-12.columns
       
@@ -21,13 +21,14 @@
               %table.responsive.nofeatures_dynatable
                 %thead
                   %tr
-                    %th Name
+                    %th{:scope => "col"} Name
                     - if assignment_type.name == "Class Attendance"
-                      %th Attendance Rate
-                    %th{"data-dynatable-sorts" => "dueDate"} Due
+                      %th{:scope => "col"} Attendance Rate
+                    %th{:scope => "col", "data-dynatable-sorts" => "dueDate"} Due
                     %th{:style => "display: none"} Due Date
-                    %th Max Value
+                    %th{:scope => "col"} Max Value
                     %th.button-column
+                      %span.sr-only Actions
                 %tbody
                   - assignments.each do |assignment|
                     %tr

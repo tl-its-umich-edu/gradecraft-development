@@ -4,7 +4,7 @@
     = content_nav do
       = render "tabs"
   
-    .pagetitle= @title
+    %h3.pagetitle#tableCaption= @title
     
     %span  
       %b #{term_for :badges} :
@@ -16,16 +16,17 @@
     .small-12.columns
       
       //instructor badge index table
-      %table.responsive.dynatable
+      %table.responsive.dynatable{"aria-describedby" => "tableCaption"}
         %thead
           %tr
-            %th.center{"data-dynatable-no-sort" => "true" } Icon
-            %th Awarded
-            %th Description
+            %th.center{:scope => "col", "data-dynatable-no-sort" => "true" } Icon
+            %th{:scope => "col"} Awarded
+            %th{:scope => "col"} Description
             - if current_course.valuable_badges?
-              %th{"data-sort" => "int"} Value
-            %th Visible to Students
+              %th{:scope => "col", "data-sort" => "int"} Value
+            %th{:scope => "col"} Visible to Students
             %th.button-column
+              %span.sr-only Actions
         %tbody
           - current_course_data.badges.each do |badge|
             %tr

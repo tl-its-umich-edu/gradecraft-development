@@ -1,4 +1,4 @@
-.pagetitle
+%h3.pagetitle#ungradedTableCaption
   = "Ungraded #{term_for :assignment} Submissions"
   .label.alert.round= @count_ungraded
 
@@ -8,19 +8,20 @@
       = link_to assignment.name, assignment
       = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
 
-  %table.responsive.dynatable
+  %table.responsive.dynatable{"aria-describedby" => "ungradedTableCaption"}
     %thead
       %tr
         - if assignment.is_individual?
-          %th First Name
-          %th Last Name
+          %th{:scope => "col"} First Name
+          %th{:scope => "col"} Last Name
           - if current_course.has_teams?
-            %th= "#{term_for :team}"
+            %th{:scope => "col"}= "#{term_for :team}"
         - elsif assignment.has_groups?
-          %th Group
+          %th{:scope => "col"} Group
 
 
-        %th
+        %th{:scope => "col"}
+          %span.sr-only Actions
     %tbody
       - submissions.each do |ug|
         - if ug.ungraded?

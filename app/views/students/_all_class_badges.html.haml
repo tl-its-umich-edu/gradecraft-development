@@ -1,11 +1,11 @@
 %table.responsive.dynatable
   %thead
     %tr
-      %th First Name
-      %th Last Name
-      %th #{current_course.badge_term.pluralize}
+      %th{:scope => "col"} First Name
+      %th{:scope => "col"} Last Name
+      %th{:scope => "col"} #{current_course.badge_term.pluralize}
       - if current_course.valuable_badges?
-        %th Total Badge Score
+        %th{:scope => "col"} Total Badge Score
   %tbody
     - if @team
       - students = current_course_data.students_for_team(@team)
@@ -25,16 +25,16 @@
 
   %hr
 
-  %span.pagetitle Auditing
+  %h3.pagetitle Auditing
 
   %table.responsive.dynatable
     %thead
       %tr
-        %th First Name
-        %th Last Name
-        %th #{current_course.badge_term.pluralize}
+        %th{:scope => "col"} First Name
+        %th{:scope => "col"} Last Name
+        %th{:scope => "col"} #{current_course.badge_term.pluralize}
         - if current_course.valuable_badges?
-          %th Total Badge Score
+          %th{:scope => "col"} Total Badge Score
     %tbody
       - if @team
         - students = current_course_data.auditing_students_for_team(@team)

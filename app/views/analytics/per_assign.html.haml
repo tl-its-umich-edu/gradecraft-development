@@ -3,7 +3,7 @@
   = content_nav do
     = render "analytics/tabs"
 
-  .pagetitle= "#{term_for :assignments} Analytics"
+  %h3.pagetitle= "#{term_for :assignments} Analytics"
 
   .clearfix
   
@@ -14,17 +14,17 @@
       %table.responsive.nopage_dynatable
         %thead
           %tr
-            %th Name
-            %th Min
-            %th Max
-            %th Median
-            %th 
+            %th{:scope => "col"} Name
+            %th{:scope => "col"} Min
+            %th{:scope => "col"} Max
+            %th{:scope => "col"} Median
+            %th{:scope => "col"} 
               Ave
               %i.fi-info{:title => "The average of all grades, including those who earned zero", :data => {'tooltip' => true} }
-            %th 
+            %th{:scope => "col"}
               Ave Earned
               %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
-            %th{:width => 200} Distribution
+            %th{:scope => "col", :width => 200} Distribution
         %tbody
           - assignments.each do |assignment|
             %tr

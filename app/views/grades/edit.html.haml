@@ -3,7 +3,7 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle Editing #{current_student.name}'s Grade for #{@assignment.name}
+  %h3.pagetitle Editing #{current_student.name}'s Grade for #{@assignment.name}
   .small-12.medium-4.columns.right
     .right= render "assignments/description"
   
