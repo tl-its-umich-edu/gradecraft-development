@@ -46,9 +46,11 @@
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    %button.select-all.tiny= "Check"
+                    %span.sr-only
+                      %button.select-all.tiny= "Check All"
                   %li
-                    %button.select-none.tiny= "Uncheck"
+                    %span.sr-only
+                      %button.select-none.tiny= "Uncheck"
         %tbody
           - grades.each do |g|
             %tr

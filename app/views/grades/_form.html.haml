@@ -99,9 +99,12 @@
 
     - if @assignment.release_necessary?
       .small-12.large-4.columns
-        = f.label :status
-        = f.select :status, Grade::STATUSES
-        %h6.small Can the student see this grade?
+        - if current_user.is_gsi?
+          = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
+          .form_label Is this grade ready to be reviewed? 
+        - else
+          = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
+          .form_label Can the student see this grade?
     - elsif @grade.status.blank?
       = f.hidden_field :status, value: 'Graded'
 
@@ -115,18 +118,6 @@
       = f.label :feedback
       = f.bootsy_area :feedback
 
-    .clearfix
-
-  .right
-    - if @assignment.release_necessary?
-      - if current_user.is_gsi?
-        = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
-        .form_label Is this grade ready to be reviewed? 
-      - else
-        = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
-        .form_label Can the student see this grade?
-    - else
-      = f.hidden_field :status, value: 'Graded'
 
   .clearfix
 
