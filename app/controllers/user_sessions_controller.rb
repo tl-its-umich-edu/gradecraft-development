@@ -31,6 +31,8 @@ class UserSessionsController < ApplicationController
       return
     end
     @user.courses << @course unless @user.courses.include?(@course)
+    @course_membership = @user.course_memberships.where(course_id: @course).first
+    @course_membership.assign_role_from_lti(auth_hash) if @course_membership
     save_lti_context
     session[:course_id] = @course.id
     auto_login @user

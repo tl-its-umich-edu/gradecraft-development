@@ -8,10 +8,6 @@
     .small-12.medium-4.columns
       = f.label :last_name
       = f.text_field :last_name
-    - if current_user.is_admin?
-      .small-12.medium-4.columns.columns-no-padding
-        = f.label :role, "Select Role"
-        = f.select :role, [["Student", "student"],["GSI", "gsi"],["Professor", "professor"],["Admin", "admin"]]
 
     .clearfix
 
@@ -39,7 +35,7 @@
   - if current_user.is_staff?
     .panel
       %h4.bold= "Course Settings"
-      
+
       - if current_course.has_teams? && @user.is_student?
         .small-12.medium-4.columns.columns-no-padding
           = f.input :course_team_ids, :collection => @teams, :as => :select, :label => "Select #{term_for :team}", :selected => @user.team_for_course(current_course).try(:id), :include_blank => true
@@ -59,9 +55,12 @@
             = f.association :courses, :as => :check_boxes
           .clearfix
 
-
-      - if @user.is_student?
-        = f.simple_fields_for :course_memberships, @course_membership do |p|
+      = f.simple_fields_for :course_memberships, @course_membership do |p|
+        - if current_user.is_admin?
+          .small-12.medium-4.columns.columns-no-padding
+            = p.label :role, "Select Role"
+            = p.select :role, [["Student", "student"],["GSI", "gsi"],["Professor", "professor"],["Admin", "admin"]]
+        - if @user.is_student?
           .small-12.medium-4.columns.columns-no-padding
             .small-12.medium-12.columns
               = p.input :character_profile
@@ -75,9 +74,9 @@
             .clearfix
 
       .clearfix
-      
 
-      
+
+
 
 
   .right

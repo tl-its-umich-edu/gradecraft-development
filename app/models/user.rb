@@ -6,12 +6,6 @@ class User < ActiveRecord::Base
   before_validation :set_default_course
   after_save :cache_scores
 
-  ROLES = %w(student professor gsi admin)
-
-  ROLES.each do |role|
-    scope role.pluralize, -> { where role: role }
-  end
-
   attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids
   attr_accessible :username, :email, :password, :password_confirmation,
     :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,
@@ -98,13 +92,6 @@ class User < ActiveRecord::Base
           u.username = extra['custom_canvas_user_login_id']
           u.kerberos_uid = extra['custom_canvas_user_login_id']
         end
-
-        case extra['roles']
-        when 'instructor'
-          u.role = 'professor'
-        else
-          u.role = 'student'
-        end
       end
     end
   end
@@ -146,20 +133,25 @@ class User < ActiveRecord::Base
     teams.first.try(:team_leader)
   end
 
- def is_prof?
-    role == "professor"
+  def role
+    return nil if self.course_memberships.where(course_id: current_course).empty?
+    self.course_memberships.where(course: current_course).first.role
+  end
+
+  def is_prof?
+    self.role == "professor"
   end
 
   def is_gsi?
-    role == "gsi"
+    self.role == "gsi"
   end
 
   def is_student?
-    role == "student" || role.blank?
+    self.role == "student" || self.role_in_current_course.blank?
   end
 
   def is_admin?
-    role == "admin"
+    self.course_memberships.where(course: current_course).first.role == "admin"
   end
 
   def role

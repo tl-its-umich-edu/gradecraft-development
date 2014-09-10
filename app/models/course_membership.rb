@@ -2,7 +2,27 @@ class CourseMembership < ActiveRecord::Base
   belongs_to :course
   belongs_to :user
 
-  attr_accessible :shared_badges, :auditing, :character_profile, :course_id, :user_id
+  attr_accessible :shared_badges, :auditing, :character_profile, :course_id, :user_id, :role
+
+  ROLES = %w(student professor gsi admin)
+
+  ROLES.each do |role|
+    scope role.pluralize, -> { where role: role }
+  end
+
+  def assign_role_from_lti(auth_hash)
+    return unless auth_hash['extra'] && auth_hash['extra']['raw_info'] && auth_hash['extra']['raw_info']['roles']
+
+    auth_hash['extra']['raw_info'].tap do |extra|
+
+      case extra['roles']
+      when 'instructor'
+        self.update_attribute(:role, 'professor')
+      else
+        self.update_attribute(:role, 'student')
+      end
+    end
+  end
 
   # sum of all grade scores
   # where the membership course is the same as the grade course
@@ -26,7 +46,7 @@ class CourseMembership < ActiveRecord::Base
   end
 
   # working, needs speed improvements
-  def released_grade_score 
+  def released_grade_score
     Grade
       .released
       .where(course_id: course.id)
@@ -52,7 +72,7 @@ class CourseMembership < ActiveRecord::Base
   #
 
   # sum of all challenge grades (same as assignments to grades) that belong to the team that you belong to
-  def challenge_grade_score 
+  def challenge_grade_score
     if user_course_team
       ChallengeGrade
         .where(team_id: user_course_team.id)
@@ -60,7 +80,7 @@ class CourseMembership < ActiveRecord::Base
     else
       0
     end
-      
+
   end
 
   #    (SELECT COALESCE(sum(assignments.point_total), (0)::bigint) AS "coalesce" FROM assignments
@@ -71,7 +91,7 @@ class CourseMembership < ActiveRecord::Base
   #    AS in_progress_assignment_score,
 
   # total possible score for all completed assignments for the student/user
-  def in_progress_assignment_score 
+  def in_progress_assignment_score
     Assignment
       .where("id in (select distinct id from submissions where student_id = ? and course_id = ?)", user.id, course.id)
       .released(user) # scope in Assignment
@@ -79,13 +99,13 @@ class CourseMembership < ActiveRecord::Base
   end
 
   #    SELECT m.id, m.id AS course_membership_id, m.course_id, m.user_id, md5(pg_catalog.concat(m.course_id, m.user_id, (SELECT COALESCE(sum(date_part('epoch'::text, earned_badges.updated_at)), (0)::double precision) AS "coalesce" FROM earned_badges WHERE ((earned_badges.course_id = m.course_id) AND (earned_badges.student_id = m.user_id))))) AS earned_badges_key, md5(pg_catalog.concat(m.course_id, m.user_id, (SELECT COALESCE(sum(date_part('epoch'::text, submissions.updated_at)), (0)::double precision) AS "coalesce"
-  #    
+  #
   #    FROM submissions
-  #    WHERE ((submissions.course_id = m.course_id) AND (submissions.student_id = m.user_id))))) AS submissions_key, md5(pg_catalog.concat(m.course_id, m.user_id, (SELECT COALESCE(sum(date_part('epoch'::text, aw.updated_at)), (0)::double precision) AS "coalesce" FROM assignment_weights aw WHERE ((aw.student_id = m.user_id) AND (aw.course_id = aw.course_id))))) AS assignment_weights_key, 
+  #    WHERE ((submissions.course_id = m.course_id) AND (submissions.student_id = m.user_id))))) AS submissions_key, md5(pg_catalog.concat(m.course_id, m.user_id, (SELECT COALESCE(sum(date_part('epoch'::text, aw.updated_at)), (0)::double precision) AS "coalesce" FROM assignment_weights aw WHERE ((aw.student_id = m.user_id) AND (aw.course_id = aw.course_id))))) AS assignment_weights_key,
   #    (SELECT COALESCE(sum(a.point_total), (0)::bigint) AS "coalesce" FROM assignments a WHERE (a.course_id = m.course_id)) AS assignment_score,
   #    earned badges
   #    submissions
-  # 
+  #
   # combination of grades for completed assignments, including assignment weights where they exist
   #
   # actual score on all completed assignments
@@ -155,7 +175,7 @@ class CourseMembership < ActiveRecord::Base
   end
 
   #    (SELECT sum(COALESCE(assignment_weights.point_total, assignments.point_total))
-  #    AS sum FROM (assignments 
+  #    AS sum FROM (assignments
   #    WHERE (assignments.course_id = m.course_id))
   #    AS weighted_assignment_score,
   #
