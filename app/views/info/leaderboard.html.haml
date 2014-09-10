@@ -3,18 +3,20 @@
   = content_nav do
     = render "info/tabs"
 
-  %h3.pagetitle= @title
+  %h3.pagetitle#tableCaption= @title
 
   - if current_course.has_teams?
     .small-12.large-4.medium-6.columns.right
+      %label.sr-only{:for => "team_id"}
+        Select Team
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
-          %th{:scope => "row", "data-dynatable-sorts" => "rank"} Rank
+          %th{:scope => "col", "data-dynatable-sorts" => "rank"} Rank
           %th{:scope => "col"} First Name
           %th{:scope => "col"} Last Name
           - if current_course.has_teams?
@@ -25,6 +27,7 @@
             %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" } Badges Earned
             %th{:style => "display: none"} Badge Count
           %th.button-column{:scope => "col", "data-dynatable-no-sort" => "true"}
+            %span.sr-only Actions
         %tbody
           - if @team
             - students = current_course_data.students_for_team(@team)

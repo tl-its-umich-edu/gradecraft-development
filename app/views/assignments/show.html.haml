@@ -6,7 +6,7 @@
     - else
       = render "students/student_profile_tabs"
 
-  %span.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
   - if @assignment.description.present?
     .small-12.medium-4.columns.right
       .right= render "assignments/description"

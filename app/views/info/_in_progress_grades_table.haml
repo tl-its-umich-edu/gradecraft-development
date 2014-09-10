@@ -1,4 +1,4 @@
-.pagetitle
+%h3.pagetitle#inProgressTableCaption
   = "In Progress Grades"
   .label.alert.round= @count_in_progress
 
@@ -9,18 +9,18 @@
       = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
 
   .columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.dynatable{"aria-describedby" => "inProgressTableCaption"}
       %thead
         %tr
           - if assignment.is_individual?
-            %th First Name
-            %th Last Name
+            %th{:scope => "col"} First Name
+            %th{:scope => "col"} Last Name
             - if current_course.has_teams?
-              %th= "#{term_for :team}"
+              %th{:scope => "col"}= "#{term_for :team}"
           - elsif assignment.has_groups?
-            %th Group
-          %th Score
-          %th Feedback
+            %th{:scope => "col"} Group
+          %th{:scope => "col"} Score
+          %th{:scope => "col"} Feedback
           %th.button-column 
           %th
             .button-bar
@@ -33,19 +33,39 @@
         - grades.each do |g|
           %tr
             - if assignment.is_individual?
-              %td= link_to g.student.try(:first_name), student_path(g.student)
-              %td= link_to g.student.try(:last_name), student_path(g.student)
-              %td
-                - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
-                  = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
-              %td= points g.score
-              %td{:style => "width: 500px" }= raw g.feedback
-            %td
+              %th First Name
+              %th Last Name
+              - if current_course.has_teams?
+                %th= "#{term_for :team}"
+            - elsif assignment.has_groups?
+              %th Group
+            %th Score
+            %th Feedback
+            %th.button-column 
+            %th
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button tiny alert"
-                  %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button tiny alert"
-            %td.text-center
-              = check_box_tag "grade_ids[]", g.id
+                    %button.select-all.tiny= "Check"
+                  %li
+                    %button.select-none.tiny= "Uncheck"
+        %tbody
+          - grades.each do |g|
+            %tr
+              - if assignment.is_individual?
+                %td= link_to g.student.try(:first_name), student_path(g.student)
+                %td= link_to g.student.try(:last_name), student_path(g.student)
+                %td
+                  - if current_course.has_teams? && g.student.present? && g.student.team_for_course(current_course).present?
+                    = link_to g.student.team_for_course(current_course).try(:name), g.student.team_for_course(current_course)
+                %td= points g.score
+                %td{:style => "width: 500px" }= raw g.feedback
+              %td
+                .button-bar
+                  %ul.button-group.right.round
+                    %li
+                      = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button tiny alert"
+                    %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button tiny alert"
+              %td.text-center
+                = check_box_tag "grade_ids[]", g.id
 

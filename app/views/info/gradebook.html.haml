@@ -2,23 +2,23 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle#tableCaption= @title
 
   / Gradebook Table
   .small-12.columns
     #gradebook
-      %table.responsive.nopage_dynatable
+      %table.responsive.nopage_dynatable{"aria-describedby" => "tableCaption"}
         %thead
           %tr
-            %th First Name
-            %th Last Name
+            %th{:scope => "col"} First Name
+            %th{:scope => "col"} Last Name
             - for assignment in current_course_data.assignments
-              %th= assignment.name
+              %th{:scope => "col"}= assignment.name
             - if current_course.valuable_badges?
-              %th Badge Score
-            %th Total Score
-            %th Final Grade
-            %th #{current_course.user_term}
+              %th{:scope => "col"} Badge Score
+            %th{:scope => "col"} Total Score
+            %th{:scope => "col"} Final Grade
+            %th{:scope => "col"} #{current_course.user_term}
         %tbody
           - current_course_data.students.each do |student|
             %tr
