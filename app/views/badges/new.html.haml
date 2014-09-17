@@ -2,6 +2,8 @@
   / Badge Navigation
   = content_nav do
     = render "tabs"
+
+  = content_nav_for Badge, "New #{term_for(:badge)}"
   
   .pagetitle= @title
   

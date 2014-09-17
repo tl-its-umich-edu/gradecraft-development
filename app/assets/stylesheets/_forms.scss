@@ -45,6 +45,16 @@ label, input {
   }
 }
 
+dl.tabs {
+  dd.active {
+    border-radius: 1rem;
+    background-color: pink !important;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+  }
+}
+
 .score-level .remove-level.button, .remove-element.button, .assignment-score-levels .remove-assignment-score-level.button {
   margin-top: 1.8rem;
   color: #FFF;

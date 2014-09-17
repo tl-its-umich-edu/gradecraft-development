@@ -38,7 +38,6 @@
 
 - else
   - @group.students.each do |student|
-    %hr
     - if student.grade_for_assignment(@assignment).present?
       %p.bold 
         #{student.try(:first_name)}'s Grade

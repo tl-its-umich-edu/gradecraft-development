@@ -19,12 +19,10 @@
           - if current_user.is_staff?
             = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :upload_id => cf.id })
 
-    = simple_form_for @challenge do
+    = form_tag edit_status_challenge_challenge_grades_path @challenge do
       %table.responsive.nopage_dynatable
         %thead
           %tr
-            - if @challenge.release_necessary?
-              %th
             %th= current_course.team_term
             %th  Score
             - if @challenge.has_levels?
@@ -33,14 +31,18 @@
               %th Status
             - if current_user.is_staff?
               %th
+            - if @challenge.release_necessary?
+              %th{"data-dynatable-no-sort" => "true" }
+                .button-bar
+                  %ul.button-group.round
+                    %li
+                      %button.button.select-all.tiny= "Check All"
+                    %li
+                      %button.button.select-none.tiny= "Uncheck"
         %tbody
           - @teams.alpha.each do |team|
             - challenge_grade = @challenge.challenge_grades.find_by team: team
             %tr
-              - if @challenge.release_necessary?
-                %td
-                  - if challenge_grade
-                    = check_box_tag "challenge_grade_ids[]", challenge_grade.id
               %td= link_to team.name, team
               %td
                 - if challenge_grade
@@ -50,7 +52,7 @@
                   - if challenge_grade
                     = @challenge.grade_level(grade)
               - if @challenge.release_necessary?
-                %td= challenge_grade.try(:status) ? 'Released' : ''
+                %td= challenge_grade.try(:status)
               - if current_user.is_staff?
                 %td
                   - if challenge_grade
@@ -61,8 +63,13 @@
                         %li= link_to "Delete", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?', method: :delete }
                   - else
                     = link_to 'Grade', new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button tiny round secondary'
+              - if @challenge.release_necessary?
+                %td
+                  - if challenge_grade
+                    .center= check_box_tag "challenge_grade_ids[]", challenge_grade.id
 
-      - if @challenge.release_necessary? && @challenge.challenge_grades.present?
-        = submit_tag "Update Grade Statuses", :class => "button tiny radius"
+      .right
+        - if @challenge.release_necessary? && @challenge.challenge_grades.present?
+          = submit_tag "Update Grade Statuses", :class => "button tiny radius"
 
   .clearfix

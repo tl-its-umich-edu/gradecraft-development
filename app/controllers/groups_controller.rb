@@ -45,6 +45,9 @@ class GroupsController < ApplicationController
         format.html { respond_with @group }
       else
         @title = "Start a #{term_for :group}"
+        if current_user.is_student?
+          @other_students = current_course.students.where.not(id: current_user.id)
+        end
         format.html { render action: "new" }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end

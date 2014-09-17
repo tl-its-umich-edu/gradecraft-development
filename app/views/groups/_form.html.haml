@@ -35,20 +35,36 @@
 
     .small-12.textarea
       .proposals
-        %script(id="proposal-template" type="text/x-template")
-          %fieldset.proposal.callout.panel
-            = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |pf|
-              = render 'proposal_fields', f: pf
-        - i = 1
-        - @group.proposals.order_by_creation_date.each do |proposal|
-          %fieldset.proposal.panel
-            %span.columns
-              %h4.bold= "Proposal ##{i}: #{proposal.title}" 
-              %h6= "Created: #{proposal.created_at}"
-              %p= proposal.proposal
-              - i += 1
-              = f.hidden_field :id
-      = link_to 'Add a Proposal', '#', class: 'add-proposal button tiny radius'
+        - if @group.persisted?
+          %script(id="proposal-template" type="text/x-template")
+            %fieldset.proposal.callout.panel
+              = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |pf|
+                = render 'proposal_fields', f: pf
+          - i = 1
+          - @group.proposals.order_by_creation_date.each do |proposal|
+            %fieldset.proposal.panel
+              %span.columns
+                %h4.bold= "Proposal ##{i}: #{proposal.title}" 
+                %h6= "Created: #{proposal.created_at}"
+                %p= proposal.proposal
+                - i += 1
+                = f.hidden_field :id
+        - else
+          = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |f|
+            .small-12.columns.panel
+              %span.large-3.columns
+                = f.label :title, "Title"
+                = f.text_field :title
+              - if current_user.is_staff?
+                %span.large-3.columns
+                  = f.label :approved, "Approved?"
+                  = f.input :approved, :label => false
+              .small-12.columns.textarea
+                = f.label :proposal
+                = f.bootsy_area :proposal
+                = f.hidden_field :id
+        - if @group.persisted?
+          = link_to 'Add a Proposal', '#', class: 'add-proposal button tiny radius'
 
     %br
 

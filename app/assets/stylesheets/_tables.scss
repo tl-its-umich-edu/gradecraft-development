@@ -4,7 +4,6 @@ table tbody {
   vertical-align: top;
 }
 
-
 #gradebook {
   overflow: auto !important; 
 }
@@ -14,6 +13,7 @@ table.responsive {
   width: 100%;
   border-spacing: 0 !important;
   margin-bottom: 1rem;
+  clear: both;
 
   a:hover {
     color: $secondary-color;
@@ -50,8 +50,8 @@ table.responsive {
 }
 
 .button.tiny.aindex {
-  width: auto !important;
-  right: 0;
+  width: auto;
+  margin-left: 0;
   position: relative;
   top: -2.8rem;
   margin-bottom: -4.8rem;

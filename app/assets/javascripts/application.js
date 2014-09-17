@@ -55,7 +55,6 @@
 //= require select2
 //= require grade_distribution
 //= require jquery.ui.widget
-//= require jquery.sparkline.min
 //= require jquery.circliful.min
 //= require jquery.sticky
 //= require jquery.highchartTable-min

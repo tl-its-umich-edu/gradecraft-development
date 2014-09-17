@@ -108,7 +108,7 @@ class SubmissionsController < ApplicationController
         if current_user.is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "Your submission for #{@assignment.name} was successfully updated." }
           format.json { render json: @assignment, status: :created, location: @assignment }
-          NotificationMailer.revised_submission(@submission.id).deliver
+          #NotificationMailer.revised_submission(@submission.id).deliver
         else
           format.html { redirect_to session.delete(:return_to), notice: "#{@assignment.name} was successfully updated." }
         end

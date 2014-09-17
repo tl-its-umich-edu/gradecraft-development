@@ -12,13 +12,22 @@
 
   .tabs-content{:style => "background-color: #FFFFFF;"}
     .content.small-12#boxplot
-      .chartcontainer
-        .grades_per_assign{ "data-scores" => @assignment.grades.graded.pluck('score') }
+      %h4.bold.center Grade Distribution
+      .center
+        .chartcontainer
+          .grades_per_assign{ "data-scores" => @assignment.grades.graded.pluck('score') }
 
-      %h6.small= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"
+        %h6.small= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"
+
+      %ul
+        %li= "Average Score: #{@assignment.average}" 
+        %li= "Minimum Score: #{@assignment.low_score}" 
+        %li= "High Score: #{@assignment.high_score}" 
 
 
-    .content.small-12#submitted.center
+    .content.small-12#submitted
+      %h4.bold.center Participants
+
       - if @assignment.accepts_submissions?
         #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Submitted", "data-percent" => "#{@assignment.submission_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.submissions.count}", "data-dimension" => "250", "data-fontsize" => "38"  }
 
@@ -26,6 +35,8 @@
         #myStat{:"data-type" => "half", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-text" => "#{@assignment.positive_grade_count}", "data-dimension" => "250", "data-fontsize" => "38"  }
 
     .content.small-12#levels{:style => "width: 100%"}
-      .small-12#levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
+      %h4.bold.center Percentage of Scores Earned
+      .center
+        .small-12#levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }
 
 .clearfix

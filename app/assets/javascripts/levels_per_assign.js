@@ -7,7 +7,7 @@ $(document).ready(function() {
         renderTo: 'levels_per_assignment'
         },
       title: {
-        text: 'Percentage of Earned Scores'
+        text: ''
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

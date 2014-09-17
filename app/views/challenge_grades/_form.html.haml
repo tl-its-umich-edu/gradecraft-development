@@ -9,16 +9,21 @@
 
 
   .small-12.large-4.columns
-    = f.label :status
-    = f.select :status, Grade::STATUSES
-    .form_label Can the student see this grade?
+    - if @challenge.release_necessary?
+      = f.label :status
+      = f.select :status, Grade::STATUSES
+      .form_label= "Can the #{term_for :team} see this grade?"
 
   .clearfix
+
+  %br
 
   .small-12.columns
     = f.bootsy_area :text_feedback
 
-  .clearfix
+    .clearfix
+
+    %br
 
   .right
     = f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade for' : 'Grade'} #{ term_for :challenge }",  :class => "button tiny radius"

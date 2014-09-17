@@ -17,9 +17,8 @@
           %thead
             %tr
               %th
-              - if @badge.can_earn_multiple_times?
-                %th Already Earned
-              %th
+              %th Earned
+              %th{"data-dynatable-no-sort" => "true"} 
                 .button-bar
                   %ul.button-group.right.round
                     %li
@@ -29,16 +28,15 @@
           - @earned_badges.each_with_index do |eb, i|
             %tr
               %td= link_to eb.student.name, student_path(eb.student)
-              - if @badge.can_earn_multiple_times?
-                %td
-                  - eb.student.earned_badges.where(:badge_id => @badge).each do |eb|
-                    %img{:src => eb.badge.try(:icon), :alt => eb.badge.try(:name), :width => "25", :height => "25"}
+              %td
+                - eb.student.earned_badges.where(:badge_id => @badge).each do |eb|
+                  %img{:src => eb.badge.try(:icon), :alt => eb.badge.try(:name), :width => "25", :height => "25"}
               %td.right
                 = f.simple_fields_for :earned_badges, eb do |ebf|
                   = ebf.hidden_field :student_id
-                  - if @badge.can_earn_multiple_times?
+                  - if @badge.can_earn_multiple_times? 
                     = ebf.check_box :score, {}, @badge.point_total, nil
-                  - else
+                  - elsif ! eb.student.earned_badges.where(:badge_id => @badge).present?
                     = ebf.hidden_field :_destroy, class: 'destroy'
                     = ebf.check_box :score, {}, @badge.point_total, nil
                   

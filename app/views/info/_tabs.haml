@@ -9,7 +9,6 @@
     = link_to_unless_current "#{term_for :weight} Choices", multiplier_choices_path
 %li{class: ("active" if current_page?(earned_badges_path)) }
   = link_to_unless_current "Awarded #{term_for :badges}", earned_badges_path
-
-/ Link to download csv of total gradebook. Should probably be updated to trigger a background job and send the instructor an email when the download is ready
+  / Link to download csv of total gradebook. Should probably be updated to trigger a background job and send the instructor an email when the download is ready
 %li{class: ("active" if current_page?(gradebook_path)) }
-  = link_to_unless_current "Download Gradebook", gradebook_path(:csv)
+  = link_to_unless_current "Gradebook", gradebook_path

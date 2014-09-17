@@ -48,7 +48,7 @@
   - else
     Your Submission
   // link to edit the submission
-  %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
+  %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment), :group_id => @group), :class => "button tiny radius secondary no-margin"
   // Displaying when the assignment was submitted
   %p
     %b Submitted:

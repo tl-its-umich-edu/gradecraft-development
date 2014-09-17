@@ -12,7 +12,7 @@
         .clearfix
     .small-12
       - assignments.each do |assignment|
-        - if assignment.point_total && assignment.try(:point_total) > 0
+        - if assignment.point_total > 0
           .assignment
             .small-12.medium-7.columns
               - if assignment.required?

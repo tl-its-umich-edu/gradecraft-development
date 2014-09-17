@@ -8,5 +8,3 @@
   = link_to_unless_current "#{term_for :assignment} Analytics", analytics_per_assign_path
 %li{class: ("active" if current_page?(analytics_top_10_path)) }
   = link_to_unless_current "Top 10/Bottom 10", analytics_top_10_path
-%li{class: ("active" if current_page?(analytics_teams_path)) }
-  = link_to_unless_current "#{term_for(:team)} Analytics", analytics_teams_path

@@ -19,8 +19,14 @@ class GradeSchemeElementsController < ApplicationController
   def mass_update
     @course = current_course
     @course.update_attributes(params[:course])
-    if @course.save
-      redirect_to grade_scheme_elements_path
+    respond_to do |format|
+      if @course.save
+        format.html { redirect_to grade_scheme_elements_path }
+      else 
+        @title = "Edit Grade Scheme"
+        @grade_scheme_elements = current_course.grade_scheme_elements
+        format.html { render action: "mass_edit" }
+      end
     end
   end
 end

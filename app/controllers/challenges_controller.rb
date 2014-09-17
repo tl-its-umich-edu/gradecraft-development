@@ -49,6 +49,7 @@ class ChallengesController < ApplicationController
   def update
     @challenge = current_course.challenges.includes(:challenge_score_levels).find(params[:id])
     @challenge.assign_attributes(params[:challenge])
+    @title = "Editing #{@challenge.name}"
     respond_to do |format|
       if @challenge.due_at.present? && @challenge.open_at.present? && @challenge.due_at < @challenge.open_at
         flash[:error] = 'Due date must be after open date.'

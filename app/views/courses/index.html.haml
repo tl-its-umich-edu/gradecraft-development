@@ -25,6 +25,11 @@
             %td= course.semester
             %td
             %td= points course.total_points
+            - if current_user.is_admin?
+              %td
+                - if course == current_course
+                  = link_to_unless_current "Export Grades for Research", research_gradebook_path, :class=>"data-clearing"
+
             %td
               .button-bar
                 %ul.button-group.round.right

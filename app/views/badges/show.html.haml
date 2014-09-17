@@ -4,6 +4,8 @@
   - if current_user.is_staff?
     = content_nav do
       = render "tabs"
+
+  = content_nav_for @badge
   
   .pagetitle= @title
 

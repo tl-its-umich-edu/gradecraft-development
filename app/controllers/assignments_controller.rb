@@ -111,10 +111,6 @@ class AssignmentsController < ApplicationController
         flash[:error] = 'Submission accept date must be after open date.'
         format.html { redirect_to edit_assignment_path(@assignment) }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
-      elsif (@assignment.point_total.present?) && (@assignment.point_total < 1)
-        flash[:error] = 'Point total must be a positive number'
-        format.html { redirect_to edit_assignment_path(@assignment) }
-        format.json { render json: @assignment.errors, status: :unprocessable_entity }
       else
         if @assignment.save
           format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully updated" }

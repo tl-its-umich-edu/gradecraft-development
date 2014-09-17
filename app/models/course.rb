@@ -234,6 +234,15 @@ class Course < ActiveRecord::Base
       end
     end
   end
+
+  def research_grades_for_course(course, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["Course ID", "Uniqname", "Assignment Name", "Assignment ID", "Score", "Assignment Point Total", "Multiplied Score", "Predicted Score", "Text Feedback", "Submission ID", "Submission Creation Date", "Submission Updated Date"]
+      course.grades.each do |grade|
+        csv << [grade.course.id, grade.student.username, grade.assignment.name, grade.assignment.id, grade.raw_score, grade.point_total, grade.score, grade.predicted_score, grade.feedback, grade.submission.try(:id), grade.submission.try(:created_at), grade.submission.try(:updated_at)]
+      end
+    end
+  end
   
   #badges
   def course_badge_count

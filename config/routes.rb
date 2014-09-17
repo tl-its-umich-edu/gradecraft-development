@@ -135,6 +135,8 @@ GradeCraft::Application.routes.draw do
   resources :challenges do
     resources :challenge_grades do
       collection do
+        post :edit_status
+        put :update_status
         get :mass_edit
 
       end
@@ -165,6 +167,7 @@ GradeCraft::Application.routes.draw do
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
   get 'gradebook' => 'info#gradebook'
+  get 'research_gradebook' => 'info#research_gradebook'
   get 'all_grades' => 'courses#all_grades'
 
   #8. Groups

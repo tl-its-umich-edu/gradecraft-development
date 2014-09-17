@@ -4,14 +4,7 @@ educ_team_names = ['Harm & Hammer', 'Abusement Park','Silver Woogidy Woogidy Woo
 
 educ_badge_names = ['Creative', 'Inner Eye', 'Patronus Producer','Cheerful Charmer','Invisiblity Cloak','Marauders Map','Lumos','Rune Reader','Tea Leaf Guru','Wizard Chess Grand Master','Green Thumb','Gamekeeper','Seeker','Alchemist','Healer','Parseltongue','House Cup']
 
-educ_badge_icons = ['crown_bronze.png','crown_gold.png','crown_silver.png','gift_bronze.png','gift_gold.png','gift_silver.png','medal1_bronze.png','medal1_gold.png','medal1_silver.png','medal2_bronze.png','medal2_gold.png','medal2_silver.png','oscar_bronze.png','oscar_gold.png','oscar_silver.png','plate_bronze.png','plate_gold.png', 'plate_silver.png', 'podium.png', 'star_bronze.png', 'star_gold.png', 'star_silver.png', 'trophie2_bronze.png', 'trophie2_gold.png', 'trophie2_silver.png', 'trophie1_bronze.png', 'trophie1_gold.png', 'trophie1_silver.png']
-
 polsci_badge_names = ['MINOR: Learning from Mistakes', 'MINOR: Learning from Mistakes', 'MINOR: Halloween Special', 'MINOR: Thanksgiving Special', 'MINOR: Now It is Personal', 'MAJOR: Makeup Much', 'MAJOR: Practice Makes Perfect', 'MAJOR: Combo Platter', 'MINOR: Makeup Some', 'MINOR: Participatory Democrat', 'MINOR: Number One', 'MINOR: Rockstar', 'MINOR: Over-achiever', 'MINOR: Avid Reader', 'MINOR: Nice Save!', 'MINOR: The Nightstalker', 'MINOR: Paragon of Virtue', 'MAJOR: Bad Investment', 'MINOR: Leader of the pack', 'MINOR: Thoughtful Contribution']
-
-polsci_badge_icons = []
-
-# Use stock badge icons
-badge_icon_paths = Dir.glob(Rails.root.join('test/support/assets/*'))
 
 educ_grade_scheme_hash = { [0,600000] => 'F', [600000,649000] => 'D+', [650000,699999] => 'C-', [700000,749999] => 'C', [750000,799999] => 'C+', [800000,849999] => 'B-', [850000,899999] => 'B', [900000,949999] => 'B+', [950000,999999] => 'A-', [1000000,1244999] => 'A', [1245000,1600000] => 'A+'}
 
@@ -135,7 +128,7 @@ puts "Introduction to Information Science is in session"
 educ_grade_scheme_hash.each do |range,letter|
   educ_course.grade_scheme_elements.create do |e|
     e.letter = letter
-    e.level = educ_grade_levels.shuffle.sample
+    e.level = educ_grade_levels.sample
     e.low_range = range.first
     e.high_range = range.last
   end
@@ -146,7 +139,7 @@ puts "Installed the EDUC 222 grading scheme. Roar!"
 information_grade_scheme_hash.each do |range,letter|
   information_course.grade_scheme_elements.create do |e|
     e.letter = letter
-    e.level = information_grade_levels.shuffle.sample
+    e.level = information_grade_levels.sample
     e.low_range = range.first
     e.high_range = range.last
   end
@@ -271,7 +264,6 @@ educ_badges = educ_badge_names.map do |badge_name|
     b.name = badge_name
     b.point_total = 100 * rand(10)
     b.visible = 1
-    b.icon = educ_badge_icons.shuffle.sample
   end
 end
 puts "Did someone need motivation? We found these badges in the Room of Requirements..."
@@ -1052,8 +1044,6 @@ challenges << Challenge.create! do |c|
   end
 end
 puts "The House Cup Competition begins... "
-
-
 
 challenges << Challenge.create! do |c|
   c.course = educ_course

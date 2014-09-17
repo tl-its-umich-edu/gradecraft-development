@@ -124,9 +124,15 @@ img.earned {
   background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
 }
 
+#myStat{
+  text-align: center;
+  margin: 0 auto;
+}
+
 #levels_per_assignment {
   min-height: 250px;
-  width: 25%;
+  margin: 0 auto;
+  width: 300px;
   clear: both;
   .chart {
     height: 230px;

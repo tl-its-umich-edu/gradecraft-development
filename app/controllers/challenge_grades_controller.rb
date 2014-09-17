@@ -80,6 +80,23 @@ class ChallengeGradesController < ApplicationController
     end
   end
 
+  # Changing the status of a grade - allows instructors to review "Graded" grades, before they are "Released" to students
+  def edit_status
+    @challenge = current_course.challenges.find(params[:challenge_id])
+    @title = "#{@challenge.name} Grade Statuses"
+    @challenge_grades = @challenge.challenge_grades.find(params[:challenge_grade_ids])
+  end
+
+  def update_status
+    @challenge = current_course.challenges.find(params[:challenge_id])
+    @challenge_grades = @challenge.challenge_grades.find(params[:challenge_grade_ids])
+    @challenge_grades.each do |challenge_grade|
+      challenge_grade.update_attributes!(params[:challenge_grade].reject { |k,v| v.blank? })
+    end
+    flash[:notice] = "Updated Grades!"
+    redirect_to challenge_path(@challenge)
+  end
+
   def destroy
     @challenge_grades = current_course.challenge_grades.find(params[:id])
     @challenge_grades.destroy

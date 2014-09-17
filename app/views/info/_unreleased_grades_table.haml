@@ -28,11 +28,11 @@
             %th{"data-dynatable-no-sort" => "true" }
             %th{"data-dynatable-no-sort" => "true" }
               .button-bar
-                %ul.button-group.right.round
+                %ul.button-group.round
                   %li
-                    %button.select-all.tiny= "Check"
+                    %button.button.select-all.tiny= "Check All"
                   %li
-                    %button.select-none.tiny= "Uncheck"
+                    %button.button.select-none.tiny= "Uncheck"
         %tbody
           - grades.each do |g|
             %tr
@@ -40,21 +40,23 @@
                 %td= link_to g.student.try(:first_name), student_path(g.student)
                 %td= link_to g.student.try(:last_name), student_path(g.student)
               - if g.assignment.has_groups?
-                %td= link_to g.student.group_for_assignment(g.assignment).try(:name), group_path(:id => g.student.group_for_assignment(g.assignment))
+                %td= link_to g.student.group_for_assignment(g.assignment).try(:name)
+                // Testing out a fix for some broken data - bring back in post fix - CH
+                //, group_path(:id => g.student.group_for_assignment(g.assignment))
               - if current_course.has_teams? && ! assignment.has_groups? 
                 %td
                   = link_to "#{g.student.team_for_course(current_course).try(:name)}", g.student.team_for_course(current_course)
               
-              %td= g.score
+              %td= g.try(:score)
               %td{:style => "width: 500px" }= raw g.feedback
               %td
                 .button-bar
                   %ul.button-group.right.round
                     %li
-                      = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button tiny alert"
+                      = link_to "See Grade", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button tiny alert"
                     %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button tiny alert"
-              %td.right
-                = check_box_tag "grade_ids[]", g.id
+              %td
+                .center= check_box_tag "grade_ids[]", g.id
 
       .right
         = submit_tag "Update Selected Grade Statuses", :class => "button tiny primary radius"

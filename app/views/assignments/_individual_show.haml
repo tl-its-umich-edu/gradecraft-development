@@ -21,13 +21,13 @@
           %th Status
         %th
         - if @assignment.release_necessary?
-          %th
+          %th{"data-dynatable-no-sort" => "true"} 
             .button-bar
               %ul.button-group.right.round
                 %li
-                  %button.select-all.tiny= "Check"
+                  %button.button.select-all.tiny= "Check"
                 %li
-                  %button.select-none.tiny= "Uncheck"
+                  %button.button.select-none.tiny= "Uncheck"
     %tbody
       - if @team
         - students = current_course_data.students_for_team(@team)
@@ -95,7 +95,7 @@
           - if @assignment.release_necessary?
             %td.text-center
               - if grade.is_graded?
-                = check_box_tag "grade_ids[]", grade.id
+                .center= check_box_tag "grade_ids[]", grade.id
 
   - if @auditing.present?
 
@@ -103,29 +103,32 @@
 
     %h3 Auditing #{term_for :students}
 
-    %table.responsive.dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           %th First Name
           %th Last Name
-          %th Raw Score
-          - if @assignment.assignment_type.student_weightable?
+          - if ! @assignment.assignment_type.student_weightable?
+            %th Score
+          - elsif @assignment.assignment_type.student_weightable?
+            %th Raw Score
             %th Multiplied Score
           - if @assignment.has_levels?
             %th Level
           - if @assignment.release_necessary?
             %th Status
-          - if @assignment.accepts_submissions?
-            %th Submission
-          %th
+          %th{"data-dynatable-no-sort" => "true"} 
           - if @assignment.release_necessary?
-            %th
+            %th{"data-dynatable-no-sort" => "true"} 
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    %button.select-all.tiny= "Check"
+                    %button.button.select-all.tiny= "Check"
                   %li
-                    %button.select-none.tiny= "Uncheck"
+                    %button.button.select-none.tiny= "Uncheck"
+
+                    %tr
+        
       %tbody
         - if @team
           - students = current_course_data.auditing_students_for_team(@team)
@@ -189,7 +192,7 @@
             - if @assignment.release_necessary?
               %td.text-center
                 - if grade.is_graded?
-                  = check_box_tag "grade_ids[]", grade.id
+                  .center= check_box_tag "grade_ids[]", grade.id
 
   - if @assignment.release_necessary? && @assignment.grades.present?
     .right

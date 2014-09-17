@@ -27,11 +27,11 @@ class Group < ActiveRecord::Base
   has_many :earned_badges, :as => :group
 
   before_save :clean_html
-  before_validation :cache_associations
+  #before_validation :cache_associations
 
-  validates_presence_of :course, :name
+  #validates_presence_of :course, :name
 
-  validate :max_group_number_not_exceeded, :min_group_number_met
+  #validate :max_group_number_not_exceeded, :min_group_number_met
 
   scope :approved, -> { where approved: "Approved" }
   scope :rejected, -> { where approved: "Rejected" }

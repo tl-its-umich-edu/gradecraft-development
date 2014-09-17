@@ -2,6 +2,7 @@ module NavHelper
   def content_nav_for(*objects, &block)
     capture_haml do
       haml_tag :div, class: 'content-nav show-for-medium-up' do
+        haml_concat breadcrumbs_for(*objects)
         haml_concat content_nav(&block)
       end
       haml_tag :div, class: 'content-nav hide-for-medium-up' do

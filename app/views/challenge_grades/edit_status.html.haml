@@ -1,7 +1,7 @@
 .small-12.panel.mainContent
   / Grades Navigation
   = content_nav do
-    = render "assignments/tabs"
+    = render "teams/tabs"
 
   .pagetitle Updating Selected Grades
 
@@ -9,20 +9,20 @@
     %table.responsive.nopage_dynatable
       %thead
         %tr
-          %th= term_for :student
+          %th= term_for :team
           %th Score
           %th Current Status
       %tbody
-        - for grade in @grades
+        - for challenge_grade in @challenge_grades
           %tr
-            %td= grade.student.name
-            %td= points grade.raw_score
-            %td= grade.status
+            %td= challenge_grade.team.name
+            %td= points challenge_grade.score
+            %td= challenge_grade.status
 
     .small-12.right
-      = simple_form_for :grade, :url => update_status_grades_assignment_path(@assignment), :html => { :method => :put} do |f|
-        - for grade in @grades
-          = hidden_field_tag "grade_ids[]", grade.id
+      = simple_form_for :challenge_grade, :url => update_status_challenge_challenge_grades_path(@challenge), :html => { :method => :put} do |f|
+        - for challenge_grade in @challenge_grades
+          = hidden_field_tag "challenge_grade_ids[]", challenge_grade.id
         .medium-3.right= f.input :status, :label => "Update Status to:", :as => :select, :collection => Grade::STATUSES
         %hr
         .right
