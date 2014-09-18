@@ -7,7 +7,7 @@ class CourseMembership < ActiveRecord::Base
   ROLES = %w(student professor gsi admin)
 
   ROLES.each do |role|
-    scope role.pluralize, -> { where role: role }
+    scope role.pluralize, ->(course) { where role: role }
   end
 
   def assign_role_from_lti(auth_hash)

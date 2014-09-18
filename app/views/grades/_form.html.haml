@@ -16,7 +16,7 @@
 /           %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
 /           \/{{pointsPossible | number:0}} Points Allocated
 /         %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
-/         %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+/         %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned
 /         %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
 
 /       .clear
@@ -74,7 +74,7 @@
 /           %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
 /           \/{{pointsPossible | number:0}} Points Allocated
 /         %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
-/         %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+/         %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned
 /         %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
 /       .clear
 /     .row.text-center
@@ -99,9 +99,9 @@
 
     - if @assignment.release_necessary?
       .small-12.large-4.columns
-        - if current_user.is_gsi?
+        - if current_user_is_gsi?
           = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @grade.status
-          .form_label Is this grade ready to be reviewed? 
+          .form_label Is this grade ready to be reviewed?
         - else
           = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
           .form_label Can the student see this grade?

@@ -3,11 +3,11 @@ class InfoController < ApplicationController
 
   before_filter :ensure_staff?, :except => [ :dashboard ]
 
-  # Displays instructor dashboard, with or without Team Challenge dates 
+  # Displays instructor dashboard, with or without Team Challenge dates
   def dashboard
     @grade_scheme_elements = current_course.grade_scheme_elements
     if ! current_course.use_timeline?
-      if current_user.is_student?
+      if current_user_is_student?
         redirect_to syllabus_path
       else
         redirect_to analytics_top_10_path

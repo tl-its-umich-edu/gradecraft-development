@@ -1,18 +1,18 @@
 .small-12.panel.mainContent
-  - if current_user.is_student?
+  - if current_user_is_student?
     = content_nav do
       = render "students/student_profile_tabs"
-  - elsif current_user.is_staff?
+  - elsif current_user_is_staff?
     / Instructor Navigation for Assignment Weighting
     = content_nav do
       = render "info/tabs"
-  
+
   .pagetitle Editing #{current_student.name}'s #{term_for :weights}
-      
-  
+
+
   .small-12.columns
 
-    - if current_course.assignment_weight_open? || current_user.is_staff?
+    - if current_course.assignment_weight_open? || current_user_is_staff?
       %h4 #{term_for :weights} remaining: #{current_course.total_assignment_weight}
       .form_label You may set up to #{pluralize current_course.max_assignment_weight, term_for(:weight)} on a single #{ term_for :assignment_type}
 
@@ -30,7 +30,7 @@
                 = atwf.input :weight, :label => "#{term_for :weight}"
           .right
             = f.button :submit, "Update #{term_for :weights}", :class => "button radius tiny"
-            = link_to 'Cancel', current_user.is_student? ? dashboard_path : choices_students_path, class: 'button radius tiny transparent'
+            = link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button radius tiny transparent'
 
 
     - else

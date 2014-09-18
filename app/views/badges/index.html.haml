@@ -1,15 +1,15 @@
-- if current_user.is_staff?
+- if current_user_is_staff?
   .small-12.panel.mainContent
     / Badge Navigation
-    - if current_user.is_staff?
+    - if current_user_is_staff?
       = content_nav do
         = render "tabs"
-    
+
     = content_nav_for Badge
-  
+
     .pagetitle= @title
-    
-    %span  
+
+    %span
       %b #{term_for :badges} :
       .label.round.bold=current_course.course_badge_count
     %span
@@ -17,7 +17,7 @@
       .label.round.bold=current_course.awarded_course_badge_count
 
     .small-12.columns
-      
+
       //instructor badge index table
       %table.responsive.nopage_dynatable
         %thead

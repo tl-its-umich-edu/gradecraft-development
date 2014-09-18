@@ -32,7 +32,7 @@ class Submission < ActiveRecord::Base
   #validates_presence_of :group, if: 'assignment.has_groups?'
   validates_uniqueness_of :task, :scope => :student, :allow_nil => true
   validates_uniqueness_of :assignment_id, { :scope => :student_id }
-  
+
   #Canable permissions#
   def updatable_by?(user)
     if assignment.is_individual?
@@ -44,19 +44,19 @@ class Submission < ActiveRecord::Base
 
   def destroyable_by?(user)
     if assignment.is_individual?
-      student_id == user.id || user.is_staff?
+      student_id == user.id || user.is_staff?(current_course)
     elsif assignment.has_groups?
       group_id == user.group_for_assignment(assignment).id
     end
   end
 
-  # Grabbing any submission that has NO instructor-defined grade (if the student has predicted the grade, 
+  # Grabbing any submission that has NO instructor-defined grade (if the student has predicted the grade,
   # it'll exist, but we still don't want to catch those here)
   def ungraded?
     ! grade || grade.status == nil
   end
 
-  #Permissions regarding who can see a grade 
+  #Permissions regarding who can see a grade
   def viewable_by?(user)
     if assignment.is_individual?
       student_id == user.id

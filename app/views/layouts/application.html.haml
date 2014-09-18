@@ -30,7 +30,7 @@
         - if current_user
           = render 'layouts/authenticated_nav'
     - if current_user
-      - if current_user.is_staff?
+      - if current_user_is_staff?
         .columns= render 'layouts/staff'
       - else
         = render 'layouts/student'
@@ -43,4 +43,4 @@
     = render 'layouts/google_analytics'
     = javascript_include_tag 'application'
 
-        
+

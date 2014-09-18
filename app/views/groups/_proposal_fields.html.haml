@@ -2,7 +2,7 @@
   %span.large-3.columns
     = f.label :title, "Title"
     = f.text_field :title
-  - if current_user.is_staff?
+  - if current_user_is_staff?
     %span.large-3.columns
       = f.label :approved, "Approved?"
       = f.input :approved, :label => false

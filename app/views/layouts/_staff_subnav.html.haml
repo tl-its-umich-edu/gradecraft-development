@@ -38,7 +38,7 @@
     %li
       %i.fi-trophy
       = link_to term_for(:challenges), challenges_path
-  
+
   %li.divider
 
   %li
@@ -52,11 +52,11 @@
   %li
     %i.fi-results-demographics
     = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
-  
+
   %li.divider
 
-  %li 
-    %label Users  
+  %li
+    %label Users
   %li
     %i.fi-torsos-female-male
     = link_to "#{term_for :students}", students_path
@@ -70,7 +70,7 @@
   %li
     %i.fi-torso-business
     = link_to "Staff", staff_index_path
-  
+
   %li.divider
 
   %li
@@ -84,7 +84,7 @@
   %li
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
-  
+
   %li.divider
 
   %li
@@ -93,10 +93,10 @@
     %li
       %i.fi-puzzle
       = link_to tool.name, launch_lti_provider_path(tool)
-  
+
   %li.divider
 
-  - if current_user.is_admin?
+  - if current_user_is_admin?
     %li
       %label Admin
     %li

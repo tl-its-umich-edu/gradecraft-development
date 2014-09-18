@@ -132,29 +132,29 @@ class User < ActiveRecord::Base
     teams.first.try(:team_leader)
   end
 
-  def role
-    return nil if self.course_memberships.where(course_id: current_course).empty?
-    self.course_memberships.where(course: current_course).first.role
+  def role(course)
+    return nil if self.course_memberships.where(course_id: course).empty?
+    self.course_memberships.where(course: course).first.role
   end
 
-  def is_prof?
-    self.role == "professor"
+  def is_prof?(course)
+    self.role(course) == "professor"
   end
 
-  def is_gsi?
-    self.role == "gsi"
+  def is_gsi?(course)
+    self.role(course) == "gsi"
   end
 
-  def is_student?
-    self.role == "student" || self.role_in_current_course.blank?
+  def is_student?(course)
+    self.role(course) == "student" || self.role(course).blank?
   end
 
-  def is_admin?
-    self.course_memberships.where(course: current_course).first.role == "admin"
+  def is_admin?(course)
+    self.role(course) == "admin"
   end
 
-  def is_staff?
-    is_prof? || is_gsi? || is_admin?
+  def is_staff?(course)
+    is_prof?(course) || is_gsi?(course) || is_admin?(course)
   end
 
   # Find the team associated with the team membership for a given course id

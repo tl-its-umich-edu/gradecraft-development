@@ -1,5 +1,5 @@
 .small-12.medium-6.columns
-  - if current_student_data.grade_released_for_assignment?(@assignment).present? || current_user.is_staff?
+  - if current_student_data.grade_released_for_assignment?(@assignment).present? || current_user_is_staff?
     .panel= render "grades/results"
 
   - if @assignment.accepts_submissions?

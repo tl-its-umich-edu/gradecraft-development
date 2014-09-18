@@ -1,7 +1,7 @@
 - if @assignment.is_individual?
   %p.bold
-    - if current_user.is_staff?
-      = "#{current_student.first_name}'s Submission" 
+    - if current_user_is_staff?
+      = "#{current_student.first_name}'s Submission"
     - else
       Your Submission
     // link to edit the submission
@@ -14,7 +14,7 @@
     // Late alert if submitted after due date
     - if current_student.submission_for_assignment(@assignment).late?
       %span.label.alert.round Late!
-      
+
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if current_student.submission_for_assignment(@assignment).updated_at != current_student.submission_for_assignment(@assignment).created_at
     %p
@@ -34,7 +34,7 @@
         - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
           %li
             = link_to sf.filename, sf.url
-              
+
   - if current_student.submission_for_assignment(@assignment).text_comment?
     %p
       Statement:
@@ -42,8 +42,8 @@
 
 
 - else
-  - if current_user.is_staff?
-    %b= "#{@group.name}'s Submission" 
+  - if current_user_is_staff?
+    %b= "#{@group.name}'s Submission"
   - else
     Your Submission
   // link to edit the submission
@@ -56,7 +56,7 @@
     // Late alert if submitted after due date
     - if @group.submission_for_assignment(@assignment).late?
       %span.label.alert.round Late!
-      
+
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if @group.submission_for_assignment(@assignment).updated_at != @group.submission_for_assignment(@assignment).created_at
     %p
@@ -77,7 +77,7 @@
           %li
             = link_to sf.filename, sf.url
             = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
-              
+
   - if @group.submission_for_assignment(@assignment).text_comment?
     %p
       %b Statement:

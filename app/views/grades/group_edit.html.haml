@@ -2,7 +2,7 @@
   / Grades Navigation
   = content_nav do
     = render "assignments/tabs"
-  
+
   .pagetitle= @title
 
   .small-12.columns
@@ -14,11 +14,11 @@
         - @group.proposals.last do |prop|
           = prop.title
 
-  .small-12.columns 
+  .small-12.columns
     = simple_form_for :grade, :url => group_grade_assignment_path(@assignment), :html => { :method => :put} do |f|
       = hidden_field_tag "group_id", @group.id
       = f.hidden_field :graded_by_id, :value => current_user.id
-      
+
       .clearfix
       .small-12.large-4.columns
         Score:
@@ -37,11 +37,11 @@
 
       .small-12.columns
         .right
-        
+
           - if @assignment.release_necessary?
-            - if current_user.is_gsi?
+            - if current_user_is_gsi?
               = f.input :status, as: :select, :collection => ["In Progress", "Graded"], :selected => @group.students.first.grade_for_assignment(@assignment).try(:status)
-              .form_label Is this grade ready to be reviewed? 
+              .form_label Is this grade ready to be reviewed?
             - else
               = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @group.students.first.grade_for_assignment(@assignment).try(:status)
           - else

@@ -26,7 +26,7 @@ class StudentsController < ApplicationController
 
   # Course timeline, displays all assignments that are determined by the instructor to belong on the timeline + team challenges if present
   def timeline
-    if current_user.is_student?
+    if current_user_is_student?
       redirect_to dashboard_path
     end
     if current_course.team_challenges?
@@ -36,7 +36,7 @@ class StudentsController < ApplicationController
     end
   end
 
-  # Exporting student grades 
+  # Exporting student grades
   def export
     @students = current_course.students.being_graded respond_to do |format|
       format.html
@@ -49,7 +49,7 @@ class StudentsController < ApplicationController
   def show
     self.current_student = current_course.students.where(id: params[:id]).first
     @assignments = current_course.assignments.chronological.alphabetical
-    if current_user.is_staff?
+    if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)
     end
     scores = []
@@ -62,7 +62,7 @@ class StudentsController < ApplicationController
   def course_progress
     @grade_scheme_elements = current_course.grade_scheme_elements
     @title = "Your Course Progress"
-    if current_user.is_staff?
+    if current_user_is_staff?
       @scores_for_current_course = current_student.scores_for_course(current_course)
     end
   end

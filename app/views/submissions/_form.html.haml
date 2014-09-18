@@ -19,14 +19,14 @@
             %li
               = link_to sf.filename, sf.url
               = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
-      
+
 
 = simple_form_for([@assignment, @submission]) do |f|
-  - if @assignment.has_groups? && current_user.is_student?
+  - if @assignment.has_groups? && current_user_is_student?
     = f.input :group_id, :input_html => { :value => current_student.group_for_assignment(@assignment).id }, :as => :hidden
-  - elsif @assignment.has_groups? && current_user.is_staff?
+  - elsif @assignment.has_groups? && current_user_is_staff?
     = f.input :group_id, :input_html => { :value => @group.id }, :as => :hidden
-  - elsif @assignment.is_individual? && current_user.is_staff?
+  - elsif @assignment.is_individual? && current_user_is_staff?
     = f.input :student_id, :input_html => { :value => @student.id }, :as => :hidden
   = f.simple_fields_for :submission_files, @submission.submission_files.new do |sff|
     = sff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden

@@ -1,5 +1,5 @@
 - @assignment.grade_for_student(current_student).tap do |grade|
-  - if grade && grade.assignment.release_necessary && grade.is_released? || grade && ! grade.assignment.release_necessary || grade && current_user.is_staff?
+  - if grade && grade.assignment.release_necessary && grade.is_released? || grade && ! grade.assignment.release_necessary || grade && current_user_is_staff?
     %hr
     %h4 Grade
     .small-12

@@ -13,11 +13,11 @@
           %li= link_to ag.assignment.name, ag.assignment
 
     .small-12.medium-3.columns
-      %h4 
-        Members: 
+      %h4
+        Members:
       %ul
         - @group.group_memberships.each do |gm|
-          - if current_user.is_staff?
+          - if current_user_is_staff?
             %li= link_to gm.student.name, student_path(gm.student)
           - else
             %li= gm.student.name
@@ -26,7 +26,7 @@
       - i = 1
       - @group.proposals.order_by_creation_date.each do |p|
         .panel
-          %h4.bold= "Proposal ##{i}: #{p.title}" 
+          %h4.bold= "Proposal ##{i}: #{p.title}"
           %h6= "Created: #{p.created_at}"
           %p= p.proposal
         - i += 1

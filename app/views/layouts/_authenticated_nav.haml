@@ -1,6 +1,6 @@
 %section.top-bar-section
   %ul.right
-    - if current_user.is_staff?
+    - if current_user_is_staff?
       %li.has-form.hide-for-small.hide-for-medium
         .row.collapse
           .large-8.small-9.columns
@@ -17,7 +17,7 @@
         - current_user.courses.each do |c|
           - if c.active?
             %li= link_to "#{c.name}", change_current_course_path(:course_id => c.id), :method => 'post'
-        
+
         - if current_user.archived_courses.present?
           .past_courses
             %hr
@@ -33,13 +33,13 @@
         %li
           %i.fi-crown
           Professor #{ current_course.professor.try(:name) }
-        - if current_user.is_student?
+        - if current_user_is_student?
           - current_student.team_leader.tap do |team_leader|
             - if team_leader.present?
               %li
                 %i.fi-torso-business
                 = "#{current_course.team_leader_term} #{team_leader.first_name}"
-        - if current_user.is_student? && current_user.team_for_course(current_course).present?
+        - if current_user_is_student? && current_user.team_for_course(current_course).present?
           %li
             %i.fi-torsos-all
             = "#{term_for :team} #{current_user.team_for_course(current_course).name}"

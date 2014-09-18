@@ -36,12 +36,12 @@ class UsersController < ApplicationController
     session[:return_to] = request.referer
     @teams = current_course.teams
     @user = current_course.users.find(params[:id])
-    if @user.is_staff?
+    if @user.is_staff?(current_course)
       @courses = Course.all
       @teams_for_course = @user.teams.map do |t|
-        t.id 
+        t.id
       end
-    elsif current_user.is_staff?
+    elsif current_user_is_staff?
       @courses = Course.all
     end
     @course_membership = @user.course_memberships.where(course_id: current_course).first
@@ -53,9 +53,9 @@ class UsersController < ApplicationController
   def create
     @teams = current_course.teams
     @user = current_course.users.new(params[:user])
-    if @user.save && @user.is_student?
+    if @user.save && @user.is_student?(current_course)
       redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully created!"
-    elsif @user.save && @user.is_staff?
+    elsif @user.save && @user.is_staff?(current_course)
       redirect_to staff_index_path, :notice => "Staff Member #{@user.name} was successfully created!"
     else
       render :new
@@ -69,9 +69,9 @@ class UsersController < ApplicationController
     @teams = current_course.teams
     @user.teams.set_for_course(current_course.id, params[:user][:course_team_ids])
     @user.update_attributes(params[:user])
-    if @user.save && @user.is_student?
+    if @user.save && @user.is_student?(current_course)
       redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully updated!"
-    elsif @user.save && @user.is_staff?
+    elsif @user.save && @user.is_staff?(current_course)
       redirect_to staff_index_path, :notice => "Staff Member #{@user.name} was successfully updated!"
     else
       render :edit

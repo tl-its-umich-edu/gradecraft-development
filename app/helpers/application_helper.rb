@@ -6,8 +6,8 @@ module ApplicationHelper
     classes = []
     if logged_in?
       classes << 'logged-in'
-      classes << 'staff' if current_user.is_staff?
-      classes << current_user.role
+      classes << 'staff' if current_user_is_staff?
+      classes << current_user.role(current_course)
     else
       classes << 'logged-out'
     end
@@ -44,9 +44,9 @@ module ApplicationHelper
     target.active_model_serializer.new(target, options).to_json
   end
 
-  # Search items 
+  # Search items
   def autocomplete_items
-    return [] unless current_user.is_staff?
+    return [] unless current_user_is_staff?
     current_course.students.map do |u|
       { :name => [u.first_name, u.last_name].join(' '), :id => u.id }
     end

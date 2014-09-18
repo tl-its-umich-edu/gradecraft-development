@@ -1,6 +1,6 @@
 class AssignmentTypeWeightsController < ApplicationController
 
-  # Students set their assignment type weights all at once 
+  # Students set their assignment type weights all at once
   def mass_edit
     @assignment_types = current_course.assignment_types
     respond_with @form = AssignmentTypeWeightForm.new(current_student, current_course)
@@ -12,7 +12,7 @@ class AssignmentTypeWeightsController < ApplicationController
     @form.update_attributes(student_params)
 
     if @form.save
-      redirect_to current_user.is_student? ? syllabus_path : multiplier_choices_path, :notice => "You have successfully updated your #{term_for :weight} choices!"
+      redirect_to current_user_is_student? ? syllabus_path : multiplier_choices_path, :notice => "You have successfully updated your #{term_for :weight} choices!"
     else
       render :mass_edit
     end

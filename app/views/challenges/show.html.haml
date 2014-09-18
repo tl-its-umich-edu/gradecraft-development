@@ -2,9 +2,9 @@
   / Challenge View Navigation
 
   = content_nav do
-    - if current_user.is_staff?
+    - if current_user_is_staff?
       = render "teams/tabs"
-    - else 
+    - else
       = render "students/student_profile_tabs"
 
   .pagetitle= @title
@@ -16,7 +16,7 @@
         %ul
         - @challenge.challenge_files.each do |cf|
           %li= link_to cf.filename, cf.url
-          - if current_user.is_staff?
+          - if current_user_is_staff?
             = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :upload_id => cf.id })
 
     = form_tag edit_status_challenge_challenge_grades_path @challenge do
@@ -29,7 +29,7 @@
               %th Level
             - if @challenge.release_necessary?
               %th Status
-            - if current_user.is_staff?
+            - if current_user_is_staff?
               %th
             - if @challenge.release_necessary?
               %th{"data-dynatable-no-sort" => "true" }
@@ -53,7 +53,7 @@
                     = @challenge.grade_level(grade)
               - if @challenge.release_necessary?
                 %td= challenge_grade.try(:status)
-              - if current_user.is_staff?
+              - if current_user_is_staff?
                 %td
                   - if challenge_grade
                     .button-bar

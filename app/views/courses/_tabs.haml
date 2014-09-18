@@ -1,4 +1,4 @@
-- if current_user.is_admin?
+- if current_user_is_admin?
   %li{class: ("active" if current_page?(courses_path)) }
     = link_to_unless_current 'Course Index', courses_path
 %li{class: ("active" if current_page?(new_course_path)) }

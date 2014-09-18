@@ -1,4 +1,4 @@
-- if current_user.is_staff?
+- if current_user_is_staff?
   .small-12.panel.mainContent
     / Assignment navigation
     = content_nav do
@@ -7,7 +7,7 @@
     .pagetitle= @title
 
     .small-12.columns
-      
+
       .assignments
         - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
           .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
@@ -54,7 +54,7 @@
                     %th Points
 
                     %th Dates
-                    %th 
+                    %th
                 %tbody
                   - assignments.each do |assignment|
                     %tr
@@ -75,7 +75,7 @@
                       %td
                         - if assignment.include_in_predictor?
                           %i.fi-check
-                      %td 
+                      %td
                         - if assignment.assignment_type.include_in_to_do?
                           %i.fi-check
                       %td
@@ -102,7 +102,7 @@
                       %td= points assignment.point_total
                       %td
                         %ul
-                          %li 
+                          %li
                             Opens:
                             = assignment.try(:opens_at) || "Always Open"
                           %li

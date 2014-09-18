@@ -28,9 +28,9 @@
 
     #predictorPage{ 'data-student-name' => current_student.name, 'data-course-total' => current_course.total_points }
       %ul.slides.small-12.columns
-        - if current_user.is_staff?
+        - if current_user_is_staff?
           = render partial: 'students/predictor/instructor_assignments', collection: current_course_data.by_assignment_type.to_a, as: :assignment_type_and_assignments
-        - elsif current_user.is_student?
+        - elsif current_user_is_student?
           = render partial: 'students/predictor/assignments', collection: current_course_data.predictable_by_assignment_type.to_a, as: :assignment_type_and_assignments
         = render 'students/predictor/badges'
         //= render 'students/predictor/challenges'

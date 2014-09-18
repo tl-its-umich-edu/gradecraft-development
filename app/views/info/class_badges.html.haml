@@ -1,8 +1,8 @@
 .small-12.panel.mainContent
   / Students Navigation
-  - if current_user.is_staff?
+  - if current_user_is_staff?
     = render "students/staff_view_class_badges"
-  - elsif current_user.is_student?
+  - elsif current_user_is_student?
     = render "students/public_class_badges"
 
   .clearfix

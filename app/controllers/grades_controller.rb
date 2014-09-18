@@ -6,12 +6,12 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id])
-    if current_user.is_student? 
+    if current_user_is_student?
       redirect_to @assignment
     end
-    if @assignment.has_groups? && current_user.is_staff?
+    if @assignment.has_groups? && current_user_is_staff?
       @group = @assignment.groups.find(params[:group_id])
-    elsif @assignment.has_groups? && current_user.is_student?
+    elsif @assignment.has_groups? && current_user_is_student?
       @grade = current_student_data.grade_for_assignment(@assignment)
     end
   end
@@ -31,7 +31,7 @@ class GradesController < ApplicationController
     redirect_to @assignment and return unless current_student.present?
     @grade = current_student_data.grade_for_assignment(@assignment)
     @grade.update_attributes params[:grade]
-    
+
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
     end
@@ -82,7 +82,7 @@ class GradesController < ApplicationController
     end
   end
 
-  # Students predicting the score they'll get on an assignent using the grade predictor 
+  # Students predicting the score they'll get on an assignent using the grade predictor
   def predict_score
     @assignment = current_course.assignments.find(params[:id])
     raise "Cannot set predicted score if grade status is 'Graded' or 'Released'" if current_student_data.grade_released_for_assignment?(@assignment)

@@ -1,4 +1,4 @@
-- if current_user.is_staff?
+- if current_user_is_staff?
   = form_tag edit_status_grades_assignment_path(@assignment) do
     - @groups.each do |group|
       .small-12.columns
@@ -47,7 +47,7 @@
                   - if grade
                     = @assignment.grade_level(grade)
               - if @assignment.release_necessary?
-                %td= grade.try(:status)              
+                %td= grade.try(:status)
                 %td.right
                   - if grade && grade.is_graded?
                     = check_box_tag "grade_ids[]", grade.id
@@ -56,7 +56,7 @@
         = submit_tag "Update Grade Statuses", :class => "button tiny radius"
 - else
   - if current_student.group_for_assignment(@assignment)
-    %h3 
+    %h3
       = "#{term_for :group}: #{current_student.group_for_assignment(@assignment).name}"
 
     %hr
@@ -69,7 +69,7 @@
     %h3 Members:
     %ul
       - current_student.group_for_assignment(@assignment).group_memberships.each do |gm|
-        - if current_user.is_staff?
+        - if current_user_is_staff?
           %li= link_to gm.student.name, student_path(gm.student)
         - else
           %li= gm.student.name

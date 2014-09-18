@@ -12,7 +12,7 @@
           %th First Name
           %th Last Name
           %th Email
-          - if current_course.team_roles? 
+          - if current_course.team_roles?
             %th Role
           %th Score
           %th Level
@@ -21,12 +21,12 @@
           %th.button-column
       %tbody
         - @team.students.each do |student|
-          - if student.is_student?
+          - if student.is_student?(current_course)
             %tr
               %td= link_to student.first_name, student_path(student)
               %td= link_to student.last_name, student_path(student)
               %td= mail_to student.email, student.email
-              - if current_course.team_roles? 
+              - if current_course.team_roles?
                 %td= student.team_role
               %td= student.cached_score_for_course(current_course) if student.respond_to?(:grades)
               %td

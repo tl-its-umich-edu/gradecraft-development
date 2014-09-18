@@ -16,7 +16,7 @@
           %th
       %tbody
         - @assignment_type.assignments.alphabetical.chronological.each do |assignment|
-          - if assignment.visible? || (current_user.is_student? && current_student_data.grade_released_for_assignment?(assignment)) || current_user.is_staff?
+          - if assignment.visible? || (current_user_is_student? && current_student_data.grade_released_for_assignment?(assignment)) || current_user_is_staff?
             %tr
               %td= link_to assignment.name, assignment
               %td
@@ -24,7 +24,7 @@
                 = assignment.try(:due_at) || "Ongoing"
               %td= assignment.try(:due_at).to_formatted_s(:db) if assignment.due_at.present?
               %td= points assignment.point_total
-              - if current_user.is_staff?
+              - if current_user_is_staff?
                 %td
                   .button-bar
                     %ul.button-group.right.round

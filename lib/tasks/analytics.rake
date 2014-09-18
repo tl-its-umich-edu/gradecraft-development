@@ -28,7 +28,7 @@ namespace :analytics do
       puts "Sending lots of events, stop by pressing ^c"
       loop do
         user = User.offset(rand(user_count)).limit(1).first
-        if user.is_student?
+        if user.is_student?(current_course)
           event = events.sample
           course = user.courses.sample
 
@@ -60,7 +60,7 @@ namespace :analytics do
                    end
                  end
 
-          attributes = {course_id: course.id, user_id: user.id, user_role: user.role}
+          attributes = {course_id: course.id, user_id: user.id, user_role: user.role(current_course)}
           EventLogger.perform_async(event, attributes.merge(data)) if data
           sleep(rand)
         end

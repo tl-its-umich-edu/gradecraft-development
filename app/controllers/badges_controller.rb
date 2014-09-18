@@ -3,7 +3,7 @@ class BadgesController < ApplicationController
   before_filter :ensure_staff?, :except => [:index]
 
   def index
-    if current_user.is_student?
+    if current_user_is_student?
       redirect_to my_badges_path
     end
     @title = "View All #{term_for :badges}"
@@ -77,5 +77,5 @@ class BadgesController < ApplicationController
 
   private
 
-  
+
 end

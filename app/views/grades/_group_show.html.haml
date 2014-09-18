@@ -1,5 +1,5 @@
 .small-12.medium-6.columns
-  - if current_user.is_student?
+  - if current_user_is_student?
     - @group = current_student.group_for_assignment(@assignment)
   - if @group.present?
     .panel= render "grades/group_results"

@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
   end
 
   def show
-    if current_user.is_student?
+    if current_user_is_student?
       @user = current_user
     end
     @group = current_course.groups.find(params[:id])
@@ -17,7 +17,7 @@ class GroupsController < ApplicationController
 
   def new
     @group = current_course.groups.new
-    if current_user.is_student?
+    if current_user_is_student?
       @other_students = current_course.students.where.not(id: current_user.id)
     end
     @assignments = current_course.assignments.group_assignments
@@ -32,8 +32,8 @@ class GroupsController < ApplicationController
   def create
     @group = current_course.groups.new(params[:group])
     @assignments = current_course.assignments.group_assignments
-    @group.students << current_user if current_user.is_student?
-    if current_user.is_student?
+    @group.students << current_user if current_user_is_student?
+    if current_user_is_student?
       @group.approved = "Pending"
     else
       @group.approved = "Approved"
@@ -45,7 +45,7 @@ class GroupsController < ApplicationController
         format.html { respond_with @group }
       else
         @title = "Start a #{term_for :group}"
-        if current_user.is_student?
+        if current_user_is_student?
           @other_students = current_course.students.where.not(id: current_user.id)
         end
         format.html { render action: "new" }

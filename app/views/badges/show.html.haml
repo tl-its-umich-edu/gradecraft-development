@@ -1,12 +1,12 @@
 
 .small-12.panel.mainContent
   / Badge Navigation
-  - if current_user.is_staff?
+  - if current_user_is_staff?
     = content_nav do
       = render "tabs"
 
   = content_nav_for @badge
-  
+
   .pagetitle= @title
 
   .small-12.columns
@@ -17,13 +17,13 @@
         .center
           %b Awarded:
           .label.round.bold.large=@badge.awarded_count
-          
+
       - if @badge.point_total?
         %hr
         .center
           %b Point Value:
           ="#{@badge.point_total}"
-          
+
 
     .small-12.large-8.columns
       - if @badge.description?
@@ -38,12 +38,12 @@
             - @badge.badge_files.each do |bf|
               %li
                 = link_to bf.filename, bf.url
-                - if current_user.is_staff?
+                - if current_user_is_staff?
                   = link_to "(Remove)", remove_uploads_path({ :model => "BadgeFile", :upload_id => bf.id } )
 
-    - if current_user.is_staff?
+    - if current_user_is_staff?
 
-      .small-12   
+      .small-12
         //staff individual badge award index
         %table.responsive.nopage_dynatable
           %thead
@@ -52,7 +52,7 @@
               %th Last Name
               %th{ :width => 300} Feedback
               //uncomment to add counts per student
-              //-if @badge.can_earn_multiple_times  
+              //-if @badge.can_earn_multiple_times
               //%th Count
               %th{"data-dynatable-sorts" => "dateStamp"} Date Awarded
               %th{:style => "display: none"} Date Stamp
@@ -71,8 +71,8 @@
                 //uncomment to add counts per student
                 //-if @badge.can_earn_multiple_times
                 //%td= @badge.earned_badge_count_for_student(student)
-                
-                %td  
+
+                %td
                   - @badge.earned_badges.where(:student_id => student.id).each do |badge|
                     %img{:src => @badge.icon, :alt => @badge.name, :width => "20" }
                     %span.has-tip{:title => "Edit this #{term_for :badge}", :data => {'tooltip' => true} }= link_to "(#{badge.created_at.strftime("%b %d")})", edit_badge_earned_badge_path(@badge, badge.id)

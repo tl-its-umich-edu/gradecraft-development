@@ -7,7 +7,7 @@
     - current_course.earned_badges.where(:shared => true).group_by(&:student).each do |student, sebs|
       %tr
         %td= link_to student.name
-        - if current_user.is_student? && student.id == current_student.id
+        - if current_user_is_student? && student.id == current_student.id
           %td#current_user_badges
             - sebs.each do |seb|
               %img.has-tip{:src => seb.try(:icon), :alt => seb.try(:name), :width => "20", :title => seb.name, :data => {'tooltip' => true}}

@@ -22,14 +22,14 @@ class SubmissionsController < ApplicationController
     session[:return_to] = request.referer
     @assignment = current_course.assignments.find(params[:assignment_id])
     @title = @assignment.name
-    if current_user.is_staff?
+    if current_user_is_staff?
       if @assignment.has_groups?
         @group = current_course.groups.find(params[:group_id])
       else
         @student = current_student
       end
     end
-    if current_user.is_student?
+    if current_user_is_student?
       @user = current_user
       if @assignment.has_groups?
         @group = current_course.groups.find(params[:group_id])
@@ -46,7 +46,7 @@ class SubmissionsController < ApplicationController
     @assignment = current_course.assignments.find(params[:assignment_id])
     @submission = current_course.submissions.find(params[:id])
     @student = @submission.student
-    if current_user.is_staff?
+    if current_user_is_staff?
       if @assignment.has_groups?
         @group = current_course.groups.find(params[:group_id])
         @title = "Editing #{@group.name}'s Submission "
@@ -54,7 +54,7 @@ class SubmissionsController < ApplicationController
         @title = "Editing #{@submission.student.name}'s Submission"
       end
     end
-    if current_user.is_student?
+    if current_user_is_student?
       @title = "Editing My Submission for #{@assignment.name}"
       @user = current_user
       enforce_view_permission(@submission)
@@ -66,17 +66,17 @@ class SubmissionsController < ApplicationController
   def create
     @assignment = current_course.assignments.find(params[:assignment_id])
     @submission = @assignment.submissions.new(params[:submission])
-    @submission.student = current_student if current_user.is_student?
+    @submission.student = current_student if current_user_is_student?
     respond_to do |format|
       self.check_uploads
       if @submission.save
-        if current_user.is_student?
+        if current_user_is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "#{@assignment.name} was successfully submitted." }
           format.json { render json: @assignment, status: :created, location: @assignment }
         else
           format.html { redirect_to session.delete(:return_to), notice: "#{@assignment.name} was successfully submitted." }
         end
-        if @assignment.is_individual? && current_user.is_student?
+        if @assignment.is_individual? && current_user_is_student?
           user = { name: "#{@submission.student.first_name}", email: "#{@submission.student.email}" }
           submission = { name: "#{@submission.assignment.name}", time: "#{@submission.created_at}" }
           course = { courseno: "#{current_course.courseno}",  }
@@ -105,7 +105,7 @@ class SubmissionsController < ApplicationController
     respond_to do |format|
       self.check_uploads
       if @submission.update_attributes(params[:submission])
-        if current_user.is_student?
+        if current_user_is_student?
           format.html { redirect_to assignment_grade_path(@assignment, :student_id => current_user), notice: "Your submission for #{@assignment.name} was successfully updated." }
           format.json { render json: @assignment, status: :created, location: @assignment }
           #NotificationMailer.revised_submission(@submission.id).deliver

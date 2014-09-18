@@ -7,7 +7,7 @@ class LTIController < ApplicationController
     @consumer.lis_person_name_full = current_user.name
     @consumer.lis_person_contact_email_primary = current_user.email
     @consumer.user_id = current_user.id
-    if current_user.is_admin? || current_user.is_prof?
+    if current_user_is_admin? || current_user_is_prof?
       @consumer.roles = 'Instructor'
     else
       @consumer.roles = 'Learner'

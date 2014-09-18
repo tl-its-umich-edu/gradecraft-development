@@ -1,5 +1,5 @@
 class AssignmentsController < ApplicationController
-  
+
   before_filter :ensure_staff?, :except => [:feed, :show]
 
   def index
@@ -34,7 +34,7 @@ class AssignmentsController < ApplicationController
     @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
     @graded_count = @submissions_count - @ungraded_submissions_count
 
-    if current_user.is_student?
+    if current_user_is_student?
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where("submissions.student_id =?", current_user[:id])
     end
 

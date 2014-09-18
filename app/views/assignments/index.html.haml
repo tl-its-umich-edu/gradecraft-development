@@ -1,4 +1,4 @@
-- if current_user.is_staff?
+- if current_user_is_staff?
   .small-12.panel.mainContent
     / Assignment navigation
     = content_nav do
@@ -7,7 +7,7 @@
     .pagetitle= @title
 
     .small-12.columns
-      
+
       .assignments
         - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
           .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
@@ -34,7 +34,7 @@
                       %td= link_to assignment.name, assignment
                       // If an attendance assignment has past and students could earn points for the class,
                       // display visual of attendance percentage. Otherwise display empty space.
-                      - if assignment.assignment_type.name == "Class Attendance" 
+                      - if assignment.assignment_type.name == "Class Attendance"
                         %td
                           - if assignment.past? && assignment.point_total != 0
                             // Provide mouseover with actual attendance percentage.

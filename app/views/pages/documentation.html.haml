@@ -1,7 +1,7 @@
 - if current_user
-  - if current_user.is_staff?
+  - if current_user_is_staff?
     = render 'pages/instructor_documentation'
-  - elsif current_user.is_student?
+  - elsif current_user_is_student?
     = render 'pages/student_documentation'
 - else
   .small-12

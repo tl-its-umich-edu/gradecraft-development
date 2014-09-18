@@ -1,7 +1,7 @@
 .small-12.panel.mainContent
   / Group Navigation
   = content_nav do
-    - if current_user.is_staff?
+    - if current_user_is_staff?
       = render "tabs"
     - else
       = render "students/student_profile_tabs"

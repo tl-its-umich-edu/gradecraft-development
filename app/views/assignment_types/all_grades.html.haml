@@ -1,9 +1,9 @@
-- if current_user.is_staff?
+- if current_user_is_staff?
   .small-12.panel.mainContent
     / Assignment Type Navigation
     = content_nav do
       = render "assignments/tabs"
-    
+
     .pagetitle= "#{@assignment_type.name} Grade Patterns"
 
     .small-12.columns
@@ -16,11 +16,11 @@
       .small-12.medium-5
         %table
           %tr
-            %th 
+            %th
               %i.fi-heart.complete
               Full Points
 
-            %th 
+            %th
               %i.fi-cloud.partial
               Partial Points
             %th
@@ -55,7 +55,7 @@
                 - i = 0
                 - @assignment_type.assignments.chronological.each do |assignment|
                   - if assignment.point_total > 0
-                    
+
                     - assignment.grade_for_student(student).tap do |grade|
 
                       - if grade && grade.score == assignment.point_total

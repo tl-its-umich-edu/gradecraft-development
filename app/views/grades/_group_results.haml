@@ -1,6 +1,6 @@
 %p
   %span.bold= "#{term_for :group}:"
-  - if current_user.is_student?
+  - if current_user_is_student?
     - @group = current_student.group_for_assignment(@assignment)
   - if @group.present?
     = link_to @group.name, group_path(@group)
@@ -9,18 +9,18 @@
 
   %span.bold= "#{term_for :students}:"
   %ul
-    - @group.students.each do |student| 
-      - if current_user.is_student?
+    - @group.students.each do |student|
+      - if current_user_is_student?
         %li= student.name
       - else
         %li= link_to student.name, student_path(student)
 
-- if current_user.is_student?
+- if current_user_is_student?
   - if current_student.grade_for_assignment(@assignment).present?
-    - if current_user.is_student?
+    - if current_user_is_student?
       %p.bold Your Results
     - else
-      %p.bold 
+      %p.bold
         #{current_student.try(:first_name)}'s Grade
         %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => current_student.id), :class => 'button tiny secondary radius'
 
@@ -28,8 +28,8 @@
     %p
       %span.bold= "#{points grade.raw_score }"
       %span=" / #{points @assignment.point_total } possible points"
-    - if current_student.grade_for_assignment(@assignment).assignment.release_necessary? && current_user.is_staff?
-      %p 
+    - if current_student.grade_for_assignment(@assignment).assignment.release_necessary? && current_user_is_staff?
+      %p
         Status:
         %span.bold= current_student.grade_for_assignment(@assignment).status
     - if current_student.grade_for_assignment(@assignment).feedback.present?
@@ -39,7 +39,7 @@
 - else
   - @group.students.each do |student|
     - if student.grade_for_assignment(@assignment).present?
-      %p.bold 
+      %p.bold
         #{student.try(:first_name)}'s Grade
         %span= link_to "Edit", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny secondary radius'
 
@@ -48,7 +48,7 @@
         %span.bold= "#{points grade.raw_score }"
         %span=" / #{points @assignment.point_total } possible points"
       - if student.grade_for_assignment(@assignment).assignment.release_necessary?
-        %p 
+        %p
           Status:
           %span.bold= student.grade_for_assignment(@assignment).status
       - if student.grade_for_assignment(@assignment).feedback.present?

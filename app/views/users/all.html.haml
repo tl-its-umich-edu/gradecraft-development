@@ -2,9 +2,9 @@
   / User All navigation
   = content_nav do
     = render "tabs"
-  
+
   .pagetitle= @title
-  
+
   %table.columns.dynatable
     %thead
       %tr
@@ -19,19 +19,19 @@
       - @users.alpha.each do |user|
         %tr
           %td
-            = link_to user.first_name, student_path(user) if user.is_student?
-            = link_to user.first_name, staff_path(user) if user.is_staff?
+            = link_to user.first_name, student_path(user) if user.is_student?(current_course)
+            = link_to user.first_name, staff_path(user) if user.is_staff?(current_course)
           %td
-            = link_to user.last_name, student_path(user) if user.is_student?
-            = link_to user.last_name, staff_path(user) if user.is_staff?
+            = link_to user.last_name, student_path(user) if user.is_student?(current_course)
+            = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
           %td= user.email
-          %td= user.role.capitalize
+          %td= user.role(current_course).capitalize
           %td
             %ul
               - user.course_memberships.each do |cm|
                 %li= cm.course.name
           %td
-            - if user.is_student?
+            - if user.is_student?(current_course)
               = points user.score_for_course(current_course) if user.respond_to?(:grades)
           %td
             .button-bar
