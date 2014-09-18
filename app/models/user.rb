@@ -153,10 +153,6 @@ class User < ActiveRecord::Base
     self.course_memberships.where(course: current_course).first.role == "admin"
   end
 
-  def role
-    super || "student"
-  end
-
   def is_staff?
     is_prof? || is_gsi? || is_admin?
   end
