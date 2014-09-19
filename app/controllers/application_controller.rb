@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_prof?
-    return not_authenticated unless current_user_is_prof?
+    return not_authenticated unless current_user_is_professor?
   end
 
   def ensure_admin?

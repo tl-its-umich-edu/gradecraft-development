@@ -230,7 +230,7 @@ class Course < ActiveRecord::Base
   end
 
   def professor
-    users.where(:role => "professor").first
+    course_memberships.where(:role => "professor").first.user
   end
 
   #gradebook

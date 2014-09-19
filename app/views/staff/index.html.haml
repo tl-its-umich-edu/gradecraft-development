@@ -17,7 +17,7 @@
           %th.button-column
       %tbody
         - current_course.users.alpha.each do |user|
-          - if user.is_staff?
+          - if user.is_staff?(current_course)
             %tr
               %td= link_to user.first_name, staff_path(user)
               %td= link_to user.last_name, staff_path(user)
