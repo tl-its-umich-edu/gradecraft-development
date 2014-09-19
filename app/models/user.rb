@@ -10,7 +10,9 @@ class User < ActiveRecord::Base
 
   class << self
     def with_role_in_course(role, course)
-      all.select { |u| u.role(course) == role }
+      user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
+      User.where(id: user_ids)
+      #User.where(id: CourseMembership.where(course: course, role: role).pluck(:user_id))
     end
 
     ROLES.each do |role|
