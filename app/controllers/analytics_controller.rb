@@ -3,7 +3,7 @@ class AnalyticsController < ApplicationController
   before_filter :set_granularity_and_range
 
   def index
-    @students = current_course.users.students.order('last_name ASC')
+    @students = current_course.students.order('last_name ASC')
   end
 
   def all_events

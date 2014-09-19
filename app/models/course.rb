@@ -1,4 +1,16 @@
 class Course < ActiveRecord::Base
+
+  # Note: we are setting the role methods as instance methods,
+  # not class methods, so that they are limited to the users
+  # of the current course
+  ROLES = %w(student professor gsi admin)
+
+  ROLES.each do |role|
+    define_method(role.pluralize) do
+      User.with_role_in_course(role, self)
+    end
+  end
+
   attr_accessible :courseno, :name,
     :semester, :year, :badge_setting, :team_setting, :team_term, :user_term,
     :user_id, :course_id, :homepage_message, :group_setting,
@@ -13,7 +25,7 @@ class Course < ActiveRecord::Base
     :use_timeline, :media_file, :media_credit, :media_caption, :assignment_term,
     :challenge_term, :badge_term, :grading_philosophy, :team_score_average,
     :team_challenges, :team_leader_term, :max_assignment_types_weighted,
-    :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes, 
+    :point_total, :in_team_leaderboard, :grade_scheme_elements_attributes,
     :add_team_score_to_student, :status
 
   with_options :dependent => :destroy do |c|
@@ -32,7 +44,7 @@ class Course < ActiveRecord::Base
     c.has_many :teams
     c.has_many :course_memberships
   end
-  
+
   has_many :users, :through => :course_memberships
   accepts_nested_attributes_for :users
 
@@ -78,10 +90,6 @@ class Course < ActiveRecord::Base
 
   def challenge_term
     super.presence || 'Challenge'
-  end
-
-  def students
-    users.students
   end
 
   def has_teams?
@@ -243,14 +251,14 @@ class Course < ActiveRecord::Base
       end
     end
   end
-  
+
   #badges
   def course_badge_count
    badges.count
   end
-  
+
   def awarded_course_badge_count
    earned_badges.count
   end
-  
+
 end

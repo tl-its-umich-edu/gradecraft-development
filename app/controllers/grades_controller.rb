@@ -134,7 +134,7 @@ class GradesController < ApplicationController
       if params[:group]
         user_search_options = {}
         user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-        @students = current_course.users.students.includes(:teams).where(user_search_options).alpha
+        @students = current_course.students.includes(:teams).where(user_search_options).alpha
       else
         @group = @assignment.groups.find(params[:group_id])
         @students = @group.students

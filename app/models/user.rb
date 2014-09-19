@@ -6,6 +6,20 @@ class User < ActiveRecord::Base
   before_validation :set_default_course
   after_save :cache_scores
 
+  ROLES = %w(student professor gsi admin)
+
+  class << self
+    def with_role_in_course(role, course)
+      all.select { |u| u.role(course) == role }
+    end
+
+    ROLES.each do |role|
+      define_method(role.pluralize) do |course|
+        with_role_in_course(role,course)
+      end
+    end
+  end
+
   attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids
   attr_accessible :username, :email, :password, :password_confirmation,
     :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,

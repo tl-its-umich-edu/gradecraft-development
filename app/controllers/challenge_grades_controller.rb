@@ -29,13 +29,13 @@ class ChallengeGradesController < ApplicationController
     @challenge_grade = @challenge.challenge_grades.find(params[:id])
   end
 
-  # Grade many teams on a particular challenge at once 
+  # Grade many teams on a particular challenge at once
   def mass_edit
     @challenge = current_course.challenges.find(params[:challenge_id])
     @teams = current_course.teams
     @title = "Quick Grade #{@challenge.name}"
     @challenge_score_levels = @challenge.challenge_score_levels
-    @students = current_course.users.students
+    @students = current_course.students
     @challenge_grades = @teams.map do |t|
       @challenge.challenge_grades.where(:team_id => t).first || @challenge.challenge_grades.new(:team => t, :challenge => @challenge)
     end

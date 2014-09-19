@@ -25,7 +25,7 @@ class EarnedBadgesController < ApplicationController
     @badge = current_course.badges.find(params[:badge_id])
     @title = "Award #{@badge.name}"
     @earned_badge = @badge.earned_badges.new
-    @students = current_course.users.students.alpha
+    @students = current_course.students.alpha
   end
 
   # Allows the student to change whether or not they've shared having earned this badge with the class
@@ -109,7 +109,7 @@ class EarnedBadgesController < ApplicationController
       @title = "Quick Award #{@badge.name}"
       user_search_options = {}
       user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?
-      @students = current_course.users.students.includes(:teams).where(user_search_options).alpha
+      @students = current_course.students.includes(:teams).where(user_search_options).alpha
       if @badge.can_earn_multiple_times?
         @earned_badges = @students.map do |s|
           @badge.earned_badges.new(:student => s, :badge => @badge)
@@ -125,7 +125,7 @@ class EarnedBadgesController < ApplicationController
   # Display a chart of all badges earned in the course
   def chart
     @badges = current_course.badges
-    @students = current_course.users.students
+    @students = current_course.students
   end
 
   def destroy
