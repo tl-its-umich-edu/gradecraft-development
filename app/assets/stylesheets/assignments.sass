@@ -48,6 +48,9 @@ $badge_green_border: #439A31
     max-width: 100%
     table-layout: fixed
 
+    tbody tr
+      margin-top: 6px
+
   #rubric-heading
     float: left
 
@@ -132,9 +135,9 @@ $badge_green_border: #439A31
       background: #EDF5EC
 
   .metric
-    background: #D3EBF5
     border: 1px solid #9FE2FF
     cursor: auto
+    @include linear-gradient(#D3EBF5,#A6DDF5)
 
     label.larger
       font-size: 14px
@@ -160,15 +163,20 @@ $badge_green_border: #439A31
     white-space: nowrap
     font-weight: bold
     font-size: 15px
-    padding: 8px 0 0 8px
+    padding: 8px 0 0 0
     margin-top: -8px
 
   .metric-points
-    font-size: 19px
-    margin: -4px 0 0 8px
+    display: block
+    padding: 6px 
+    font-weight: bold
+    margin-top: 6px
+    color: white
+    background: $badge_blue
+    float: left
 
   .metric-description
-    margin: -4px 0 0 8px
+    margin: 6px 0 0 0
     font-size: 13px
     font-style: italic
     color: #222
@@ -208,9 +216,6 @@ $badge_green_border: #439A31
   .tier
     background: #efefef
     border: 1px solid #ddd
-    cursor: pointer
-    cursor: hand
-    vertical-align: middle
     padding: 8px 14px
     width: 220px
     position: relative
@@ -237,14 +242,6 @@ $badge_green_border: #439A31
       label
         cursor: auto
 
-    .tier-name
-      white-space: nowrap
-      font-weight: bold
-      font-size: 16px
-      position: absolute
-      top: 0
-      left: 0
-      padding: 6px
 
     .tier-column
       padding: 0
@@ -306,18 +303,21 @@ $badge_green_border: #439A31
       background: #D9FF8C
       border: 1px solid #BEF64E
 
-    &:hover:not(.heading), &.selected:hover:not(.heading)
-      background: #E1FFA3
-      border: 1px solid #D6FF7F
-
   .tier-points
-    top: 0
-    right: 0
-    position: absolute
-    padding: 6px 22px 6px 6px
+    display: block
+    padding: 6px 
     font-weight: bold
     color: white
     background: $dark_green
+    float: left
+
+  .tier-name
+    display: block
+    white-space: nowrap
+    font-weight: bold
+    font-size: 16px
+    margin-bottom: 6px
+    padding: 1px
 
   .graded-students
     padding: 6px
@@ -340,8 +340,7 @@ $badge_green_border: #439A31
 
   .tier-description
     max-width: 85%
-    margin-top: 28px
-
+    margin-top: 6px
 
   .tier-badge, .tier-badge-image
     background: $badge_green

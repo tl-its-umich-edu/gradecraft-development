@@ -10,4 +10,6 @@ class Tier < ActiveRecord::Base
 
   attr_accessible :name, :description, :points, :metric_id, :durable, :full_credit, :no_credit, :sort_order
 
+  include DisplayHelpers
+
 end

@@ -245,9 +245,9 @@ class Course < ActiveRecord::Base
 
   def research_grades_for_course(course, options = {})
     CSV.generate(options) do |csv|
-      csv << ["Course ID", "Uniqname", "Assignment Name", "Assignment ID", "Score", "Assignment Point Total", "Multiplied Score", "Predicted Score", "Text Feedback", "Submission ID", "Submission Creation Date", "Submission Updated Date"]
+      csv << ["Course ID", "Uniqname", "First Name", "Last Name", "GradeCraft ID", "Assignment Name", "Assignment ID", "Assignment Type", "Assignment Type Id", "Score", "Assignment Point Total", "Multiplied Score", "Predicted Score", "Text Feedback", "Submission ID", "Submission Creation Date", "Submission Updated Date"]
       course.grades.each do |grade|
-        csv << [grade.course.id, grade.student.username, grade.assignment.name, grade.assignment.id, grade.raw_score, grade.point_total, grade.score, grade.predicted_score, grade.feedback, grade.submission.try(:id), grade.submission.try(:created_at), grade.submission.try(:updated_at)]
+        csv << [grade.course.id, grade.student.username, grade.student.first_name, grade.student.last_name, grade.student_id, grade.assignment.name, grade.assignment.id, grade.assignment.assignment_type.name, grade.assignment.assignment_type_id, grade.raw_score, grade.point_total, grade.score, grade.predicted_score, grade.feedback, grade.submission_id, grade.submission.try(:created_at), grade.submission.try(:updated_at)]
       end
     end
   end

@@ -114,7 +114,7 @@ class NotificationMailer < ActionMailer::Base
     @user = user
     @course = course
     attachments["#{course.id}.csv"] = {:mime_type => 'tex/csv',:content => csv_data }
-    mail(:to =>  @user.email, :bcc=>"mailer@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
+    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
       format.text
       format.html
     end

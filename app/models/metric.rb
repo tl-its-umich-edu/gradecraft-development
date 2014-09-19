@@ -19,6 +19,8 @@ class Metric < ActiveRecord::Base
     description.nil? or description.blank?
   end
 
+  include DisplayHelpers
+
   protected
 
   def generate_default_tiers
