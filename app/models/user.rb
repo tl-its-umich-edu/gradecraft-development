@@ -34,10 +34,10 @@ class User < ActiveRecord::Base
     :character_profile, :team_id, :lti_uid, :course_team_ids
 
   scope :alpha, -> { order 'last_name ASC' }
-  scope :order_by_high_score, -> { order 'course_memberships.score DESC' }
-  scope :order_by_low_score, -> { order 'course_memberships.score ASC' }
-  scope :being_graded, -> { where('course_memberships.auditing IS FALSE') }
-  scope :auditing, -> { where('course_memberships.auditing IS TRUE') }
+  scope :order_by_high_score, -> { joins(:course_memberships).order 'course_memberships.score DESC' }
+  scope :order_by_low_score, -> { joins(:course_memberships).order 'course_memberships.score ASC' }
+  scope :being_graded, -> { joins(:course_memberships).where('course_memberships.auditing IS FALSE') }
+  scope :auditing, -> { joins(:course_memberships).where('course_memberships.auditing IS TRUE') }
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
