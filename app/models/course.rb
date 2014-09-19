@@ -1,6 +1,6 @@
 class Course < ActiveRecord::Base
 
-  # Note: we are setting the role methods as instance methods,
+  # Note: we are setting the role scopes as instance methods,
   # not class methods, so that they are limited to the users
   # of the current course
   ROLES = %w(student professor gsi admin)
