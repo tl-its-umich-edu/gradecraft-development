@@ -18,7 +18,7 @@ class Team < ActiveRecord::Base
   #Teams don't currently earn badges directly - but they are recognized for the badges their students earn
   has_many :earned_badges, :through => :students
 
-  #Teams compete through challenges, which receive points through challenge_grades 
+  #Teams compete through challenges, which receive points through challenge_grades
   has_many :challenge_grades
   has_many :challenges, :through => :challenge_grades
 
@@ -31,7 +31,7 @@ class Team < ActiveRecord::Base
 
   #Getting the team leader - needs to be rebuilt so that the GSI isn't a student
   def team_leader
-    students.gsis.first
+    students.gsis(course).first
   end
 
   #Sorting team's students by their score, currently only used for in team leaderboards
@@ -68,9 +68,9 @@ class Team < ActiveRecord::Base
   private
 
   #Teams rack up points in two ways, which is used is determined by the instructor in the course settings.
-  #The first way is that the team's score is the average of its students' scores, and challenge grades are 
+  #The first way is that the team's score is the average of its students' scores, and challenge grades are
   #added directly into students' scores
-  #The second way is that the teams compete in team challenges that earn the team points. At the end of the 
+  #The second way is that the teams compete in team challenges that earn the team points. At the end of the
   #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
     if self.course.team_score_average?
