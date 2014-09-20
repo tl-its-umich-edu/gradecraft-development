@@ -34,9 +34,8 @@
                 = student.grade_level_for_course(current_course)
               - if current_course.has_badges?
                 %td
-                  - student.earned_badges.each do |badge|
-                    %span.has-tip.tip-top{:title => "#{badge.name}", :data => {'tooltip' => true}}
-                      %img{:src => asset_path(badge.icon), :alt => badge.name, :width => "25"}
+                  - student.earned_badges_for_course(current_course).each do |badge|
+                    %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
               %td
                 .button-bar
                   %ul.button-group.round.right
