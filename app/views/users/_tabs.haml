@@ -4,8 +4,6 @@
   = link_to_unless_current "#{term_for :students}", students_path
 %li{class: ("active" if current_page?(staff_index_path)) }
   = link_to_unless_current "Staff", staff_index_path
-%li{class: ("active" if current_page?(new_user_path)) }
-  = link_to_unless_current "Create a New User", new_user_path
 %li
   = link_to_unless_current "Download Roster", students_path(format: 'csv')
 - if @user.present? && @user.persisted?
