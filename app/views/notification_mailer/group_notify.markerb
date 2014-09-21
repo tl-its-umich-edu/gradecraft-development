@@ -1,5 +1,3 @@
-Hi <%= @gm.first_name %>,
-
 I just wanted to let you know that you have been listed as a member of the <%= @group.name%> Group. Let your instructor know if this is incorrect. 
 
 Play on!
