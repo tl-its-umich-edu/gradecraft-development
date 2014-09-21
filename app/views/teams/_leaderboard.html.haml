@@ -2,20 +2,35 @@
 .small-12.columns
   #leaderboardBarChart
 .small-12.columns
-  %table.responsive#leaderboard.highchart{:data => { "graph-container" => "#leaderboardBarChart", "graph-type" => "column", "graph-legend-disabled" => 1, "graph-xaxis-rotation" => 0, "graph-color-1" => '#303285' } }
+  %table.highchart.hidden{:data => { "graph-container" => "#leaderboardBarChart", "graph-type" => "column", "graph-legend-disabled" => 1, "graph-xaxis-rotation" => 0, "graph-color-1" => '#303285'} }
     %thead
       %tr
         %th
         %th
-        %th{:data => { "graph-skip" => 1 } }
     %tbody
-      - i = 1
       - current_course.teams.order_by_high_score.each do |team|
-        %tr{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course))}
+        %tr
           %td= team.name
           - if current_course.team_score_average?
             %td.right.points= points team.try(:average_points)
           - else
             %td.right.points= points team.try(:score)
+
+.small-12.columns
+  %table.responsive#leaderboard
+    %thead
+      %tr
+        %th{:data => { "graph-skip" => 1 } }
+        %th
+        %th
+    %tbody
+      - i = 1
+      - current_course.teams.order_by_high_score.each do |team|
+        %tr{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course))}
           %td.rank= i
+          %td= team.name
+          - if current_course.team_score_average?
+            %td.right.points= points team.try(:average_points)
+          - else
+            %td.right.points= points team.try(:score)
           - i += 1
