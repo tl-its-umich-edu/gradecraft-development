@@ -3,21 +3,22 @@
     = render "student_profile_tabs"
 
   .pagetitle= "#{term_for :badges}"
-  %span
-    -if current_course.valuable_badges?  
+  
+  .small-12.columns.right
+    - if current_course.valuable_badges?  
       - if current_user.is_student?
-        %b My #{term_for :badge}  Points:
+        %b My #{term_for :badge}  Points
         .label.round.bold= points current_student.earned_badge_score
-      - else
-        %b My #{term_for :badges} Earned:
-        .label.round.bold=current_student.earned_badge_count_for_course(current_course)
-    -else
+    - else
       - if current_user.is_student?
-        %b #{current_student.name}'s #{term_for :badge}  Points:
-        .label.round.bold=current_student.earned_badge_score
+        %b My #{term_for :badges}
       - else
-        %b #{current_student.name}'s #{term_for :badge}s Earned:
-        .label.round.bold=current_student.earned_badge_count_for_course(current_course)  
+        %b #{current_student.name}'s #{term_for :badges} Earned:
+      .label.round.bold=current_student.earned_badge_count_for_course(current_course)  
+    - if current_user.is_student? && ! current_student.badges_shared(current_course)
+      .small
+        = "Want to share your #{term_for :badges} with the class?"
+        .bold= link_to "Turn on shared #{term_for :badges}!", edit_profile_users_path
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}
@@ -31,62 +32,46 @@
         %dd
           %a{ "href" => "#tabb2"} Shared #{term_for :badges}
 
-    .small-12
-      - if current_user.is_student? && ! current_student.badges_shared(current_course)
-        %h6.small.right
-          = "Want to share your #{term_for :badges} with the class?"
-          .bold= link_to "Turn on shared #{term_for :badges}!", edit_profile_users_path
-
-      //student badges table
-      .tabs-content
-        .content#tabb1.active.small-12
-          %table.responsive
-            %thead
+  .small-12.columns 
+    .tabs-content
+      .content#tabb1.active.small-12
+        %table.responsive
+          %tbody
+            - current_course_data.badges.each do |badge|
               %tr
-                %th.center Icon
-                %th Earned
-                %th{ :width => 300} Description
+                %td.center= image_tag badge.icon, :alt => badge.name, :width => 80
+                %td
+                  - if badge.can_earn_multiple_times
+                    = badge.earned_badge_count_for_student(current_student.id)
+                  - elsif current_student_data.earned_badge?(badge)
+                    .fi-check
+                  - else
+                    .transparent.fi-minus
+                %td
+                  .bold= badge.name
+                  = raw badge.description
                 - if current_course.valuable_badges?
-                  %th Value
-                %th Date Earned
+                  %td= points badge.earned_badge_total_value(current_student)
+                %td
+                  - if current_student_data.earned_badge?(badge)
+                    = current_student_data.earned_badge(badge).created_at
+                    %p= raw current_student_data.earned_badge(badge).try(:feedback)
                 - if current_course.shared_badges? && current_student.badges_shared(current_course)
-                  %th Share this with the class?
-            %tbody
-              - current_course_data.badges.each do |badge|
-                %tr
-                  %td.center= image_tag badge.icon, :alt => badge.name, :width => 80
                   %td
-                    - if badge.can_earn_multiple_times
-                      = badge.earned_badge_count_for_student(current_student.id)
-                    - elsif current_student_data.earned_badge?(badge)
-                      .fi-check
-                    - else
-                      .transparent.fi-minus
-                  %td
-                    .bold= badge.name
-                    = raw badge.description
-                  - if current_course.valuable_badges?
-                    %td= points badge.earned_badge_total_value(current_student)
-                  %td
-                    - if current_student_data.earned_badge?(badge)
-                      = current_student_data.earned_badge(badge).created_at
-                      %p= raw current_student_data.earned_badge(badge).try(:feedback)
-                  - if current_course.shared_badges? && current_student.badges_shared(current_course)
-                    %td
-                      - earned_badge = current_student_data.earned_badge(badge)
-                      - if current_user.is_student? && earned_badge.present?
-                        %div{:class=>"share_badge", :data => { badge_id: badge.id.to_s, earned_badge_id: earned_badge.id.to_s, name: badge.name, icon: badge.icon }}
-                          - if earned_badge.shared?
-                            %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button tiny radius"} Stop Sharing
-                          - else
-                            %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button tiny radius"} Share
-                      - elsif earned_badge.present?
+                    - earned_badge = current_student_data.earned_badge(badge)
+                    - if current_user.is_student? && earned_badge.present?
+                      %div{:class=>"share_badge", :data => { badge_id: badge.id.to_s, earned_badge_id: earned_badge.id.to_s, name: badge.name, icon: badge.icon }}
                         - if earned_badge.shared?
-                          = "Shared"
+                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button tiny radius"} Stop Sharing
                         - else
-                          = "Not Shared"
+                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button tiny radius"} Share
+                    - elsif earned_badge.present?
+                      - if earned_badge.shared?
+                        = "Shared"
+                      - else
+                        = "Not Shared"
 
-        .content#tabb2.small-12
-          = render "students/public_class_badges"
+      .content#tabb2
+        = render "students/public_class_badges"
 
   .clearfix

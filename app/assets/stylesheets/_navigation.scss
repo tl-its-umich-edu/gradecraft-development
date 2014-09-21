@@ -88,6 +88,24 @@ img.img-rounded {
   background-color: $secondary-color;
 }
 
+.tabs-content {
+  border: 1px solid $primary-color-2;
+  border-top-right-radius: $global-radius;
+  border-bottom-right-radius: $global-radius;
+  border-bottom-left-radius:  $global-radius;
+}
+
+dl.tabs dd > a {
+  border-top-right-radius: $global-radius;
+  border-top-left-radius:  $global-radius;
+  text-transform: uppercase;
+  font-size: 90%;
+}
+
+dl.tabs dd.active > a {
+  background-color: $primary-color-2;
+}
+
 .past_courses {
   
   hr {

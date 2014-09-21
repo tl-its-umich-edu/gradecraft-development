@@ -8,12 +8,13 @@
 
   - grade = current_student.grade_for_assignment(@assignment)
   %p
+    %span You earned 
     %span.bold= "#{points grade.raw_score }"
-    %span=" / #{points @assignment.point_total } possible points"
+    %span=" out of #{points @assignment.point_total } possible points."
   - if current_student.grade_for_assignment(@assignment).assignment.release_necessary? && current_user.is_staff?
     %p 
-      Status:
+      %span.small_uppercase Status:
       %span.bold= current_student.grade_for_assignment(@assignment).status
   - if current_student.grade_for_assignment(@assignment).feedback.present?
-    %p.bold Instructor Feedback:
+    %span.small_uppercase Instructor Feedback:
     %p= raw current_student.grade_for_assignment(@assignment).feedback

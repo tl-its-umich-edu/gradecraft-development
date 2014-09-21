@@ -1,14 +1,6 @@
 .button {
-  text-shadow: 0 1px 1px rgba(0,0,0,.3);
-  background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#666));
-  background: -moz-linear-gradient(top,  #999,  #666);
   color: #FFF !important;
   margin-bottom: 0;
-}
-
-.button:hover, .button:focus {
-  background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#333));
-  background: -moz-linear-gradient(top,  #666,  #333);
 }
 
 h2 a.button.tiny {
@@ -56,7 +48,7 @@ table {
 .button.tiny {
   margin-left: .35rem;
   padding: .4rem;
-  background-color: #ddd !important;
+  background-color: #888;
   color: #000;
 }
 

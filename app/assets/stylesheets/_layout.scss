@@ -9,7 +9,6 @@ body.logged-in, body.logged-out {
 /* Primary page content */ 
 .mainContent {
   background-color: #FFF;
-  min-height: 750px;
   position: relative;
   height: 100% !important;
   margin-top: 1.8rem;
@@ -21,9 +20,6 @@ body.logged-in, body.logged-out {
   overflow: hidden;*/
 }
 
-.outerContainer {
-  padding-right: 0;
-}
 
 /* Front facing page, not logged in */ 
 .row.panel.publicContent {
@@ -92,26 +88,28 @@ form .tabs-content .content {
   padding: 1rem;
 } 
 
+@media (min-width: 400px) {
+  
+  .mainContent {
+    min-height: 750px;
+  }
+}
+
 /* Responsive outer container */ 
 @media (min-width: 1000px)  {
+
   
   .staff_subnav {
     border-radius: $global-radius;
   }
+
+  .outerContainer {
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 1000px)  {
-  .mainContent, .sideBar.panel {
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-  }
   .staff_subnav {
     border-radius: $global-radius;
-  }
-}
-
-@media (max-width: 640px)  {
-  .mainContent {
-    border-radius: 0;
   }
 }

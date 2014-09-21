@@ -1,35 +1,36 @@
-%table.responsive.nopage_dynatable
-  %thead
-    %tr
-      %th Rank
-      %th Name
-      - if current_course.team_score_average?
-        %th Challenge Score
-      - else
-        %th Mean Score
-        %th Challenge Score
-      %th{ "data-dynatable-column" => "students"} #{term_for :students}
-      - if current_user.is_staff?
-        %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
-        %th.button-column
-  %tbody
-    - i = 1
-    - @teams.alpha.order_by_high_score.each do |team|
+.small-12.columns
+  %table.responsive.nopage_dynatable
+    %thead
       %tr
-        %td= i
-        %td= link_to team.name, team
+        %th Rank
+        %th Name
         - if current_course.team_score_average?
-          %td= points team.try(:average_points)
-        - else  
-          %td= points team.try(:average_points)
-          %td= points team.try(:score)
-        %td= team.member_count
+          %th Challenge Score
+        - else
+          %th Mean Score
+          %th Challenge Score
+        %th{ "data-dynatable-column" => "students"} #{term_for :students}
         - if current_user.is_staff?
-          %td= points team.badge_count
-          %td
-            .button-bar
-              %ul.button-group.round.right
-                %li= link_to 'See', team, :class => 'button tiny secondary'
-                %li= link_to 'Edit', edit_team_path(team), :class => 'button tiny secondary'
-                %li= link_to 'Delete', team, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
-      - i += 1
+          %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
+          %th.button-column
+    %tbody
+      - i = 1
+      - @teams.alpha.order_by_high_score.each do |team|
+        %tr
+          %td= i
+          %td= link_to team.name, team
+          - if current_course.team_score_average?
+            %td= points team.try(:average_points)
+          - else  
+            %td= points team.try(:average_points)
+            %td= points team.try(:score)
+          %td= team.member_count
+          - if current_user.is_staff?
+            %td= points team.badge_count
+            %td
+              .button-bar
+                %ul.button-group.round.right
+                  %li= link_to 'See', team, :class => 'button tiny secondary'
+                  %li= link_to 'Edit', edit_team_path(team), :class => 'button tiny secondary'
+                  %li= link_to 'Delete', team, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
+        - i += 1

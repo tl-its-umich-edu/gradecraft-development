@@ -59,7 +59,11 @@
       %tbody
         - @challenges.each do |challenge|
           %tr
-            %td= link_to challenge.name, challenge
+            %td
+              - if challenge.challenge_grades.present?
+                = link_to challenge.name, challenge
+              - else
+                = challenge.name
             %td= challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?

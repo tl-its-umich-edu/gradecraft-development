@@ -3,7 +3,7 @@
   %h6.small (click chart to see results)
 
   %dl.tabs{:data => {'tab' => true}, :class => "analytics_tabs"}
-    %dd
+    %dd.active
       = link_to image_tag(asset_path('boxplot.png'), :width => 80), "#boxplot"
     %dd
       = link_to image_tag(asset_path('halfcircle.png'), :width => 80), "#submitted"
@@ -11,7 +11,7 @@
       = link_to image_tag(asset_path('pie.png'), :width => 80), "#levels"
 
   .tabs-content{:style => "background-color: #FFFFFF;"}
-    .content.small-12#boxplot
+    .content.small-12#boxplot.active
       %h4.bold.center Grade Distribution
       .center
         .chartcontainer
@@ -20,9 +20,15 @@
         %h6.small= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"
 
       %ul
-        %li= "Average Score: #{@assignment.average}" 
-        %li= "Minimum Score: #{@assignment.low_score}" 
-        %li= "High Score: #{@assignment.high_score}" 
+        %li
+          %span.small_uppercase Average Score:
+          = points @assignment.average
+        %li
+          %span.small_uppercase Minimum Score:
+          = points @assignment.low_score
+        %li
+          %span.small_uppercase High Score: 
+          = points @assignment.high_score
 
 
     .content.small-12#submitted

@@ -1,26 +1,27 @@
-%table.responsive.nofeatures_dynatable
-  %thead
-    %tr
-      %th Name
-      %th Description
-      %th Due date
-      - if current_student.team_for_course(current_course).present?
-        %th Score
-      - else
-        %th Point total
+.small-12.columns
+  %table.responsive.nofeatures_dynatable
+    %thead
+      %tr
+        %th Name
+        %th Description
+        %th Due date
+        - if current_student.team_for_course(current_course).present?
+          %th Score
+        - else
+          %th Point total
 
-  %tbody
-    - current_course_data.challenges.each do |challenge|
-      - if challenge.visible?
-        %tr
-          %td= link_to challenge.name, challenge
-          %td= raw challenge.description
-          %td= challenge.due_at
-          - if current_student.team_for_course(current_course).present?
-            %td
-              %span= points challenge.challenge_grade_for_team(current_student.team_for_course(current_course)).try(:score) 
-              %span= "/"   
-              %span= points challenge.point_total
+    %tbody
+      - current_course_data.challenges.each do |challenge|
+        - if challenge.visible?
+          %tr
+            %td= link_to challenge.name, challenge
+            %td= raw challenge.description
+            %td= challenge.due_at
+            - if current_student.team_for_course(current_course).present?
+              %td
+                %span= points challenge.challenge_grade_for_team(current_student.team_for_course(current_course)).try(:score) 
+                %span= "/"   
+                %span= points challenge.point_total
 
-          - else
-            %td= points challenge.point_total
+            - else
+              %td= points challenge.point_total

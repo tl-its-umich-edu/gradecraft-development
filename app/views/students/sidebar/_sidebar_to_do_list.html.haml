@@ -1,7 +1,7 @@
 %h3.text-center Due This Week
 %hr
 - current_course_data.visible_by_assignment_type.each do |assignment_type, assignments|
-  -# Do not use `assignment_type.has_soon_assignments?' It will trigger a query.
+  
   - if assignments.any?(&:soon?) && assignment_type.include_in_to_do?
     - assignments.each do |assignment|
       - if assignment.soon?
@@ -11,10 +11,12 @@
           - else
             .right= render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
         - if current_student.submission_for_assignment(assignment).present?
+          %span.small_uppercase= "#{assignment.assignment_type.name}"
           %p.strikethrough= link_to "#{assignment.try(:name)}", assignment
         - else
           %p
-            .bold= link_to assignment.name, assignment_grade_path(assignment, :student_id => current_student)
+            %span.small_uppercase= "#{assignment.assignment_type.name}"
+            %span.bold= link_to assignment.name, assignment_grade_path(assignment, :student_id => current_student)
             .form_label= "Due: #{assignment.try(:due_at).strftime("%A, %B %d, %Y, at %H:%M%p")}"
         %hr
         .clearfix

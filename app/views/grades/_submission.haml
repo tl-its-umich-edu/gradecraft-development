@@ -8,7 +8,10 @@
     %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button tiny radius secondary no-margin"
   // Displaying when the assignment was submitted
   %p
-    Submitted:
+    %span.smallcaps Due:
+    = @assignment.due_at
+  %p
+    %span.smallcaps Submitted:
     = current_student.submission_for_assignment(@assignment).created_at
 
     // Late alert if submitted after due date
@@ -18,18 +21,18 @@
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if current_student.submission_for_assignment(@assignment).updated_at != current_student.submission_for_assignment(@assignment).created_at
     %p
-      Updated:
+      %span.smallcaps Updated:
       %span= current_student.submission_for_assignment(@assignment).updated_at
 
   // Displaying the link to the submission if there is one
   - if current_student.submission_for_assignment(@assignment).link?
     %p
-      Link:
+      %span.smallcaps Link:
       = link_to current_student.submission_for_assignment(@assignment).link, current_student.submission_for_assignment(@assignment).link
 
   - if current_student.submission_for_assignment(@assignment).submission_files.present?
     %p
-      Attachments:
+      %span.smallcaps Attachments:
       %ul
         - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
           %li
@@ -37,7 +40,7 @@
               
   - if current_student.submission_for_assignment(@assignment).text_comment?
     %p
-      Statement:
+      %span.smallcaps Statement:
       = raw current_student.submission_for_assignment(@assignment).text_comment
 
 
@@ -50,7 +53,7 @@
   %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
   // Displaying when the assignment was submitted
   %p
-    %b Submitted:
+    %span.smallcaps Submitted:
     = @group.submission_for_assignment(@assignment).created_at
 
     // Late alert if submitted after due date
@@ -60,18 +63,18 @@
     // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
   - if @group.submission_for_assignment(@assignment).updated_at != @group.submission_for_assignment(@assignment).created_at
     %p
-      %b Updated:
+      %span.smallcaps Updated:
       %span= @group.submission_for_assignment(@assignment).updated_at
 
   // Displaying the link to the submission if there is one
   - if @group.submission_for_assignment(@assignment).link?
     %p
-      %b Link:
+      %span.smallcaps Link:
       = link_to @group.submission_for_assignment(@assignment).link, @group.submission_for_assignment(@assignment).link
 
   - if @group.submission_for_assignment(@assignment).submission_files.present?
     %p
-      %b Attachments:
+      %span.smallcaps Attachments:
       %ul
         - @group.submission_for_assignment(@assignment).submission_files.each do |sf|
           %li
@@ -80,5 +83,5 @@
               
   - if @group.submission_for_assignment(@assignment).text_comment?
     %p
-      %b Statement:
+      %span.smallcaps Statement:
       = raw @group.submission_for_assignment(@assignment).text_comment

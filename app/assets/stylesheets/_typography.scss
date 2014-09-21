@@ -38,7 +38,13 @@ body {
 }
 
 .smallcaps {
-  font-variant: small-caps;
+  text-transform: uppercase;
+  font-size: 80%;
+}
+
+.small_uppercase {
+  text-transform: uppercase;
+  font-size: 80%;
 }
 
 .uppercase {
@@ -94,3 +100,4 @@ hr {
     clip: rect(0,0,0,0);
     border: 0;
 }
+

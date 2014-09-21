@@ -1,28 +1,21 @@
-.small-12.columns.medium-5
-  %table.responsive.nopage_dynatable.highchart{:data => { "graph-container" => "#graphcontainer", "graph-type" => "column", "graph-legend-disabled" => 1, "graph-xaxis-rotation" => 0, "graph-color-1" => '#303285' } }
+
+.small-12.columns
+  #leaderboardBarChart
+.small-12.columns
+  %table.responsive#leaderboard.highchart{:data => { "graph-container" => "#leaderboardBarChart", "graph-type" => "column", "graph-legend-disabled" => 1, "graph-xaxis-rotation" => 0, "graph-color-1" => '#303285' } }
     %thead
       %tr
-        %th #{term_for :team}
-        %th Score
-        %th{:data => { "graph-skip" => 1 } }  Rank
+        %th
+        %th
+        %th{:data => { "graph-skip" => 1 } }
     %tbody
       - i = 1
       - current_course.teams.order_by_high_score.each do |team|
-        %tr{ class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course)) }
-          %td
-            - if team.banner.present?
-              %img{:src => team.banner}
-              .img.form_label.inverse= team.name
-            - else
-              = team.name
+        %tr{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course))}
+          %td= team.name
           - if current_course.team_score_average?
-            %td= points team.try(:average_points)
+            %td.right.points= points team.try(:average_points)
           - else
-            %td= points team.try(:score)
-          %td= i
+            %td.right.points= points team.try(:score)
+          %td.rank= i
           - i += 1
-.small-12.columns.medium-7
-  #graphcontainer
-
-
-

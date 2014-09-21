@@ -835,7 +835,7 @@ $sub-nav-active-padding: .5rem 1rem;
 
 // These control the background color for the table and even rows
 // $table-bg: #fff;
-// $table-even-row-bg: #f9f9f9 ;
+$table-even-row-bg: transparent;
 
 // These control the table cell border style
 // $table-border-style: solid;
@@ -866,9 +866,9 @@ $table-line-height: rem-calc(0);
 // $include-html-tabs-classes: $include-html-classes;
 
 $tabs-navigation-padding: 0.25rem;
-// $tabs-navigation-bg-color: #efefef  ;
-// $tabs-navigation-hover-bg-color: darken($tabs-navigation-bg-color, 5%);
-// $tabs-navigation-font-color: #222;
+$tabs-navigation-bg-color: #ccc;
+$tabs-navigation-hover-bg-color: darken($tabs-navigation-bg-color, 5%);
+$tabs-navigation-font-color: #FFF;
 // $tabs-navigation-font-size: rem-calc(16);
 // $tabs-navigation-font-family: $body-font-family;
 
