@@ -3,7 +3,9 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= "#{term_for :students} Analytics"
+  = content_nav_for "#{term_for :students} Analytics"
+
+  %h3.pagetitle= "#{term_for :students} Analytics"
 
   .small-12.columns
 

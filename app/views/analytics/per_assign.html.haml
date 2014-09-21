@@ -3,7 +3,9 @@
   = content_nav do
     = render "analytics/tabs"
 
-  .pagetitle= "#{term_for :assignments} Analytics"
+  = content_nav_for "#{term_for :assignment} Analytics"
+
+  %h3.pagetitle= "#{term_for :assignment} Analytics"
 
   .clearfix
   
@@ -11,7 +13,7 @@
     .pagetitle.subtitle= assignment_type.name 
 
     .columns
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th Name

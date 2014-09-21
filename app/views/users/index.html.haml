@@ -11,7 +11,7 @@
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .small-12.columns
-    %table.columns.nopage_dynatable
+    %table.responsive.nopage_dynatable
       %thead
         %tr
           %th First Name
@@ -46,9 +46,9 @@
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    = link_to "Dashboard", student_path(user), :class => 'button tiny' if user.is_student?
-                    = link_to "Dashboard", staff_path(user), :class => 'button tiny' if user.is_staff?
-                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny'
-                  %li= link_to 'Delete', user, :class => 'button tiny', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
+                    = link_to "Dashboard", student_path(user), :class => 'button tiny secondary' if user.is_student?
+                    = link_to "Dashboard", staff_path(user), :class => 'button tiny secondary' if user.is_staff?
+                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny secondary'
+                  %li= link_to 'Delete', user, :class => 'button tiny secondary', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
 
   .clearfix

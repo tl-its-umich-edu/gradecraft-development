@@ -7,9 +7,12 @@
 
   .small-12.columns
     %p
-      = "To import grades, upload a .csv file with either of the two following formats. These fields *MUST* be in the specified order. Note that you may include additional information in the extra columns, but that content will be ignored."
-      <br/>
-      <br/>
+      To import grades, upload a .csv file with either of the two following formats. These fields <b> MUST </b> be in the specified order. Two important keys:
+      %ul 
+        %li You may include additional information in the extra columns, but that content will be ignored.
+        %li If a student already has a grade for this assignment in GradeCraft, and there is a new grade present in the upload, <b> the old grade will be replaced. </b>
+
+    %hr
 
       %p
         %b By Uniqname<br/>

@@ -14,13 +14,17 @@
       - current_course_data.challenges.each do |challenge|
         - if challenge.visible?
           %tr
-            %td= link_to challenge.name, challenge
+            %td
+              - if challenge.graded?
+                = link_to challenge.name, challenge
+              - else
+                = challenge.name
             %td= raw challenge.description
             %td= challenge.due_at
             - if current_student.team_for_course(current_course).present?
               %td
-                %span= points challenge.challenge_grade_for_team(current_student.team_for_course(current_course)).try(:score) 
-                %span= "/"   
+                %span= points challenge.challenge_grade_for_team(current_student.team_for_course(current_course)).try(:score) if challenge.graded?
+                %span= "/" if challenge.graded?
                 %span= points challenge.point_total
 
             - else

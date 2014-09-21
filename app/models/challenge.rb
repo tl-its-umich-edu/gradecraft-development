@@ -49,4 +49,8 @@ class Challenge < ActiveRecord::Base
     due_at != nil && due_at >= Date.today
   end
 
+  def graded?
+    challenge_grades.present?
+  end
+
 end
