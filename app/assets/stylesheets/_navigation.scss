@@ -83,9 +83,10 @@ img.img-rounded {
 }
 
 /* Styling the mobile active link dropdown */ 
-.f-dropdown li.active {
+ul.dropdown-menu li.active a {
   padding: 0.5rem;
-  background-color: $secondary-color;
+  color: #FFF !important;
+  background-color: $secondary-color !important;
 }
 
 .tabs-content {
