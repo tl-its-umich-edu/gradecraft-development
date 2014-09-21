@@ -6,6 +6,8 @@
     - else
       = render "students/student_profile_tabs"
 
+  = content_nav_for @group
+
   %h3.pagetitle= "#{term_for :group}: #{@group.name}"
   
   = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"

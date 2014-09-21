@@ -6,7 +6,9 @@
     - else
       = render "students/student_profile_tabs"
 
-  .pagetitle= @title
+  = content_nav_for @group, "Edit #{term_for :group}"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
     = render 'form'
