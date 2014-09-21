@@ -2,8 +2,10 @@
   / Grades Navigation
   = content_nav do
     = render "assignments/tabs"
-  
-  .pagetitle= @title
+
+  = content_nav_for @assignment, "Group Grades"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
     %ul

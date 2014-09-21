@@ -3,7 +3,9 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+  = content_nav_for @assignment, "Detailed Grades"
+
+  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
   
   .small-12.columns
 

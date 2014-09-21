@@ -3,7 +3,9 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= @title
+  = content_nav_for User
+
+  %h3.pagetitle= @title
   
   - if current_course.has_teams?
     .small-12.medium-4.columns.right

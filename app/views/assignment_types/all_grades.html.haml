@@ -4,7 +4,9 @@
     = content_nav do
       = render "assignments/tabs"
     
-    .pagetitle= "#{@assignment_type.name} Grade Patterns"
+    = content_nav_for @assignment_type, "Grade Patterns"
+
+    %h3.pagetitle= "#{@assignment_type.name} Grade Patterns"
 
     .small-12.columns
 

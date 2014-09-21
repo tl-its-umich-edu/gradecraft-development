@@ -3,8 +3,9 @@
   = content_nav do
     = render "info/tabs"
 
-  .small-12
-    .pagetitle= @title
+  = content_nav_for "#{term_for :weight} Choices"
+
+  %h3.pagetitle= @title
 
   .columns
     - if current_course.has_teams?

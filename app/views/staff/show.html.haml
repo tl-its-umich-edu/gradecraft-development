@@ -3,7 +3,9 @@
   = content_nav do
     = render "users/tabs"
 
-  .pagetitle= @user.name
+  = content_nav_for @user
+
+  %h3.pagetitle= @user.name
 
   .small-12.columns
   

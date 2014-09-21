@@ -3,7 +3,9 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= @team.name
+  = content_nav_for @team
+
+  %h3.pagetitle= @team.name
 
   .small-12.columns
     %table.responsive.nopage_dynatable

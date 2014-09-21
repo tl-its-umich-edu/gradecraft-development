@@ -3,13 +3,15 @@
   = content_nav do
     = render "tabs"
 
+  = content_nav_for Group
+
   - if @groups.pending.present?
 
-    .pagetitle= "Pending Groups"
+    %h3.pagetitle= "Pending Groups"
 
     .small-12.columns  
 
-      %table.responsive.dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th Group Name
@@ -39,11 +41,11 @@
 
   - if @groups.rejected.present?
 
-    .pagetitle= "Rejected Groups"
+    %h3.pagetitle= "Rejected Groups"
 
     .small-12.columns  
 
-      %table.responsive.dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th Group Name
@@ -77,7 +79,7 @@
 
     .small-12.columns  
 
-      %table.responsive.dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th Group Name

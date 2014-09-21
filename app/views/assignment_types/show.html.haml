@@ -3,7 +3,9 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle= @title
+  = content_nav_for @assignment_type
+
+  %h3.pagetitle= @title
 
   .columns
     %table.responsive.nofeatures_dynatable

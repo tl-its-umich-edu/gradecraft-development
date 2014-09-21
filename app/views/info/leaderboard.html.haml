@@ -3,6 +3,8 @@
   = content_nav do
     = render "info/tabs"
 
+  = content_nav_for "Leaderboard"
+
   %h3.pagetitle= @title
 
   - if current_course.has_teams?

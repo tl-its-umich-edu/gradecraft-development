@@ -22,6 +22,7 @@ class UsersController < ApplicationController
   # Admin only view of all users
   def all
     @users = User.all.order('last_name ASC')
+    @title = "All Users"
   end
 
   def new

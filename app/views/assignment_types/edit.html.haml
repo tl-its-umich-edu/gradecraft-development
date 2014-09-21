@@ -3,7 +3,9 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle= @title
+  = content_nav_for @assignment_type, "Edit #{term_for :assignment_type}"
+
+  %h3.pagetitle= @title
 
   / Display Assignment Type form
   .small-12.columns

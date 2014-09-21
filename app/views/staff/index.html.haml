@@ -3,7 +3,9 @@
   = content_nav do
     = render "users/tabs"
 
-  .pagetitle= @title
+  = content_nav_for User, "Staff"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
 

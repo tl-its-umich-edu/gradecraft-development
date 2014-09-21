@@ -3,7 +3,9 @@
   = content_nav do
     = render "badges/tabs"
 
-  .pagetitle= @title
+  = content_nav_for @badge, "Awarded #{term_for :badge}"
+
+  %h3.pagetitle= @title
 
   .small-12.columns
         

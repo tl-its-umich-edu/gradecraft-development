@@ -3,7 +3,9 @@
   = content_nav do
     = render "teams/tabs"
 
-  .pagetitle Updating Selected Grades
+  = content_nav_for @challenge, "Edit #{term_for :challenge} Grade Status"
+
+  %h3.pagetitle Updating Selected Grades
 
   .small-12.columns            
     %table.responsive.nopage_dynatable

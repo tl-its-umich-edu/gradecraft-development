@@ -6,8 +6,10 @@
     / Instructor Navigation for Assignment Weighting
     = content_nav do
       = render "info/tabs"
+
+  = content_nav_for current_student, "Edit #{term_for :weights}"
   
-  .pagetitle Editing #{current_student.name}'s #{term_for :weights}
+  %h3.pagetitle Editing #{current_student.name}'s #{term_for :weights}
       
   
   .small-12.columns

@@ -3,7 +3,9 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle Updating Selected Grades
+  = content_nav_for @assignment, "Update Grade Status"
+
+  %h3.pagetitle Updating Selected Grades
 
   .small-12.columns            
     %table.responsive.nopage_dynatable

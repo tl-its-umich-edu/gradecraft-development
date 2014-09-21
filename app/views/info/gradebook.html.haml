@@ -2,7 +2,9 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= @title
+  = content_nav_for "Gradebook"
+
+  %h3.pagetitle= @title
 
   / Gradebook Table
   .small-12.columns

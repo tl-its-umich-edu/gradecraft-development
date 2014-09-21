@@ -4,7 +4,9 @@
     = content_nav do
       = render "tabs"
 
-    .pagetitle= @title
+    = content_nav_for Assignment
+
+    %h3.pagetitle= @title
 
     .small-12.columns
       

@@ -3,10 +3,12 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle= @title
+  = content_nav_for Course
+
+  %h3.pagetitle= @title
 
   .small-12.columns
-    %table.columns.nosearch_dynatable
+    %table.responsive.nosearch_dynatable
       %thead
         %tr
           %th Name

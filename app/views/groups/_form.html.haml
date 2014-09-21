@@ -44,7 +44,6 @@
           - @group.proposals.order_by_creation_date.each do |proposal|
             %fieldset.proposal.panel
               %span.columns
-                %h4.bold= "Proposal ##{i}: #{proposal.title}" 
                 %h6= "Created: #{proposal.created_at}"
                 %p= proposal.proposal
                 - i += 1
@@ -53,8 +52,6 @@
           = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |f|
             .small-12.columns.panel
               %span.large-3.columns
-                = f.label :title, "Title"
-                = f.text_field :title
               - if current_user.is_staff?
                 %span.large-3.columns
                   = f.label :approved, "Approved?"

@@ -1,7 +1,10 @@
 .small-12.columns.mainContent
   = content_nav do
     = render "tabs"
-  .pagetitle= "#{term_for :group}: #{@group.name}"
+  
+  = content_nav_for @group, "Review Group"
+
+  %h3.pagetitle= "#{term_for :group}: #{@group.name}"
   = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
 
   .small-12.columns
@@ -37,7 +40,7 @@
       = simple_form_for @group do |f|
         .small-12.medium-4
           = f.label :approved, "Status"
-          = f.select :approved, [[], ["Approved"], ["Rejected"]]
+          = f.select :approved, [["Pending"], ["Approved"], ["Rejected"]]
           .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
 
         %br

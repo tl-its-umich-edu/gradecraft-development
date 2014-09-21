@@ -7,14 +7,7 @@
     
     = content_nav_for Badge
   
-    .pagetitle= @title
-    
-    %span  
-      %b #{term_for :badges} :
-      .label.round.bold=current_course.course_badge_count
-    %span
-      %b Awarded #{term_for :badges} :
-      .label.round.bold=current_course.awarded_course_badge_count
+    %h3.pagetitle= @title
 
     .small-12.columns
       

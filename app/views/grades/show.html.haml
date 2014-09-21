@@ -2,14 +2,15 @@
   = content_nav do
     = render "assignments/tabs"
 
+  = content_nav_for @assignment, "See Grade"
   
   - if @assignment.is_individual?
-    .pagetitle= "#{current_student.name}'s #{ @assignment.name }"
+    %h3.pagetitle= "#{current_student.name}'s #{ @assignment.name }"
 
     .small-12.columns= render "individual_show"
     
   - else
-    .pagetitle #{@group.try(:name)}'s #{@assignment.name}
+    %h3.pagetitle #{@group.try(:name)}'s #{@assignment.name}
       
     .small-12.columns= render "group_show"
 

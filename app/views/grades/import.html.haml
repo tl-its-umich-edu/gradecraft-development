@@ -3,7 +3,9 @@
   = content_nav do
     = render "assignments/tabs"
 
-  .pagetitle Import Grades for #{@assignment.name}
+  = content_nav_for @assignment, "Import Grades"
+
+  %h3.pagetitle Import Grades for #{@assignment.name}
 
   .small-12.columns
     %p

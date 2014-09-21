@@ -3,7 +3,9 @@
   = content_nav do
     = render "assignments/tabs"
 
-  %span.pagetitle= @title
+  = content_nav_for @assignment, "Quick Grade"
+
+  %h3.pagetitle= @title
 
   .small-12.medium-4.columns.right
     

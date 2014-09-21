@@ -3,7 +3,9 @@
   = content_nav do
     = render "tabs"
 
-  .pagetitle Top 10
+  = content_nav_for "Top 10/Bottom 10"
+
+  %h3.pagetitle Top 10
 
   .columns
     = render 'students_table', :course => current_course, :students => @top_ten_students

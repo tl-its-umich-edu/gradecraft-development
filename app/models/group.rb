@@ -53,6 +53,10 @@ class Group < ActiveRecord::Base
     @earned_badges_by_badge ||= earned_badges.group_by(&:badge_id)
   end
 
+  def approved?
+    approved == "Approved"
+  end
+
   private
 
   def clean_html

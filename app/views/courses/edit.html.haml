@@ -3,7 +3,9 @@
   = content_nav do 
     = render "tabs"
 
-  .pagetitle= @title
+  = content_nav_for @course, "Edit Course"
+
+  %h3.pagetitle= @title
   
   .small-12.columns
     = render 'form'

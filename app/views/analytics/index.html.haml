@@ -3,9 +3,11 @@
   = content_nav do
     = render "tabs"
 
-  .small-12.columns
+  = content_nav_for "Analytics"
 
-    = content_nav_for "Analytics"
+  %h3.pagetitle= "Analytics"
+  
+  .small-12.columns
 
     .navbar.navbar-inverse.section-heading
       %h3 Interactions

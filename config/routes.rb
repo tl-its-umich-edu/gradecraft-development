@@ -168,7 +168,6 @@ GradeCraft::Application.routes.draw do
   get 'grading_status' => 'info#grading_status'
   get 'gradebook' => 'info#gradebook'
   get 'research_gradebook' => 'info#research_gradebook'
-  get 'all_grades' => 'courses#all_grades'
 
   #8. Groups
   resources :groups do 

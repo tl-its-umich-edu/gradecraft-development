@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
 
   before_filter :ensure_staff?, :except => :timeline
-  before_filter :ensure_admin?, :only => [:all_grades, :index]
+  before_filter :ensure_admin?, :only => [:index]
 
   def index
     @title = "Course Index"

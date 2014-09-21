@@ -1,6 +1,8 @@
 = content_nav do
   = render "info/tabs"
 
+= content_nav_for "Awarded #{term_for :badges}"
+
 .small-12.columns
   %dl.tabs{:data => {'tab' => true}}
     %dd.active
