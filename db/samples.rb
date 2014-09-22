@@ -461,7 +461,9 @@ assignment_types[:boss_battle] = AssignmentType.create! do |at|
 end
 puts "Challenges!"
 
-assignment_types[:polsci_essays] = AssignmentType.create! do |at|
+weighted_assignments = []
+
+weighted_assignments << assignment_types[:polsci_essays] = AssignmentType.create! do |at|
   at.course = polsci_course
   at.name = "Conventional Academic Essays"
   at.point_setting = "By Assignment"
@@ -472,7 +474,7 @@ assignment_types[:polsci_essays] = AssignmentType.create! do |at|
 end
 puts "Essays are one path to success. How much do you like writing?"
 
-assignment_types[:polsci_boss] = AssignmentType.create! do |at|
+weighted_assignments << assignment_types[:polsci_boss] = AssignmentType.create! do |at|
   at.course = polsci_course
   at.name = "Boss Battles"
   at.point_setting = "By Assignment"
@@ -483,7 +485,7 @@ assignment_types[:polsci_boss] = AssignmentType.create! do |at|
 end
 puts "How good are you under pressure?"
 
-assignment_types[:polsci_group] = AssignmentType.create! do |at|
+weighted_assignments << assignment_types[:polsci_group] = AssignmentType.create! do |at|
   at.course = polsci_course
   at.name = "Group Project"
   at.point_setting = "By Assignment"
@@ -494,7 +496,7 @@ assignment_types[:polsci_group] = AssignmentType.create! do |at|
 end
 puts "So uh, do you make friends easily?"
 
-assignment_types[:polsci_blogging] = AssignmentType.create! do |at|
+weighted_assignments << assignment_types[:polsci_blogging] = AssignmentType.create! do |at|
   at.course = polsci_course
   at.name = "Blogging"
   at.point_setting = "By Assignment"
@@ -504,6 +506,25 @@ assignment_types[:polsci_blogging] = AssignmentType.create! do |at|
   at.student_weightable = true
 end
 puts "You ever blogged before?"
+
+weighted_assignments.each do |assignment|
+  next unless assignment.due_at.past?
+  students.each do |student|
+    assignment.tasks.each do |task|
+      submission = student.submissions.create! do |s|
+        s.task = task
+        s.text_comment = "Wingardium Leviosa"
+        s.link = "http://www.twitter.com"
+      end
+      student.grades.create! do |g|
+        g.submission = submission
+        g.raw_score = assignment.point_total * [0, 1].sample
+        g.status = "Graded"
+      end
+    end
+  end
+end
+puts "Attendance and Reading Reaction scores have been posted!"
 
 grinding_assignments = []
 
@@ -794,6 +815,8 @@ puts "Individual Project 2 has been posted!"
   end
 end
 
+groups = []
+
 ggd_assignment = Assignment.create! do |a|
   a.course = educ_course
   a.assignment_type = assignment_types[:boss_battle]
@@ -806,6 +829,16 @@ ggd_assignment = Assignment.create! do |a|
   a.grade_scope = "Group"
 end
 puts "Group Game Design has been posted!"
+
+1.upto(2).each do |n|
+  groups << Group.create! do |g|
+    g.course = educ_course
+    g.name = "Group #{n}"
+    g.approved = "Pending"
+    g.assignments << ggd_assignment 
+    g.students << students.sample(4).uniq{|x| x.id}
+  end
+end
 
 1.upto(4).each do |n|
   ggd_assignment.assignment_score_levels.create! do |asl|
@@ -961,7 +994,7 @@ assignments << Assignment.create! do |a|
   a.name = "Blog Post 2"
   a.point_total = 500
   a.accepts_submissions = true
-  a.release_necessary = true
+  a.release_necessary = false
   a.grade_scope = "Individual"
 end
 puts "Blog 2 has been posted!"
@@ -972,7 +1005,7 @@ assignments << Assignment.create! do |a|
   a.name = "Blog Post 3"
   a.point_total = 500
   a.accepts_submissions = true
-  a.release_necessary = true
+  a.release_necessary = false
   a.grade_scope = "Individual"
 end
 puts "Blog 3 has been posted!" 

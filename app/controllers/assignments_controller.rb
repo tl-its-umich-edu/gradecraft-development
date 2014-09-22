@@ -3,7 +3,7 @@ class AssignmentsController < ApplicationController
   before_filter :ensure_staff?, :except => [:feed, :show]
 
   def index
-    @title = "#{term_for :assignment} Index"
+    @title = "#{term_for :assignments}"
     @assignments = current_course.assignments.chronological.alphabetical
   end
 

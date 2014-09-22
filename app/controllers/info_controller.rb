@@ -67,7 +67,7 @@ class InfoController < ApplicationController
 
   #Course wide leaderboard - excludes auditors from view
   def leaderboard
-    @title = "#{current_course.name} Leaderboard"
+    @title = "Course Leaderboard"
     @team = current_course.teams.find_by(id: params[:team_id]) if params[:team_id]
     user_search_options = {}
     user_search_options['team_memberships.team_id'] = params[:team_id] if params[:team_id].present?

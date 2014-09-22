@@ -27,11 +27,11 @@ class Group < ActiveRecord::Base
   has_many :earned_badges, :as => :group
 
   before_save :clean_html
-  #before_validation :cache_associations
+  before_validation :cache_associations, :unique_assignment_per_group_membership
 
-  #validates_presence_of :course, :name
+  validates_presence_of :name
 
-  #validate :max_group_number_not_exceeded, :min_group_number_met
+  validate :max_group_number_not_exceeded, :min_group_number_met
 
   scope :approved, -> { where approved: "Approved" }
   scope :rejected, -> { where approved: "Rejected" }
@@ -72,6 +72,16 @@ class Group < ActiveRecord::Base
   def max_group_number_not_exceeded
     if self.students.to_a.count > course.max_group_size
       errors.add(:group, "Woah, too many group members, try again.")
+    end
+  end
+
+  def unique_assignment_per_group_membership
+    assignments.each do |a|
+      students.each do |s|
+        if s.group_for_assignment(a).present? 
+          errors.add(:group, "Uh... #{s.name} is already working on this.")
+        end
+      end
     end
   end
 

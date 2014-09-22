@@ -4,7 +4,7 @@
     %meta(charset="utf-8")
     %meta(name="viewport" content="width=device-width, initial-scale=1")
     %title
-      = "#{yield :title} - " if content_for? :title
+      = "#{@title} - " if @title
       = current_course.try(:name) || 'GradeCraft'
     = stylesheet_link_tag "application", :media => "all", media: "all"
     = javascript_include_tag "vendor/modernizr"
