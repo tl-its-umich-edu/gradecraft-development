@@ -24,9 +24,9 @@
                 .button-bar
                   %ul.button-group.right.round
                     %li
-                      %button.select-all.tiny= "Check All"
+                      %button.button.select-all.tiny= "Check All"
                     %li
-                      %button.select-none.tiny= "Uncheck"
+                      %button.button.select-none.tiny= "Uncheck"
           - @earned_badges.each_with_index do |eb, i|
             %tr
               %td= link_to eb.student.name, student_path(eb.student)
