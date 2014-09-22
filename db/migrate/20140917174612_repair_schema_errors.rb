@@ -26,15 +26,10 @@ class RepairSchemaErrors < ActiveRecord::Migration
 
       change_column :assignments, :notify_released, :boolean, default: true
 
-      drop_table "duplicated_users"
-
       add_column :grade_scheme_elements, :team_id, :integer
 
       change_column :grades, :raw_score, :integer, default: 0
 
-      remove_index "grades", name: "index_grades_on_assignment_id_and_task_id_and_submission_id"
-
-      drop_table "submission_files_duplicate"
     end
   end
 
@@ -53,25 +48,7 @@ class RepairSchemaErrors < ActiveRecord::Migration
 
       change_column :assignments, :notify_released, :boolean, default: true
 
-      create_table "duplicated_users", id: false do |t|
-        t.integer "id"
-        t.string  "last_name"
-        t.string  "role"
-        t.integer "submissions", limit: 8
-      end
-
       change_column :grades, :raw_score, :integer, default: 0, null: false
-
-      add_index "grades", ["assignment_id", "task_id", "submission_id"], name: "index_grades_on_assignment_id_and_task_id_and_submission_id", unique: true, using: :btree
-
-      create_table "submission_files_duplicate", id: false, force: true do |t|
-        t.string  "key",        limit: nil
-        t.string  "format",     limit: nil
-        t.integer "upload_id"
-        t.string  "full_name",  limit: nil
-        t.string  "last_name",  limit: nil
-        t.string  "first_name", limit: nil
-      end
     end
   end
 end
