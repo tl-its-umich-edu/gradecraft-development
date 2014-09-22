@@ -32,7 +32,7 @@ class StudentsController < ApplicationController
     if current_course.team_challenges?
       @events = current_course.assignments.timelineable.to_a + current_course.challenges
     else
-      @events = current_course.timelineable.to_a
+      @events = current_course.assignments.timelineable.to_a
     end
   end
 

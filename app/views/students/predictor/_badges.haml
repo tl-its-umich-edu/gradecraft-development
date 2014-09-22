@@ -7,7 +7,7 @@
       .row
       - current_course_data.badges.each do |badge|
         - if badge.point_total.present? && badge.point_total > 0
-          .small-12.medium-3.columns
+          .small-12.medium-3.columns.predictor_badge
             - if current_student_data.earned_badge?(badge)
               .earnedBadgeField.panel
                 .small-12.medium-5.columns
