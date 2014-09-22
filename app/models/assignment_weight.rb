@@ -10,7 +10,7 @@ class AssignmentWeight < ActiveRecord::Base
   belongs_to :submission
 
   before_validation :cache_associations, :cache_point_total
-  after_save :save_grades
+  after_save :save_grades, :save_student
 
   validates_presence_of :student, :assignment, :assignment_type, :course
 
@@ -66,5 +66,9 @@ class AssignmentWeight < ActiveRecord::Base
 
   def save_grades
     assignment.grades.where(student: student).each(&:save)
+  end
+
+  def save_student
+    student.save
   end
 end

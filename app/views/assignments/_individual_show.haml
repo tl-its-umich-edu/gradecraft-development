@@ -39,8 +39,12 @@
           %td= link_to student.first_name, student_path(student)
           %td= link_to student.last_name, student_path(student)
           %td{:data => { :"sort-value" => "#{grade.raw_score}"} }= points grade.raw_score if grade.status?
-          - if @assignment.assignment_type.student_weightable?
-            %td= points grade.score if grade.status?
+          - if @assignment.assignment_type.student_weightable? 
+            %td
+              - if student.weighted_assignments?
+                = points grade.score if grade.status?
+              - else
+                = "(not yet assigned)"
           - if @assignment.has_levels?
             %td
               = @assignment.grade_level(grade) if grade.status?

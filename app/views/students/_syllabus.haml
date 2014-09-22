@@ -58,10 +58,14 @@
                 %td
                   - if assignment.assignment_type.student_weightable?
                     - grade = current_student_data.grade_for_assignment(assignment)
-                    %span.has-tip{:title => "#{points current_student_data.score_for_assignment(assignment)} / #{points current_student_data.point_total_for_assignment(assignment)} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
+                    %span.has-tip{:title => "#{ points grade.score } / #{points grade.point_total} points (Multiplied), #{points grade.raw_score} / #{ points assignment.point_total } points (Raw)", :data => {'tooltip' => true}  }
                       - if current_student_data.grade_released_for_assignment?(assignment)
-                        = "#{points current_student_data.score_for_assignment(assignment)}  / "
-                        = points current_student_data.point_total_for_assignment(assignment)
+                        - if current_student.weighted_assignments?
+                          = "#{ points grade.score }  / "
+                          = points grade.point_total
+                        - else
+                          = "#{ points grade.raw_score }  / "
+                          = points assignment.point_total
 
                   - else
                     - if current_student_data.grade_released_for_assignment?(assignment)

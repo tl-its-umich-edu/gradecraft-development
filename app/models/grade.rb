@@ -76,7 +76,11 @@ class Grade < ActiveRecord::Base
   end
 
   def score
-    final_score || (raw_score * assignment_weight).round
+    if student.weighted_assignments?
+      final_score || (raw_score * assignment_weight).round
+    else 
+      final_score || raw_score
+    end
   end
 
   def predicted_score
