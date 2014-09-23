@@ -146,26 +146,26 @@ i.missing_grade {
 
 
 table#leaderboard {
-  background: rgba(10,202,176,1);
-  background: -moz-linear-gradient(top, rgba(10,202,176,1) 0%, rgba(0,189,57,0.59) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(10,202,176,1)), color-stop(100%, rgba(0,189,57,0.59)));
-  background: -webkit-linear-gradient(top, rgba(10,202,176,1) 0%, rgba(0,189,57,0.59) 100%);
-  background: -o-linear-gradient(top, rgba(10,202,176,1) 0%, rgba(0,189,57,0.59) 100%);
-  background: -ms-linear-gradient(top, rgba(10,202,176,1) 0%, rgba(0,189,57,0.59) 100%);
-  background: linear-gradient(to bottom, rgba(10,202,176,1) 0%, rgba(0,189,57,0.59) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0acab0', endColorstr='#00bd39', GradientType=0 );
+background: $secondary-color-5;/*
+background: -moz-linear-gradient(top, rgba(0,189,57,1) 0%, rgba(255,255,255,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,189,57,1)), color-stop(100%, rgba(255,255,255,1)));
+background: -webkit-linear-gradient(top, rgba(0,189,57,1) 0%, rgba(255,255,255,1) 100%);
+background: -o-linear-gradient(top, rgba(0,189,57,1) 0%, rgba(255,255,255,1) 100%);
+background: -ms-linear-gradient(top, rgba(0,189,57,1) 0%, rgba(255,255,255,1) 100%);
+background: linear-gradient(to bottom, rgba(0,189,57,1) 0%, rgba(255,255,255,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00bd39', endColorstr='#ffffff', GradientType=0 );*/
 
   td {
-    color: #FFF !important;
+    color: #000;
   }
 }
-/*
-table#leaderboard {
-  outline: 3px solid #FFF !important;
-}*/
+
+table#leaderboard tr {
+  outline: 1px solid #FFF !important;
+}
 
 table#leaderboard tr.complete {
-  outline: 8px solid $alert-color !important;
+  background-color: $primary-color-4;
 }
 
 td.rank {
@@ -174,12 +174,19 @@ td.rank {
   text-align: center;
   background-color: #111;
     font-weight: bold;
+    color: #FFF !important;
 }
 
 td.points {
   font-weight: bold;
     font-weight: bold;
 }
+
+table#leaderboard tr#place-1, table#leaderboard tr#place-2, table#leaderboard tr#place-3 {
+
+}
+
+
 
 table#leaderboard tr#place-1 td.rank {
   background-color: $alert-color;

@@ -11,12 +11,12 @@
           - else
             .right= render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
         - if current_student.submission_for_assignment(assignment).present?
-          %span.small_uppercase= "#{assignment.assignment_type.name}"
           %p.strikethrough= link_to "#{assignment.try(:name)}", assignment
+          %span.small_uppercase= "#{assignment.assignment_type.name}"
         - else
           %p
-            %span.small_uppercase= "#{assignment.assignment_type.name}"
             %span.bold= link_to assignment.name, assignment_grade_path(assignment, :student_id => current_student)
+            %span.small_uppercase= "#{assignment.assignment_type.name}"
             .form_label= "Due: #{assignment.try(:due_at).strftime("%A, %B %d, %Y, at %H:%M%p")}"
         %hr
         .clearfix

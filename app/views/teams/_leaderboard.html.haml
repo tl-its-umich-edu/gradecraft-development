@@ -5,16 +5,16 @@
   %table.highchart.hidden{:data => { "graph-container" => "#leaderboardBarChart", "graph-type" => "column", "graph-legend-disabled" => 1, "graph-xaxis-rotation" => 0, "graph-color-1" => '#303285'} }
     %thead
       %tr
-        %th
-        %th
+        %th Points
+        %th Team
     %tbody
       - current_course.teams.order_by_high_score.each do |team|
         %tr
           %td= team.name
           - if current_course.team_score_average?
-            %td.right.points= points team.try(:average_points)
+            %td.right.points= team.try(:average_points)
           - else
-            %td.right.points= points team.try(:score)
+            %td.right.points= team.try(:score)
 
 .small-12.columns
   %table.responsive#leaderboard

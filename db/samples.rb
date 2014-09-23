@@ -86,6 +86,8 @@ polsci_course = Course.create! do |c|
   c.meeting_times = "MW 11:30-1"
   c.badge_term = "Power Up"
   c.team_challenges = false
+  c.total_assignment_weight = 6
+  c.default_assignment_weight = 0.5
   c.grading_philosophy = "Think of how video games work. This course works along the same logic. There are some things everyone will have to do to make progress. In this course, the readings, reading-related homework, lectures and discussion sections are those things.
 But game play also allows you to choose some activities -- quests, tasks, challenges -- and skip others. You can partly make your own path through a game. So also in this course: the are some assignment types you may choose (because you are good at them, or because you like challenges) and others you can avoid (because your interests are elsewhere). You also have a choice on how you want to weight some of the optional components you choose!
 In games, you start with a score of zero and 'level up' as you play. You might have to try some tasks several times before you get the points, but good games don't ever take your points away. Same here: everything you successfully do earns you more points.
@@ -507,25 +509,6 @@ weighted_assignments << assignment_types[:polsci_blogging] = AssignmentType.crea
 end
 puts "You ever blogged before?"
 
-weighted_assignments.each do |assignment|
-  next unless assignment.due_at.past?
-  students.each do |student|
-    assignment.tasks.each do |task|
-      submission = student.submissions.create! do |s|
-        s.task = task
-        s.text_comment = "Wingardium Leviosa"
-        s.link = "http://www.twitter.com"
-      end
-      student.grades.create! do |g|
-        g.submission = submission
-        g.raw_score = assignment.point_total * [0, 1].sample
-        g.status = "Graded"
-      end
-    end
-  end
-end
-puts "Attendance and Reading Reaction scores have been posted!"
-
 grinding_assignments = []
 
 1.upto(30).each do |n|
@@ -830,14 +813,12 @@ ggd_assignment = Assignment.create! do |a|
 end
 puts "Group Game Design has been posted!"
 
-1.upto(2).each do |n|
-  groups << Group.create! do |g|
-    g.course = educ_course
-    g.name = "Group #{n}"
-    g.approved = "Pending"
-    g.assignments << ggd_assignment 
-    g.students << students.sample(4).uniq{|x| x.id}
-  end
+groups << Group.create! do |g|
+  g.course = educ_course
+  g.name = "Amazing Group"
+  g.approved = "Pending"
+  g.assignments << ggd_assignment 
+  g.students << students.sample(4).uniq{|x| x.id}
 end
 
 1.upto(4).each do |n|
@@ -847,7 +828,9 @@ end
   end
 end
 
-assignments << Assignment.create! do |a|
+polsci_essay_assignments = []
+
+polsci_essay_assignments << Assignment.create! do |a|
   a.course = polsci_course
   a.assignment_type = assignment_types[:polsci_essays]
   a.name = "First Essay"
@@ -880,7 +863,7 @@ assignments << Assignment.create! do |a|
 end
 puts "First Conventional Essay has been posted!"
 
-assignments << Assignment.create! do |a|
+polsci_essay_assignments << Assignment.create! do |a|
   a.course = polsci_course
   a.assignment_type = assignment_types[:polsci_essays]
   a.name = "Second Essay"
@@ -892,6 +875,18 @@ assignments << Assignment.create! do |a|
   a.grade_scope = "Individual"
 end
 puts "Second Conventional Essay has been posted!"
+
+polsci_essay_assignments.each do |at|
+  students.each do |student|
+    student.assignment_weights.create! do |aw|
+      aw.assignment = at      
+      aw.assignment_type = assignment_types[:polsci_essays]
+      aw.student = student
+      aw.weight = 3
+    end
+  end
+end
+puts "And we've placed our bets..."
 
 assignments << Assignment.create! do |a|
   a.course = polsci_course
