@@ -2,9 +2,9 @@
   = content_nav do
     = render "student_profile_tabs"
 
-  .pagetitle= "#{term_for :badges}"
+  %h3.pagetitle= "#{term_for :badges}"
   
-  .small-12.columns.right
+  .small-4.columns.right
     - if current_course.valuable_badges?  
       - if current_user.is_student?
         %b My #{term_for :badge}  Points
