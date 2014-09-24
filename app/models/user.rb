@@ -80,6 +80,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  has_many :team_leaderships, :foreign_key => :leader_id, :dependent => :destroy
+
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   validates :username, :presence => true,

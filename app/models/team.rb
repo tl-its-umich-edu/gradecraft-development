@@ -1,5 +1,5 @@
 class Team < ActiveRecord::Base
-  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :teams_leaderboard, :in_team_leaderboard, :banner
+  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :leaders, :teams_leaderboard, :in_team_leaderboard, :banner
 
   validates_presence_of :course, :name
 
@@ -11,6 +11,8 @@ class Team < ActiveRecord::Base
 
   has_many :team_memberships
   has_many :students, :through => :team_memberships
+  has_many :team_leaderships
+  has_many :leaders, :through => :team_leaderships
 
   #Teams design banners that they display on the leadboard
   mount_uploader :banner, ThumbnailUploader

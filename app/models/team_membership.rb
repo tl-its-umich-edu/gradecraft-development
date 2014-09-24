@@ -16,9 +16,5 @@ class TeamMembership < ActiveRecord::Base
   def challenge_grade_score
     ChallengeGrade
       .where(team_id: team_id)
-      
   end
-
-
-
 end
