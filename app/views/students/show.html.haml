@@ -3,7 +3,7 @@
   = content_nav do
     = render "student_profile_tabs"
     
-  .pagetitle
+  %h3.pagetitle
     Current Score:
     / Check to see if the course has a pre-determined total number of points
     - if current_course.point_total?

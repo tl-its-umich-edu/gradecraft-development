@@ -3,7 +3,7 @@
   = content_nav do
     = render "student_profile_tabs"
 
-  .pagetitle
+  %h3.pagetitle
     Your current score is
     %span.bold #{points current_student.cached_score_for_course(current_course)}
     %span /#{points current_course.total_points} points

@@ -10,7 +10,7 @@
   .clearfix
   
   - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
-    .pagetitle.subtitle= assignment_type.name 
+    %h4.subtitle= assignment_type.name 
 
     .columns
       %table.responsive.nofeatures_dynatable
@@ -21,10 +21,10 @@
             %th Max
             %th Median
             %th 
-              Ave
+              Avg
               %i.fi-info{:title => "The average of all grades, including those who earned zero", :data => {'tooltip' => true} }
             %th 
-              Ave Earned
+              Avg Earned
               %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
             %th # Submissions
         %tbody

@@ -2,7 +2,7 @@
   = content_nav do
     = render "student_profile_tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle= @title
   
   .small-12.columns
     - if current_course.grade_scheme_elements.present?

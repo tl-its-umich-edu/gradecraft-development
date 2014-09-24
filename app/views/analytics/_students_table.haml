@@ -4,10 +4,10 @@
       %th= course.user_term
       %th Score
       %th{"data-dynatable-no-sort" => "true"} Chart
-      - if course.has_teams?
-        %th= course.team_term
       - if course.has_badges?
         %th Badges
+      - if course.has_teams?
+        %th= course.team_term
       - if course.has_teams?
         %th= course.team_leader_term
       %th Last Login
@@ -17,14 +17,13 @@
         %td= link_to student.name, student_path(student)
         %td= student.cached_score_for_course(current_course)
         %td{ :data => { :id => student.id.to_s, :max => current_course.total_points }, :class => "bar-chart" }
-        - if course.has_teams?
-          %td
-            - if student.team_for_course(current_course).present?
-              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
         - if course.has_badges?
           %td= student.earned_badges.count
 
         - if course.has_teams?
+          %td
+            - if student.team_for_course(current_course).present?
+              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
           %td
             - if student.team_for_course(course) && student.team_for_course(course).team_leader.present?
               = link_to student.team_for_course(course).team_leader.first_name, staff_path(student.team_for_course(course).team_leader)
