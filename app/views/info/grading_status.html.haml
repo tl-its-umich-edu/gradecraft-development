@@ -1,9 +1,8 @@
 .small-12.panel.mainContent
-  / Ungraded Assignments
-  = content_nav do
-    = render "info/tabs"
 
   = content_nav_for "Grading Status"
+
+  %h3.pagetitle Grading Status
 
   = render 'ungraded_submissions_table', :course => current_course, :submissions => @ungraded_submissions
 

@@ -324,9 +324,9 @@ class Assignment < ActiveRecord::Base
   #single assignment gradebook
   def gradebook_for_assignment(assignment, options = {})
     CSV.generate(options) do |csv|
-      csv << ["First Name", "Last Name", "Email", "Score", "Statement", "Feedback" ]
+      csv << ["First Name", "Last Name", "Uniqname", "Score", "Statement", "Feedback" ]
       course.students.each do |student|
-        csv << [student.first_name, student.last_name, student.email, student.grade_for_assignment(assignment).score, student.submission_for_assignment(assignment).try(:text_comment), student.grade_for_assignment(assignment).try(:feedback) ]
+        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).score, student.submission_for_assignment(assignment).try(:text_comment), student.grade_for_assignment(assignment).try(:feedback) ]
       end
     end
   end

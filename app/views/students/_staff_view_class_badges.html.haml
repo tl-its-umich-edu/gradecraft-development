@@ -1,14 +1,13 @@
-= content_nav do
-  = render "info/tabs"
-
 = content_nav_for "Awarded #{term_for :badges}"
+
+%h3.pagetitle= "Awarded #{term_for :badges}"
 
 .small-12.columns
   %dl.tabs{:data => {'tab' => true}}
     %dd.active
       %a{ "href" => "#tab1" } All Awarded #{current_course.badge_term.pluralize}
-    //%dd
-    //%a{ "href" => "#tab2" } Shared #{current_course.badge_term.pluralize}
+    %dd
+      %a{ "href" => "#tab2" } Shared #{current_course.badge_term.pluralize}
 
   .tabs-content
     .content.active#tab1.small-12.columns

@@ -8,13 +8,22 @@
         %th Points
         %th Team
     %tbody
-      - current_course.teams.order_by_high_score.each do |team|
-        %tr
-          %td= team.name
-          - if current_course.team_score_average?
-            %td.right.points= team.try(:average_points)
-          - else
-            %td.right.points= team.try(:score)
+      - if current_course.team_score_average?
+        - current_course.teams.order_by_average_high_score.each do |team|
+          %tr
+            %td= team.name
+            - if current_course.team_score_average?
+              %td.right.points= team.try(:average_points)
+            - else
+              %td.right.points= team.try(:score)
+      - else
+        - current_course.teams.order_by_high_score.each do |team|
+          %tr
+            %td= team.name
+            - if current_course.team_score_average?
+              %td.right.points= team.try(:average_points)
+            - else
+              %td.right.points= team.try(:score)
 
 .small-12.columns
   %table.responsive#leaderboard

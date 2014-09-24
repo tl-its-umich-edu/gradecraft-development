@@ -69,18 +69,18 @@ hr {
   margin: 1.5rem auto;
 }
 /*  TODO: Remove .pagetitle  and remove !important from padding: */
-.pagetitle, h3.pagetitle {
+h3.pagetitle {
     color: #FFF !important;
     background-color: $primary-color-2;
-    padding: .5rem !important;
+    padding: .8rem;
     clear: both;
     margin: 0 0 1rem;
     display: inline-block;
     border-top-right-radius: $global-radius;
     border-bottom-right-radius: $global-radius;
-    top: .5rem !important;
+    top: .5rem;
     box-shadow: 2px 2px 8px #ccc;
-    font-size: 0.9rem;
+    font-size: 1.7rem;
 
     .label.alert {
       top: -.1rem;

@@ -28,6 +28,7 @@ class Team < ActiveRecord::Base
   scope :alpha, -> { order 'name ASC' }
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
+  scope :order_by_average_high_score, -> { order 'average_points DESC'}
 
   #Getting the team leader - needs to be rebuilt so that the GSI isn't a student
   def team_leader
