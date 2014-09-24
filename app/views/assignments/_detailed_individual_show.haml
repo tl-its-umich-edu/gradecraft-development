@@ -20,9 +20,9 @@
             .button-bar
               %ul.button-group.right.round
                 %li
-                  %button.button.select-all.tiny= "Check"
+                  %button.button.select-all.tiny= "Check All"
                 %li
-                  %button.button.select-none.tiny= "Uncheck"
+                  %button.button.select-none.tiny= "Uncheck All"
     %tbody
       - if @team
         - students = current_course_data.students_for_team(@team)
@@ -97,9 +97,9 @@
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    %button.select-all.tiny= "Check"
+                    %button.select-all.tiny= "Check All"
                   %li
-                    %button.select-none.tiny= "Uncheck"
+                    %button.select-none.tiny= "Uncheck All"
       %tbody
         - if @team
           - students = current_course_data.auditing_students_for_team(@team)

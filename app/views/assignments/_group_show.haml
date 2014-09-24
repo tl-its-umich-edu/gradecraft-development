@@ -29,9 +29,9 @@
                 .button-bar
                   %ul.button-group.right.round
                     %li
-                      %button.button.select-all.tiny= "Check"
+                      %button.button.select-all.tiny= "Check All"
                     %li
-                      %button.button.select-none.tiny= "Uncheck"
+                      %button.button.select-none.tiny= "Uncheck All"
         %tbody
           - group.students.each do |student|
             - grade = @assignment.grades.find_by student_id: student

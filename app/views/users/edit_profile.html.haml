@@ -4,6 +4,8 @@
     - if current_user.is_student?
       = render "students/student_profile_tabs"
 
+  %h3.pagetitle= @title
+
   .small-12.columns    
     .small-12.columns.panel
       .small-3.columns.text-center
