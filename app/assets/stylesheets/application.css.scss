@@ -2,7 +2,6 @@
  *= require s3_direct_upload_progress_bars
  *= require jquery-ui.min
  *= require jquery.circliful
- *= require jquery.dynatable
  *= require animate.min
  *= require responsive-tables
  *= require bootstrap-datetimepicker
@@ -13,7 +12,6 @@
  *= require rubrics
  *= require grades
  *= require assignments
- *= require jquery.dynatable
  *= require dynatable
  
 /* Branding colors */
@@ -52,3 +50,4 @@ $alert-color-5: #FFFD73;
 @import 'layout';
 @import 'buttons_and_icons';
 @import 'typography';
+@import 'homepage';

@@ -18,7 +18,7 @@
           %th{:scope => "col"} Last Name
           - if current_course.has_teams?
             %th{:scope => "col"} #{current_course.team_term}
-          %th{:scope => "col", "data-dynatable-sorts" => "score"}  Score
+          %th{:scope => "col"} Score
           %th{:scope => "col"} Grade
           - if current_course.has_badges?
             %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" } Badges Earned
@@ -39,7 +39,7 @@
               - if current_course.has_teams?
                 %td#team_for_course
                   = link_to student.team_for_course(current_course).try(:name), student.team_for_course(current_course) if student.team_for_course(current_course).present?
-              %td= points student.cached_score_for_course(current_course)
+              %td= student.cached_score_for_course(current_course)
               %td
                 = student.grade_letter_for_course(current_course)
                 - if student.grade_level_for_course(current_course).present?

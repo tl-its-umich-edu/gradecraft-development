@@ -12,27 +12,27 @@
     .small-12.columns
       
       //instructor badge index table
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_default_name_dynatable
         %thead
           %tr
             %th.center{"data-dynatable-no-sort" => "true" } Icon
-            %th Awarded
-            %th Description
+            %th Name
             - if current_course.valuable_badges?
               %th{"data-sort" => "int"} Value
+            %th Awarded
             %th Visible to Students
             %th.button-column
         %tbody
           - current_course_data.badges.each do |badge|
             %tr
               %td.center
-                %img{:src => badge.icon, :alt => badge.name, :width => "80"}
-              %td= badge.awarded_count
+                %img{:src => badge.icon, :alt => badge.name}
               %td
                 .bold= link_to badge.name, badge_path(badge)
                 = raw badge.description
               - if current_course.valuable_badges?
                 %td= points badge.point_total
+              %td= badge.awarded_count
               %td
                 - if badge.visible?
                   Yes

@@ -9,7 +9,7 @@
       = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
 
   .columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           - if assignment.is_individual?
@@ -72,5 +72,3 @@
                       %ul.button-group.right.round
                         %li= link_to "See Submission", assignment_grade_path(ug.assignment, :group_id => ug.group.id), :class => "button tiny alert"
                         %li= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group), :class => "button tiny alert"
-
-  .clearfix

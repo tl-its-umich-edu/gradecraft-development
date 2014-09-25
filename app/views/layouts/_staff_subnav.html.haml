@@ -23,7 +23,7 @@
     %i.fi-book-bookmark
     = link_to "Gradebook", gradebook_path
 
-  %li.divider
+  %hr
 
   %li
     %label Coursework
@@ -39,7 +39,7 @@
       %i.fi-trophy
       = link_to term_for(:challenges), challenges_path
   
-  %li.divider
+  %hr
 
   %li
     %label Analytics
@@ -53,7 +53,7 @@
     %i.fi-results-demographics
     = link_to "#{term_for :assignment} Analytics", analytics_per_assign_path
   
-  %li.divider
+  %hr
 
   %li 
     %label Users  
@@ -71,7 +71,7 @@
     %i.fi-torso-business
     = link_to "Staff", staff_index_path
   
-  %li.divider
+  %hr
 
   %li
     %label Course Setup
@@ -85,7 +85,7 @@
     %i.fi-list
     = link_to "Grading Scheme", grade_scheme_elements_path
   
-  %li.divider
+  %hr
 
   %li
     %label Tools
@@ -93,10 +93,11 @@
     %li
       %i.fi-puzzle
       = link_to tool.name, launch_lti_provider_path(tool)
-  
-  %li.divider
+
 
   - if current_user.is_admin?
+    %hr
+
     %li
       %label Admin
     %li

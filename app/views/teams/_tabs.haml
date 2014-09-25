@@ -1,10 +1,6 @@
-%li{class: ("active" if current_page?(teams_path)) }
-  = link_to_unless_current "See All #{term_for :teams}", teams_path
 %li{class: ("active" if current_page?(new_team_path)) }
   = link_to_unless_current "Add #{term_for :team}", new_team_path
 - if current_course.team_challenges?
-  %li{class: ("active" if current_page?(challenges_path)) }
-    = link_to_unless_current "#{term_for :challenges}", challenges_path
   %li{class: ("active" if current_page?(new_challenge_path)) }
     = link_to_unless_current "Create a New #{term_for :challenge}", new_challenge_path
 - if @team.present? && @team.persisted?

@@ -1,11 +1,9 @@
 .small-12.columns
   = simple_form_for @group do |f|
 
-    .small-12.medium-4
+    .small-12.panel
       = f.label "#{term_for :group} Name"
       = f.text_field :name
-
-    %br
 
     - if current_user.is_staff? && @group.persisted?
       .small-12.medium-4
@@ -13,25 +11,20 @@
         = f.select :approved, [[], ["Approved"], ["Rejected"]]
         .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
 
-    .small-12.medium-4
-      = f.association :assignments, :collection => @assignments, :as => :check_boxes
+    .small-12.panel
+      = f.association :assignments, :collection => @assignments, :as => :check_boxes, :label => "#{term_for :assignments}"
       .form_label What #{term_for :assignments} will this #{term_for :group} work on together?
 
-    %br
-
-    .small-12.medium-6
+    .small-12.panel
       - if current_user.is_student? && !@group.persisted?
-        = f.association :students, :collection => @other_students, as: :select
+        = f.association :students, :collection => @other_students, as: :select, :label => "#{term_for :students}"
         %span.italic= "You (#{current_student.name }) will be automatically included in this group."
       - elsif current_user.is_student?
-        = f.association :students, :collection => current_course_data.students, as: :select
+        = f.association :students, :collection => current_course_data.students, as: :select, :label => "#{term_for :students}"
       - if current_user.is_staff?
-        = f.association :students, :collection => current_course_data.students, as: :select
-      %br
+        = f.association :students, :collection => current_course_data.students, as: :select, :label => "#{term_for :students}"
       %br
       .form_label Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
-
-    %br
 
     .small-12.textarea
       .proposals

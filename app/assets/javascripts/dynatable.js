@@ -16,6 +16,7 @@ $('table.nopage_dynatable').dynatable({
 
   features: {
         paginate: false,
+        sort: true
       },
   readers: {
     rank: function(el, record) {
@@ -54,7 +55,8 @@ $('table.nopage_dynatable').dynatable({
 $('table.nosearch_dynatable').dynatable({
 
   features: {
-        search: false
+        search: false, 
+        sort: true
       },
   readers: {
       rank: function(el, record) {
@@ -71,8 +73,84 @@ $('table.nopage_orsearch_dynatable').dynatable({
 
   features: {
         search: false,
-        paginate: false
+        paginate: false, 
+        sort: true
       }
+});
+
+$('table.nofeatures_default_last_name_dynatable').dynatable({
+
+  features: {
+        paginate: false,
+        search: false,
+        recordCount: false, 
+        sort: true
+      },
+  dataset: {
+      sorts: { 'lastName': 1 }
+  },
+  readers: {
+      dueDate: function(el, record) {
+        record.parsedDate = Date.parse(el.innerHTML);
+        return el.innerHTML;
+      },
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      },
+      maxValue: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
+});
+
+$('table.nofeatures_default_name_dynatable').dynatable({
+
+  features: {
+        paginate: false,
+        search: false,
+        recordCount: false, 
+        sort: true
+      },
+  dataset: {
+      sorts: { 'name': 1 }
+  },
+  readers: {
+      dueDate: function(el, record) {
+        record.parsedDate = Date.parse(el.innerHTML);
+        return el.innerHTML;
+      },
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      },
+      maxValue: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
+});
+
+$('table.nofeatures_default_score_dynatable').dynatable({
+
+  features: {
+        paginate: false,
+        search: false,
+        recordCount: false, 
+        sort: true
+      },
+  dataset: {
+      sorts: { 'score': 1 }
+  },
+  readers: {
+      dueDate: function(el, record) {
+        record.parsedDate = Date.parse(el.innerHTML);
+        return el.innerHTML;
+      },
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      },
+      maxValue: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
 });
 
 $('table.nofeatures_dynatable').dynatable({
@@ -80,8 +158,12 @@ $('table.nofeatures_dynatable').dynatable({
   features: {
         paginate: false,
         search: false,
-        recordCount: false
+        recordCount: false, 
+        sort: true
       },
+  dataset: {
+      sorts: { 'score': -1 }
+  },
   readers: {
       dueDate: function(el, record) {
         record.parsedDate = Date.parse(el.innerHTML);

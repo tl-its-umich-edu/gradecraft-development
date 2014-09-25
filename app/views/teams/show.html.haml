@@ -7,8 +7,11 @@
 
   %h3.pagetitle= @team.name
 
+  .clearfix
+
+  %h4.subtitle= "#{term_for :student} Roster"
   .small-12.columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           %th First Name
@@ -19,7 +22,8 @@
           %th Score
           %th Level
           - if current_course.has_badges?
-            %th{:width => 200} #{term_for :badges} Earned
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" }= "#{term_for :badges} Earned"
+            %th{:style => "display: none"} Badge Count
           %th.button-column
       %tbody
         - @team.students.each do |student|
@@ -38,6 +42,7 @@
                 %td
                   - student.earned_badges_for_course(current_course).each do |badge|
                     %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
+                %th{:style => "display: none"}= student.earned_badges.count
               %td
                 .button-bar
                   %ul.button-group.round.right
@@ -47,11 +52,11 @@
 
   %hr
 
-  .pagetitle Challenge Grades
+  %h4.subtitle Challenge Grades
 
   .small-12.columns
 
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_score_dynatable
       %thead
         %tr
           %th Name

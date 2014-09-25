@@ -6,7 +6,7 @@
     - else 
       = render "assignments/tabs"
 
-  .pagetitle
+  %h3.pagetitle
     - if @assignment.has_groups? && @group.present?
       = "#{@title} for #{term_for :group} #{@group.name} (#{points @assignment.point_total} points)"
     - else
@@ -17,17 +17,17 @@
     - if @assignment.open_at?
       .small-12.columns.large-4.panel
         %b Open date:
-        = @assignment.open_at
+        = @assignment.open_at.strftime("%A, %B %d, %Y, at %H:%M%p")
 
     - if @assignment.due_at?
       .small-12.columns.large-4.panel
         %b Close date:
-        = @assignment.due_at
+        = @assignment.due_at.strftime("%A, %B %d, %Y, at %H:%M%p")
 
     - if @assignment.accepts_submissions_until? && current_user.is_staff?
       .small-12.columns.large-4.panel
         %b Accept submissions until:
-        = @assignment.accepts_submissions_until
+        = @assignment.accepts_submissions_until.strftime("%A, %B %d, %Y, at %H:%M%p")
 
     .clearfix
 

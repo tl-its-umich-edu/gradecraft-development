@@ -20,44 +20,6 @@ body.logged-in, body.logged-out {
   overflow: hidden;*/
 }
 
-
-/* Front facing page, not logged in */ 
-.row.panel.publicContent {
-  margin-bottom: 0;
-  padding-top: 2rem;
-  border: none;
-  background-color: #FFF;
-  min-height: 30rem;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.row.panel.footer {
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;
-  margin-top: 0;
-  background-color: $primary-color-5;
-  border: none;
-
-  h5 {
-    color: $primary-color-3;
-  }
-
-  a {
-    color: #FFF;
-  }
-
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    list-style-type: none;
-    font-size: .9rem;
-  }
-}
-
 .panel p {
   /*margin-bottom: 0;*/
 }

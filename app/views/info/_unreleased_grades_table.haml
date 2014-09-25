@@ -13,7 +13,7 @@
 
   .columns
     = form_tag edit_status_grades_assignment_path assignment do
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_default_last_name_dynatable
         %thead
           %tr
             - if assignment.is_individual?
@@ -60,4 +60,3 @@
 
       .right
         = submit_tag "Update Selected Grade Statuses", :class => "button tiny primary radius"
-

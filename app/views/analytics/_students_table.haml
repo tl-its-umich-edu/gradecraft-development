@@ -1,9 +1,8 @@
-%table.responsive
+%table.responsive.nofeatures_default_score_dynatable
   %thead
     %tr
       %th= course.user_term
       %th Score
-      %th{"data-dynatable-no-sort" => "true"} Chart
       - if course.has_badges?
         %th Badges
       - if course.has_teams?
@@ -16,7 +15,6 @@
       %tr
         %td= link_to student.name, student_path(student)
         %td= student.cached_score_for_course(current_course)
-        %td{ :data => { :id => student.id.to_s, :max => current_course.total_points }, :class => "bar-chart" }
         - if course.has_badges?
           %td= student.earned_badges.count
 

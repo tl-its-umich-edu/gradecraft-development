@@ -1,0 +1,82 @@
+
+/* Front facing page, not logged in */ 
+.row.panel.publicContent {
+  margin-bottom: 0;
+  padding-top: 2rem;
+  border: none;
+  background-color: #FFF;
+  min-height: 30rem;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.row.panel.footer {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  margin-top: 0;
+  background-color: $primary-color-5;
+  border: none;
+
+  h5 {
+    color: $primary-color-3;
+  }
+
+  a {
+    color: #FFF;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style-type: none;
+    font-size: .9rem;
+  }
+}
+
+
+  /** Login Forms  **/
+
+.login_forms {
+  background-color: #FFF;
+  border: none;
+
+  .content {
+    background-color: #eee;
+    border-bottom-right-radius: $global-radius;
+    border-bottom-left-radius: $global-radius;
+
+    input {
+      width: 90% !important;
+      margin-left: 15px !important;
+    }
+  }
+
+  .tabs-content {
+    border: none;
+    border-top-right-radius: $global-radius;
+    border-bottom-right-radius: $global-radius;
+    border-bottom-left-radius:  $global-radius;
+  }
+
+  dl.tabs dd > a {
+    border-collapse: true !important;
+    border-top-right-radius: $global-radius;
+    border-top-left-radius: $global-radius;
+    background-color: $primary-color-3 !important;
+    color: #FFF;
+    font-size: 100%;
+    text-transform: none;
+  }
+
+  dl.tabs dd.active > a {
+    background-color: #eee !important;
+    color: #000;
+  }
+
+  .right {
+    margin-right: 25px;
+  }
+}

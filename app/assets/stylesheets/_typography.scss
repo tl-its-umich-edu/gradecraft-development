@@ -64,13 +64,14 @@ body {
 }
 
 hr {
-  border: dotted $secondary-color;
+  border-color: #CCC;
   border-width: 1px 0 0;
   margin: 1.5rem auto;
 }
-/*  TODO: Remove .pagetitle  and remove !important from padding: */
+
+/** Page Title **/
 h3.pagetitle {
-    color: #FFF !important;
+    color: #FFF;
     background-color: $primary-color-2;
     padding: .8rem;
     clear: both;
@@ -81,6 +82,7 @@ h3.pagetitle {
     top: .5rem;
     box-shadow: 2px 2px 8px #ccc;
     font-size: 1.7rem;
+    text-transform: capitalize;
 
     .label.alert {
       top: -.1rem;
@@ -89,19 +91,29 @@ h3.pagetitle {
     }
   }
 
-  .pagetitle.subtitle {
-    background-color: $primary-color;
-  }
+/** Subtitle **/
+h4.subtitle {
+  background-color: $secondary-color-5;
+  padding: .4rem .8rem;
+  text-transform: capitalize;
+  clear: both;
+  margin: 0 0 1rem; 
+  display: inline-block;
+  border-top-right-radius: $global-radius;
+  border-bottom-right-radius: $global-radius;
+  box-shadow: 2px 2px 8px #ccc;
+  font-size: 1.0rem;
+}
 
-  /* Used for screen reader only items */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
+/* Used for screen reader only items */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
 

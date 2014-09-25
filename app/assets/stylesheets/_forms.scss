@@ -3,6 +3,8 @@
 }
 
 label {
+  text-transform: capitalize;
+  font-weight: bold;
   display: inline-block;
   margin-bottom: 5px;
 }
@@ -11,47 +13,15 @@ label, input {
   padding-bottom: 0;
 }
 
-  /** Login Forms  **/
+.radio label,
+.checkbox label {
+  cursor: pointer;
+  display: inline;
+}
 
-.login_forms {
-  background-color: #FFF;
-  border: none;
-
-  .content {
-    background-color: #eee;
-    border-bottom-right-radius: $global-radius;
-    border-bottom-left-radius: $global-radius;
-
-    input {
-      width: 90% !important;
-      margin-left: 15px !important;
-    }
-  }
-
-  .tabs-content {
-    border: none;
-    border-top-right-radius: $global-radius;
-    border-bottom-right-radius: $global-radius;
-    border-bottom-left-radius:  $global-radius;
-  }
-
-  dl.tabs dd > a {
-    border-collapse: true !important;
-    border-top-right-radius: $global-radius;
-    border-top-left-radius: $global-radius;
-    background-color: $primary-color-3 !important;
-    color: #FFF;
-    font-size: 100%;
-    text-transform: none;
-  }
-  dl.tabs dd.active > a {
-    background-color: #eee !important;
-    color: #000;
-  }
-
-  .right {
-    margin-right: 25px;
-  }
+label.checkbox input, label.checkbox, label.radio, label.radio input {
+  margin-right: 10px;
+  clear: both;
 }
 
 .score-level .remove-level.button, .remove-element.button, .assignment-score-levels .remove-assignment-score-level.button {
@@ -72,19 +42,6 @@ fieldset {
   padding-left: 0px;
   margin-bottom: 15px;
 }
-.radio label,
-.checkbox label {
-  margin-bottom: 0;
-  margin-top: -10px;
-  font-weight: normal;
-  cursor: pointer;
-}
-
-label.checkbox input, label.checkbox, label.radio, label.radio input {
-  margin-right: 10px;
-  clear: both;
-}
-
 
 .radio input[type="radio"],
 .radio-inline input[type="radio"],

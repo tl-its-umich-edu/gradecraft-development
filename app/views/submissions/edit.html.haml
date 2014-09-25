@@ -4,18 +4,18 @@
     - if current_user.is_student?
       = render "students/student_profile_tabs"
 
-  .pagetitle= @title
+  %h3.pagetitle= @title
 
   .small-12.columns
     - if @assignment.open_at?
       .small-12.columns.large-4.panel
         %b Open date:
-        = @assignment.open_at
+        = @assignment.open_at.strftime("%A, %B %d, %Y, at %H:%M%p")
 
     - if @assignment.due_at?
       .small-12.columns.large-4.panel
         %b Close date:
-        = @assignment.due_at
+        = @assignment.due_at.strftime("%A, %B %d, %Y, at %H:%M%p")
 
     .clearfix
 
