@@ -156,9 +156,17 @@ class User < ActiveRecord::Base
     end
   end
 
-  def role(course)
-    return nil if self.course_memberships.where(course_id: course).empty?
-    self.course_memberships.where(course: course).first.role
+  # During the migration where roles are transferred from the user to the
+  # course membership, we need to account for role being a column on users (before)
+  # and a method (after). Once this migration is complete, course should not be an
+  # optional parameter, and we should remove the if...else check and always go with else
+  def role(course=nil)
+    if self.attributes.include? "role"
+      self.attributes["role"]
+    else
+      return nil if self.course_memberships.where(course_id: course).empty?
+      self.course_memberships.where(course: course).first.role
+    end
   end
 
   def is_staff?(course)
