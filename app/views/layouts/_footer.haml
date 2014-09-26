@@ -10,8 +10,8 @@
   %h5 Using GradeCraft
   %ul
     %li= link_to_unless_current "Apply to Use", using_gradecraft_path
-    %li= link_to_unless_current "Documentation", documentation_path
-    %li= link_to_unless_current "Submit a Bug", submit_a_bug_path
+    %li= link_to "Documentation", "http://gradecraft.freshdesk.com/support/home"
+    %li= link_to "Submit a Bug", "http://gradecraft.freshdesk.com/support/tickets/new"
   .clearfix
   %hr.show-for-small-only
 
@@ -28,6 +28,7 @@
 .small-12.medium-2.columns
   %h5 Talk to Us
   %ul
+    %li= mail_to 'help@gradecraft.com', 'Help'
     %li= mail_to 'gradecraft@gmail.com', 'Email'
     %li= link_to_unless_current "Twitter", "https://twitter.com/gradecraft"
   .clearfix

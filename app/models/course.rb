@@ -112,24 +112,8 @@ class Course < ActiveRecord::Base
     badges_value == true
   end
 
-  def predictor_on?
-    predictor_setting == true
-  end
-
   def has_groups?
     group_setting == true
-  end
-
-  def course_badges?
-    badge_use_scope == "Course"
-  end
-
-  def assignment_badges?
-    badge_use_scope == "Assignment"
-  end
-
-  def multi_badges?
-    badge_use_scope == "Both"
   end
 
   def shared_badges?
@@ -197,22 +181,19 @@ class Course < ActiveRecord::Base
     course_memberships.where(:user_id => student).first.score
   end
 
+  #Descriptive stats of the grades
   def minimum_course_score
-    course_memberships.order('course_memberships.score ASC').first.user
+    course_memberships.minimum('course_memberships.score')
   end
 
   def maximum_course_score
-    #.max
+    course_memberships.maximum('course_memberships.score')
   end
 
   def average_course_score
-    #.max
+    course_memberships.average('course_memberships.score').to_i
   end
-
-  def median_course_score
-    #len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
-  end
-
+  
   def student_count
     students.count
   end

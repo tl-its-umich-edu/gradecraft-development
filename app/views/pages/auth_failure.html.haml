@@ -1,8 +1,9 @@
 .small-12.medium-6.columns.panel.radius.callout
-  %h2 Uh Oh!
-  %h3 We had some trouble logging you in.
+  %h3.bold Uh Oh! 
+  %h4 We're having some trouble logging you in.
 
-  %p An email has been sent to the GradeCraft developers, who will look into the issue shortly.
-  %p In the meantime, if you have any questions feel free to #{mail_to 'cholma@umich.edu', 'get in touch'}.
+  %p Are you sure you've created your GradeCraft account? Students <b>must</b> log in through CTools/Canvas before they can access GradeCraft directly. 
+
+  %p.bold #{ link_to 'Follow these directions', "http://gradecraft.freshdesk.com/support/home"} to create your GradeCraft account, and #{mail_to 'cholma@umich.edu', 'get in touch'} if that doesn't work.
 .small-12.medium-6.columns.panel.radius.login_forms
   = render 'user_sessions/form'

@@ -222,6 +222,10 @@ class StudentData < Struct.new(:student, :course)
     end
   end
 
+  def remaining_weights(course)
+    course.total_assignment_weight - course.assignment_weight_for_student(student)
+  end
+
   #Weights
   def weight_for_assignment_type(assignment_type)
     assignment_type_weights[assignment_type.id]

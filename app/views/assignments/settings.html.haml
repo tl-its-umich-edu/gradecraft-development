@@ -30,7 +30,7 @@
                         %i.fi-eye
                     %th
                       %span.has-tip.tip-top{:title => "Required", :data => {'tooltip' => true}}
-                        %i.fi-star
+                        *
                     %th
                       %span.has-tip.tip-top{:title => "Accepts Submissions", :data => {'tooltip' => true}}
                         %i.fi-paperclip
@@ -64,31 +64,40 @@
                       %td= raw assignment.description
                       %td
                         - if assignment.visible?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Visible to Students", :data => {'tooltip' => true}}
+                            %i.fi-eye
                       %td
                         - if assignment.required?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Required", :data => {'tooltip' => true}}
+                            *
                       %td
                         - if assignment.accepts_submissions?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Accepts Submissions", :data => {'tooltip' => true}}
+                            %i.fi-paperclip
                       %td
                         - if assignment.include_in_timeline?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Shown in Timeline", :data => {'tooltip' => true}}
+                            %i.fi-layout
                       %td
                         - if assignment.include_in_predictor?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Shown in Predictor", :data => {'tooltip' => true}}
+                            %i.fi-checkbox
                       %td 
                         - if assignment.assignment_type.include_in_to_do?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Shown in Due This Week", :data => {'tooltip' => true}}
+                            %i.fi-calendar
                       %td
                         - if assignment.student_logged?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Logged By Students", :data => {'tooltip' => true}}
+                            %i.fi-pencil
                       %td
                         - if assignment.release_necessary?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Release Required", :data => {'tooltip' => true}}
+                            %i.fi-unlock
                       %td
                         - if assignment.notify_released?
-                          %i.fi-check
+                          %span.has-tip.tip-top{:title => "Notify Students on Release", :data => {'tooltip' => true}}
+                            %i.fi-mail
                       %td
                         - if assignment.grade_select?
                           = select_tag(:score_levels, options_from_collection_for_select(assignment.score_levels_set, :value, :name))

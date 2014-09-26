@@ -190,12 +190,8 @@ GradeCraft::Application.routes.draw do
 
   resources :home
 
-  get 'submit_a_bug' => 'pages#submit_a_bug'
-  get 'features' => 'pages#features'
-  get 'news' => 'pages#news'
   get 'using_gradecraft' => 'pages#using_gradecraft'
   get 'contact' => 'pages#contact'
-  get 'documentation' => 'pages#documentation'
   get 'ping' => 'pages#ping'
 
   #10. Rubrics & Grade Schemes

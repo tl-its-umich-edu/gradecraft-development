@@ -4,7 +4,7 @@ class Group < ActiveRecord::Base
 
   attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,
     :assignment_groups_attributes, :group_membership_attributes, :text_feedback,
-    :proposals_attributes, :proposal
+    :proposals_attributes, :proposal, :approved
 
   attr_reader :student_tokens
 
@@ -37,8 +37,12 @@ class Group < ActiveRecord::Base
   scope :rejected, -> { where approved: "Rejected" }
   scope :pending, -> { where approved: "Pending" }
 
-  #Grades
+  #Instructors need to approve a group before the group is allowed to proceed
+  def approved?
+    approved == "Approved"
+  end
 
+  #Group submissions
   def submissions_by_assignment_id
     @submissions_by_assignment ||= submissions.group_by(&:assignment_id)
   end
@@ -47,15 +51,12 @@ class Group < ActiveRecord::Base
     submissions_by_assignment_id[assignment.id].try(:first)
   end
 
-  #Badges
-
+  #Badges awarded to a whole group
+  #TODO: We've never built a way to award these
   def earned_badges_by_badge_id
     @earned_badges_by_badge ||= earned_badges.group_by(&:badge_id)
   end
 
-  def approved?
-    approved == "Approved"
-  end
 
   private
 
@@ -63,6 +64,8 @@ class Group < ActiveRecord::Base
     self.text_proposal = Sanitize.clean(text_proposal, Sanitize::Config::BASIC)
   end
 
+
+  #Checking to make sure any constraints the instructor has set up around min/max group members are honored
   def min_group_number_met
     if self.students.to_a.count < course.min_group_size
       errors.add(:group, "Nope, not enough group members!")
@@ -75,6 +78,7 @@ class Group < ActiveRecord::Base
     end
   end
 
+  #We need to make sure students only belong to one group working on a single assignment
   def unique_assignment_per_group_membership
     assignments.each do |a|
       students.each do |s|

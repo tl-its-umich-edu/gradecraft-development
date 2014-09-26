@@ -1,17 +1,18 @@
-%table.responsive.nofeatures_dynatable
-  %thead
-    %tr
-      %th Name
-      %th #{term_for :badges}
-  %tbody#shared_badges_table
-    - current_course.earned_badges.where(:shared => true).group_by(&:student).each do |student, sebs|
+.small-12.columns
+  %table.responsive.nofeatures_dynatable
+    %thead
       %tr
-        %td= link_to student.name
-        - if current_user.is_student? && student.id == current_student.id
-          %td#current_user_badges
-            - sebs.each do |seb|
-              %img.has-tip{:src => seb.try(:icon), :alt => seb.try(:name), :width => "20", :title => seb.name, :data => {'tooltip' => true}}
-        - else
-          %td
-            - sebs.each do |seb|
-              %img.has-tip{:src => seb.try(:icon), :alt => seb.try(:name), :width => "20", :title => seb.name, :data => {'tooltip' => true}}
+        %th Name
+        %th #{term_for :badges}
+    %tbody#shared_badges_table
+      - current_course.earned_badges.where(:shared => true).group_by(&:student).each do |student, sebs|
+        %tr
+          %td= link_to student.name
+          - if current_user.is_student? && student.id == current_student.id
+            %td#current_user_badges
+              - sebs.each do |seb|
+                %img.has-tip{:src => seb.try(:icon), :alt => seb.try(:name), :width => "20", :title => seb.name, :data => {'tooltip' => true}}
+          - else
+            %td
+              - sebs.each do |seb|
+                %img.has-tip{:src => seb.try(:icon), :alt => seb.try(:name), :width => "20", :title => seb.name, :data => {'tooltip' => true}}

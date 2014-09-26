@@ -1,6 +1,7 @@
 .button {
   color: #FFF !important;
   margin-bottom: 0;
+  text-transform: capitalize;
 }
 
 h2 a.button.tiny {
@@ -29,6 +30,15 @@ i.fi-male.absent {
 i.fi-male.partial {
   font-size: 150%;
   color: $secondary-color;
+}
+
+.small-3.right .button-bar {
+  margin-right: .75rem;
+}
+
+.button.tiny.aindex {
+  margin: 0;
+  top: -2.8rem;
 }
 
 

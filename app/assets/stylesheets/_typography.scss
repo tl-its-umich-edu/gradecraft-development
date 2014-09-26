@@ -29,7 +29,7 @@ body {
   padding-bottom: .2rem;
 }
 
-.transparent{
+.transparent {
   opacity: .6;
 }
 
@@ -75,6 +75,7 @@ h3.pagetitle {
     background-color: $primary-color-2;
     padding: .8rem;
     clear: both;
+  float: left;
     margin: 0 0 1rem;
     display: inline-block;
     border-top-right-radius: $global-radius;
@@ -93,12 +94,14 @@ h3.pagetitle {
 
 /** Subtitle **/
 h4.subtitle {
-  background-color: $secondary-color-5;
+  background-color: $primary-color-4;
   padding: .4rem .8rem;
   text-transform: capitalize;
   clear: both;
   margin: 0 0 1rem; 
-  display: inline-block;
+  display: block;
+  float: left;
+  border-left: 5px solid #333;
   border-top-right-radius: $global-radius;
   border-bottom-right-radius: $global-radius;
   box-shadow: 2px 2px 8px #ccc;

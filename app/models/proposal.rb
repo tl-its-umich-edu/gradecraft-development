@@ -1,5 +1,5 @@
 class Proposal < ActiveRecord::Base
-  attr_accessible :title, :proposal
+  attr_accessible :title, :proposal, :approved
 
   belongs_to :group
 
