@@ -5,7 +5,21 @@
 
   = content_nav_for "#{term_for :students} Analytics"
 
-  %h3.pagetitle= "#{term_for :students} Analytics"
+  .small-12.medium-8 
+    %h3.pagetitle= "#{term_for :students} Analytics"
+
+  .small-12.medium-4.right
+    .button-bar
+      %ul.button-group.context_menu
+        %li
+          %i.fi-torso
+          = link_to "User Analytics", :class => "button"
+        %li
+          %i.fi-torsos-all
+          = link_to "Student Analytics", :class => "button"
+        %li
+          %i.fi-torso-business
+          = link_to "Staff Analytics", :class => "button"
 
   .small-12.columns
 

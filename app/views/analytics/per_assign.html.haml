@@ -27,6 +27,7 @@
               Avg Earned
               %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
             %th # Submissions
+            %th # Grades 
         %tbody
           - assignments.each do |assignment|
             %tr
@@ -36,6 +37,9 @@
               %td= points assignment.median
               %td= points assignment.average
               %td= points assignment.earned_average
-              %td= assignment.submissions.count
+              %td
+                - if assignment.accepts_submissions?
+                  = assignment.submissions.count
+              %th= assignment.grade_count
     .clearfix
     %hr

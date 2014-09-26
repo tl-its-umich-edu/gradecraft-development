@@ -7,7 +7,36 @@
 h2 a.button.tiny {
   margin: 0 !important;
   padding: .2rem .4rem;
-  top: -.3rem;
+  top: -.4rem;
+}
+
+ul.button-group.context_menu {
+  display: inline-block;
+  text-transform: capitalize;
+  font-size: 80%;
+
+  li {
+    margin: 0;
+    border: 1px solid #CCC;
+    background-color: #eee;
+    padding: .5rem;
+  }
+
+  li:first-child {
+    border-bottom-left-radius: $global-radius;
+    border-top-left-radius: $global-radius;
+  }
+
+  li:last-child {
+    border-top-right-radius: $global-radius;
+    border-bottom-right-radius: $global-radius;
+  }
+
+  li:hover a, li:hover {
+    background-color: $primary-color-5;
+    color: #FFF;
+    cursor: pointer;
+  }
 }
 
 /* Attendance rate visuals */

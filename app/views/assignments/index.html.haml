@@ -1,12 +1,21 @@
 - if current_user.is_staff?
   .small-12.panel.mainContent
-    / Assignment navigation
-    = content_nav do
-      = render "tabs"
 
     = content_nav_for Assignment
 
-    %h3.pagetitle= @title
+    .small-12.medium-9
+      %h3.pagetitle= @title
+
+    .small-12.medium-3.right
+      .button-bar
+        %ul.button-group.context_menu
+          %li
+            %i.fi-plus
+            = link_to "New Assignment", :class => "button"
+          %li
+            %i.fi-results
+            = link_to "Settings Overview", :class => "button"
+
 
     .small-12.columns
       
@@ -64,4 +73,3 @@
                             %li
                               %a{:href => assignment_path(assignment), :class => "button tiny", :data => { confirm: 'Are you sure?', method: :delete } }
                                 Delete
-    .clearfix

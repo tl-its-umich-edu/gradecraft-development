@@ -1,3 +1,7 @@
+h1, h2, h3, h4, h5 {
+  text-transform: capitalize;
+} 
+
 body {
  font-size: 0.9rem;
  line-height: 1.6;
@@ -69,6 +73,12 @@ hr {
   margin: 1.5rem auto;
 }
 
+.label.alert.round {
+  margin-right: -1rem;
+  top: -0.7rem;
+  background-color: $secondary-color;
+}
+
 /** Page Title **/
 h3.pagetitle {
     color: #FFF;
@@ -80,22 +90,16 @@ h3.pagetitle {
     display: inline-block;
     border-top-right-radius: $global-radius;
     border-bottom-right-radius: $global-radius;
-    top: .5rem;
     box-shadow: 2px 2px 8px #ccc;
     font-size: 1.7rem;
     text-transform: capitalize;
-
-    .label.alert {
-      top: -.1rem;
-      margin-bottom: -.1rem;
-      color: #000;
-    }
   }
 
 /** Subtitle **/
 h4.subtitle {
   background-color: $primary-color-4;
   padding: .4rem .8rem;
+  height: 2rem;
   text-transform: capitalize;
   clear: both;
   margin: 0 0 1rem; 
