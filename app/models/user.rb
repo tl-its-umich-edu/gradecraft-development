@@ -146,6 +146,8 @@ class User < ActiveRecord::Base
     course_memberships.count > 1
   end
 
+  # DEPRECATED - Teams can now have more than one leader. This should be removed
+  # once we have a strategy for cycling through team leaders.
   def team_leader
     teams.first.try(:team_leader)
   end

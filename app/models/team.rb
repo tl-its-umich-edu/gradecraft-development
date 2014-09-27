@@ -31,9 +31,11 @@ class Team < ActiveRecord::Base
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
 
-  #Getting the team leader - needs to be rebuilt so that the GSI isn't a student
+  # DEPRECATED -- Assume Teams can have more than one leader. This should be removed
+  # once we verify all uses are removed and new methods for cycling through team leaders
+  # are in place.
   def team_leader
-    students.gsis(course).first
+    leaders.first
   end
 
   #Sorting team's students by their score, currently only used for in team leaderboards
