@@ -1,5 +1,8 @@
 namespace :teams do
 
+  # Use this to test on development only -- it will assing a random grouping of
+  # students in each team as gsis
+  #
   desc "Set the first member of each team as a gsi (for testing in development)"
   task :development_db_create_leaders => :environment do
     raise "This task should only be run in development!" unless Rails.env == "development"
@@ -8,7 +11,8 @@ namespace :teams do
       puts "Setting leaders of team #{team.name}"
       Random.new.rand(1..3).times do
         leader = team.students.order("RANDOM()").first
-        if ! leaders.include? leader.name
+
+        if leader && !leaders.include?(leader.name)
           puts "  #{leader.name}"
           leaders << leader.name
 
@@ -20,6 +24,10 @@ namespace :teams do
     end
   end
 
+  # Before running `rake teams:transfer_leaderships` this method will display
+  # all gsi's under the student listting with (gsi) after their names
+  # after running the transfer, they should be listed as leaders, and not students
+  #
   desc "Outputs a list of team leaders and students to the console"
   task :puts_memberships => :environment do
     team_member_list = Hash.new {|h, k| h[k] = {students: [], leaders: []} }
@@ -46,6 +54,9 @@ namespace :teams do
     end
   end
 
+  # Use this rake task to create team leaders out of all team members who have a gsi role
+  # for the course. They will also be removed from the team memberships
+  #
   desc "Tranfer team leaders from team membership to team leadership"
   task :transfer_leaderships => :environment do
     Team.all.each do |team|
@@ -53,20 +64,8 @@ namespace :teams do
         if student.role(team.course) == "gsi"
           leadership = TeamLeadership.new leader: student, team: team
           leadership.save
-          student.team_memberships.where(course: team.course).first.destroy
+          student.team_memberships.where(team: team).first.destroy
           puts "transferred #{student.name} from student to leader for team \"#{team.name}\""
-        end
-      end
-    end
-  end
-
-  desc "fix deletes"
-  task :fixer => :environment do
-    Team.all.each do |team|
-      team.students.each do |student|
-        if student.role(team.course) != "student"
-          student.course_memberships.where(course: team.course).first.destroy
-          puts "removed #{student.name} from students in \"#{team.name}\""
         end
       end
     end
