@@ -24,6 +24,10 @@
     li.active {
       padding: .5rem !important;
     }
+
+    li a:hover, li:hover a {
+      color: #FFF !important;
+    }
   }
 }
 /* Setting the active tab and hover styles to be the dark green */

@@ -21,7 +21,11 @@
 .alert.button {
   border-top-right-radius: $global-radius;
   border-bottom-right-radius: $global-radius;
-  background-color: $primary-color-3;
+  background-color: $primary-color-4;
+}
+
+.alert.button:hover {
+  background-color: $primary-color-5;
 }
 
 .top-bar-section ul ul.dropdown li a {

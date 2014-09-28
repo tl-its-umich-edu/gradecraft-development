@@ -16,12 +16,12 @@
       - if assignment_type.student_weightable? && current_course.assignment_weight_open?
         .small-2.right
           - if current_student.weighted_assignments?
-            %span.label.round= "#{current_student_data.weight_for_assignment_type(assignment_type)} #{term_for :weights}"
-            = link_to "Change #{term_for :weights}", assignment_type_weights_path(:student_id => current_student.id), assignment_type: assignment_type, user_id: current_student, :class => "label tiny secondary round"
+            %span.label.radius= "#{current_student_data.weight_for_assignment_type(assignment_type)} #{term_for :weights}"
+            = link_to "Change #{term_for :weights}", assignment_type_weights_path(:student_id => current_student.id), assignment_type: assignment_type, user_id: current_student, :class => "label tiny secondary radius"
           - else
-            = link_to "Set #{term_for :weights}", assignment_type_weights_path(:student_id => current_student.id), assignment_type: assignment_type, :class => "label tiny primary round"
+            = link_to "Set #{term_for :weights}", assignment_type_weights_path(:student_id => current_student.id), assignment_type: assignment_type, :class => "label tiny primary radius"
       - elsif assignment_type.student_weightable?
-        %span.label.round= "#{current_student_data.weight_for_assignment_type(assignment_type)} #{term_for :weights}"
+        %span.label.radius= "#{current_student_data.weight_for_assignment_type(assignment_type)} #{term_for :weights}"
         
         // Display the description for the assignment type if it exists.
       - if assignment_type.predictor_description?

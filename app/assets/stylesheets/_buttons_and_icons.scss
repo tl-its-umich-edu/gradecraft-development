@@ -20,8 +20,8 @@
     padding: .5rem;
     border: none;
 
-    a {
-    color: #FFF;
+    a, a:hover {
+    color: #FFF !important;
     }
   }
 }
@@ -39,6 +39,7 @@ table {
     padding: .4rem;
     font-size: 80%;
     background-color: #999;
+    color: #FFF;
   }
 }
 

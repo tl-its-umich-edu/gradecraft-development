@@ -61,9 +61,9 @@
                     - if current_user.is_student? && earned_badge.present?
                       %div{:class=>"share_badge", :data => { badge_id: badge.id.to_s, earned_badge_id: earned_badge.id.to_s, name: badge.name, icon: badge.icon }}
                         - if earned_badge.shared?
-                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button tiny radius"} Stop Sharing
+                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button radius"} Stop Sharing
                         - else
-                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button tiny radius"} Share
+                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button radius"} Share
                     - elsif earned_badge.present?
                       - if earned_badge.shared?
                         = "Shared"
