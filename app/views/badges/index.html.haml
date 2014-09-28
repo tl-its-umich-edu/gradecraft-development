@@ -8,9 +8,9 @@
   .small-12.medium-3.right.columns
     .button-bar.right
       %ul.button-group.context_menu
-        %li{class: ("active" if current_page?(new_badge_path)) }
+        %li
           %i.fi-plus
-          = link_to_unless_current "New #{term_for :badge}", new_badge_path
+          = link_to "New #{term_for :badge}", new_badge_path
 
   .small-12.columns
     

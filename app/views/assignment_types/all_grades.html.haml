@@ -5,6 +5,19 @@
 
     %h3.pagetitle= "#{@assignment_type.name} Grade Patterns"
 
+    .small-12.medium-4.right.columns
+      .button-bar.right
+        %ul.button-group.context_menu
+          %li
+            %i.fi-plus
+            = link_to "New #{term_for :assignment_type}", new_assignment_type_path
+          %li
+            %i.fi-pencil
+            = link_to "See #{@assignment_type.name} #{term_for :assignments}", assignment_type_path(@assignment_type)
+          %li
+            %i.fi-pencil
+            = link_to "Edit", edit_assignment_type_path(@assignment_type)
+
     .small-12.columns
 
       - if current_course.has_teams?

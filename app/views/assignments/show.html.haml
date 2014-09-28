@@ -11,23 +11,23 @@
   .small-12.medium-5.right.columns
     .button-bar.right
       %ul.button-group.context_menu
-        %li{class: ("active" if current_page?(edit_assignment_path(@assignment))) }
+        %li
           %i.fi-pencil
-          = link_to_unless_current "Edit", edit_assignment_path(@assignment)
+          = link_to "Edit", edit_assignment_path(@assignment)
         - if @team.present?
-          %li{class: ("active" if current_page?(mass_grade_assignment_path)) }
+          %li
             %i.fi-list-thumbnails
-            = link_to_unless_current "Quick Grade", mass_grade_assignment_path(@assignment, :team_id => @team)
+            = link_to "Quick Grade", mass_grade_assignment_path(@assignment, :team_id => @team)
         - else
-          %li{class: ("active" if current_page?(mass_grade_assignment_path)) }
+          %li
             %i.fi-list-thumbnails
-            = link_to_unless_current "Quick Grade", mass_grade_assignment_path(@assignment)
-        %li{class: ("active" if current_page?(import_grades_assignment_path(@assignment))) }
+            = link_to "Quick Grade", mass_grade_assignment_path(@assignment)
+        %li
           %i.fi-page-csv
-          = link_to_unless_current "Import Grades", import_grades_assignment_path(@assignment)
+          = link_to "Import Grades", import_grades_assignment_path(@assignment)
         %li
           %i.fi-page-export-csv
-          = link_to_unless_current "Download Grades"
+          = link_to "Download Grades"
 
   - if current_user.is_staff?
     / .small-12.columns

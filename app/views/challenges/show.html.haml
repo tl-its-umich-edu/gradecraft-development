@@ -9,10 +9,10 @@
       %ul.button-group.context_menu
         %li
           %i.fi-pencil
-          = link_to_unless_current "Edit", edit_challenge_path(@challenge)
+          = link_to "Edit", edit_challenge_path(@challenge)
         %li
           %i.fi-results-demographics
-          = link_to_unless_current "Quick Grade", mass_edit_challenge_challenge_grades_path(@challenge)
+          = link_to "Quick Grade", mass_edit_challenge_challenge_grades_path(@challenge)
 
   .small-12.columns
     - if @challenge.challenge_files.present?

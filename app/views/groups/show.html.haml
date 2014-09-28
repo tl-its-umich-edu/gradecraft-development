@@ -3,8 +3,13 @@
   = content_nav_for @group
 
   %h3.pagetitle= "#{term_for :group}: #{@group.name}"
-  
-  = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to "Edit #{term_for :group}", edit_group_path(@group)
 
   .small-12.columns
     .label.right.radius
@@ -15,7 +20,7 @@
         Pending
 
     .small-12.medium-3.columns
-      %h4 Assignment(s)
+      %h4 #{term_for :assignments}: 
       %ul
         - @group.assignment_groups.each do |ag|
           %li= link_to ag.assignment.name, ag.assignment

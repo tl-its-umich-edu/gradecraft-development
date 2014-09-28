@@ -1,16 +1,20 @@
 .small-12.columns.mainContent
-  = content_nav do
-    = render "tabs"
   
   = content_nav_for @group, "Review Group"
 
   %h3.pagetitle= "#{term_for :group}: #{@group.name}"
-  = link_to "Edit", edit_group_path(@group), :class => "button tiny radius"
+  
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to "See #{term_for :group}", group_path(@group)
 
   .small-12.columns
 
     .small-12.medium-3.columns
-      %h4 Assignment(s)
+      %h4 #{term_for :assignments}:
       %ul
         - @group.assignment_groups.each do |ag|
           %li= link_to ag.assignment.name, ag.assignment

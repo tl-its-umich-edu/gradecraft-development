@@ -3,6 +3,13 @@
   = content_nav_for @team, "Edit #{term_for :team}"
 
   %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to_unless_current "See #{term_for :team}", team_path(@team)
   
   .small-12.columns
     = render 'form'

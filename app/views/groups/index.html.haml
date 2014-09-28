@@ -10,7 +10,7 @@
       %ul.button-group.context_menu
         %li
           %i.fi-plus
-          = link_to_unless_current "New #{term_for :group}", new_group_path
+          = link_to "New #{term_for :group}", new_group_path
 
   - if @groups.pending.present?
 

@@ -10,10 +10,10 @@
       %ul.button-group.context_menu
         %li
           %i.fi-plus
-          = link_to "New Assignment", :class => "button"
+          = link_to "New #{term_for :assignment}", new_assignment_path
         %li
           %i.fi-results
-          = link_to "Settings Overview", :class => "button"
+          = link_to "Settings Overview", settings_assignments_path
 
 
   .small-12.columns

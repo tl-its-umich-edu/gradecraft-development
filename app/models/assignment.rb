@@ -116,7 +116,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def grades_for_assignment(student)
-    user_score = grades.where(:student_id => student.id).first.raw_score
+    user_score = grades.where(:student_id => student.id).first.try(:raw_score)
     scores = grades.graded.pluck('raw_score')
     return {
     :scores => scores,

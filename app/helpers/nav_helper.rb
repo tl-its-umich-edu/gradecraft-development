@@ -3,7 +3,6 @@ module NavHelper
     capture_haml do
       haml_tag :div, class: 'content-nav' do
         haml_concat breadcrumbs_for(*objects)
-        haml_concat content_nav(&block)
       end
     end
   end

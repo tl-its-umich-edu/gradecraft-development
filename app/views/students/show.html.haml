@@ -1,4 +1,6 @@
 .small-12.panel.mainContent
+
+  = content_nav_for current_student
     
   %h3.pagetitle
     Current Score:
@@ -15,7 +17,12 @@
       – Current Level:
       %span.bold= current_student.grade_level_for_course(current_course)
 
-  .clearfix
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to "Edit #{term_for :student}", edit_user_path(current_student)
   
   .small-12.medium-9.columns#syllabus
 

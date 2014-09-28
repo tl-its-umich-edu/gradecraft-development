@@ -3,6 +3,16 @@
   = content_nav_for @assignment, "Edit #{term_for :assignment}"
 
   %h3.pagetitle= @title
+
+  .small-12.medium-6.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to "New #{term_for :assignment}", new_assignment_path
+        %li
+          %i.fi-plus
+          = link_to "See #{@assignment.name}", assignment_path(@assignment)
   
   .small-12.columns
 

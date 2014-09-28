@@ -37,7 +37,11 @@
       - current_course.teams.order_by_high_score.each do |team|
         %tr{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course))}
           %td.rank= i
-          %td= team.name
+          %td
+            - if current_user.is_student?
+              = team.name
+            -else 
+              = link_to team.name, team_path(team)
           - if current_course.team_score_average?
             %td.right.points= points team.try(:average_points)
           - else

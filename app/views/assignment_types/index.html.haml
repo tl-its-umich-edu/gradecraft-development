@@ -10,7 +10,7 @@
       %ul.button-group.context_menu
         %li
           %i.fi-plus
-          = "New #{term_for :assignment_type}"
+          = link_to "New #{term_for :assignment_type}", new_assignment_type_path
 
   .small-12.columns
     %table.responsive.nofeatures_dynatable

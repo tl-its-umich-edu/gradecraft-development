@@ -4,5 +4,12 @@
 
   %h3.pagetitle= @title
 
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to "See #{term_for :group}", group_path(@group)
+
   .small-12.columns
     = render 'form'
