@@ -4,7 +4,7 @@
 
   %h3.pagetitle= @title
 
-  .columns
+  .small-12.columns
     - if current_course.has_teams?
       .small-12.large-4.medium-6.columns.right
         = form_tag choices_students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
@@ -37,8 +37,8 @@
             %td
               .button-bar
                 %ul.button-group.round.right
-                  %li= link_to "Dashboard", student_path(student), :class => "button tiny alert"
-                  %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button tiny alert"
+                  %li= link_to "Dashboard", student_path(student), :class => "button"
+                  %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button"
 
   - if current_course_data.auditing_students.present?
     .clearfix
@@ -74,9 +74,5 @@
               %td
                 .button-bar
                   %ul.button-group.round
-                    %li= link_to "Dashboard", student_path(student), :class => "button tiny alert"
-                    %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button tiny alert"
-
-
-
-  .clearfix
+                    %li= link_to "Dashboard", student_path(student), :class => "button"
+                    %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button"

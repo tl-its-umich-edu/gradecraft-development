@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Challenge Grade Navigation
-  = content_nav do
-    = render "teams/tabs"
 
   = content_nav_for @challenge, "#{term_for :challenge} Grade"
 
@@ -20,5 +17,3 @@
     %p
       %b Feedback:
       %p= raw @challenge_grade.text_feedback
-
-  .clearfix

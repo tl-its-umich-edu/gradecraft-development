@@ -1,8 +1,5 @@
 - if current_user.is_staff?
   .small-12.panel.mainContent
-    / Assignment Type Navigation
-    = content_nav do
-      = render "assignments/tabs"
     
     = content_nav_for @assignment_type, "Grade Patterns"
 
@@ -35,7 +32,7 @@
     / Gradebook Pattern Table
     .columns
       #gradebook
-        %table.responsive.nopage_dynatable
+        %table.responsive
           %thead
             %tr
               %th First Name
@@ -85,7 +82,3 @@
                         %td
                           - if assignment.past?
                             %i.fi-skull.missing_grade
-
-
-
-    .clearfix

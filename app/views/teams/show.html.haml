@@ -1,8 +1,4 @@
 .small-12.panel.mainContent
-  / Student Dashboard Breadcrumbs
-  = content_nav do
-    = render "tabs"
-
   = content_nav_for @team
 
   %h3.pagetitle= @team.name
@@ -46,8 +42,8 @@
               %td
                 .button-bar
                   %ul.button-group.round.right
-                    %li= link_to 'Dashboard', student_path(student), :class => 'button tiny secondary'
-                    %li= link_to 'Edit', edit_user_path(student), :class => 'button tiny secondary'
+                    %li= link_to 'Dashboard', student_path(student), :class => 'button'
+                    %li= link_to 'Edit', edit_user_path(student), :class => 'button'
 
 
   %hr
@@ -74,8 +70,6 @@
             %td= challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
-                = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button tiny round secondary'
+                = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button'
               - else
-                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button tiny round secondary'
-
-  .clearfix
+                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button'

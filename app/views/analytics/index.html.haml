@@ -1,30 +1,27 @@
 .small-12.panel.mainContent
-  / Analytics Navigation
-  = content_nav do
-    = render "tabs"
 
-  = content_nav_for "Analytics"
+  = content_nav_for "User Analytics"
 
   .small-12.medium-8 
-    %h3.pagetitle= "Analytics"
+    %h3.pagetitle= "User Analytics"
 
-  .small-12.medium-4.right
-    .button-bar
+  .small-12.medium-4.right.columns
+    .button-bar.right
       %ul.button-group.context_menu
-        %li
+        %li{class: ("active" if current_page?(analytics_root_path)) }
           %i.fi-torso
-          = link_to "User Analytics", :class => "button"
-        %li
+          = link_to "User Analytics", analytics_root_path
+        %li{class: ("active" if current_page?(analytics_students_path)) }
           %i.fi-torsos-all
-          = link_to "Student Analytics", :class => "button"
-        %li
+          = link_to "Student Analytics", analytics_students_path
+        %li{class: ("active" if current_page?(analytics_staff_path)) }
           %i.fi-torso-business
-          = link_to "Staff Analytics", :class => "button"
+          = link_to "Staff Analytics", analytics_staff_path
 
-  .small-12.columns  
+   
+  %h4.subtitle Interactions
 
-    %h4.section_title Interactions
-
+  .small-12.columns 
     .analytics-row
       .small-12
         / Event counts
@@ -34,8 +31,9 @@
 
     %hr
 
-    %h4.section_title Pageviews
-    
+  %h4.subtitle Pageviews
+  
+  .small-12.columns 
     .analytics-row
       .small-12.large-6.columns
         / Pageviews Total
@@ -51,9 +49,11 @@
             %th{:'data-dynatable-column' => 'total'} Pageviews
           %tbody
 
-    %hr
+      %hr
 
-    %h3 Logins
+  %h4.subtitle Logins
+  
+  .small-12.columns 
     .small-12.medium-6.columns
       / Login counts
       .analytics-row
@@ -65,5 +65,3 @@
       .analytics-row
         = analytics_chart_inputs('logins-frequencies-chart', 'past_week')
         #logins-frequencies-chart.analytics-chart{:data => {:chart => 'timeseries', :url => '/analytics/login_frequencies.json', :title => 'Average User Login Frequencies', :subtitle => '{{granularity}}', :y_axis_label => 'User Login Rate (in logins {{granularity}})'}}
-
-  .clearfix

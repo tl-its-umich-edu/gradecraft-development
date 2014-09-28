@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / User All navigation
-  = content_nav do
-    = render "tabs"
   
   = content_nav_for User, "All Users"
 
@@ -39,5 +36,5 @@
             %td
               .button-bar
                 %ul.button-group.right.round
-                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny secondary'
-                  %li= link_to 'Delete', user, :class => 'button tiny secondary', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
+                  %li= link_to 'Edit', edit_user_path(user), :class => 'button'
+                  %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete

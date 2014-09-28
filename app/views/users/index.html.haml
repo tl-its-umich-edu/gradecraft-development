@@ -1,8 +1,4 @@
 .small-12.panel.mainContent
-  / User Index Navigation
-  = content_nav do
-    = render "tabs"
-
   = content_nav_for User
 
   %h3.pagetitle= @title
@@ -48,9 +44,7 @@
               .button-bar
                 %ul.button-group.right.round
                   %li
-                    = link_to "Dashboard", student_path(user), :class => 'button tiny secondary' if user.is_student?
-                    = link_to "Dashboard", staff_path(user), :class => 'button tiny secondary' if user.is_staff?
-                  %li= link_to 'Edit', edit_user_path(user), :class => 'button tiny secondary'
-                  %li= link_to 'Delete', user, :class => 'button tiny secondary', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete
-
-  .clearfix
+                    = link_to "Dashboard", student_path(user), :class => 'button' if user.is_student?
+                    = link_to "Dashboard", staff_path(user), :class => 'button' if user.is_staff?
+                  %li= link_to 'Edit', edit_user_path(user), :class => 'button'
+                  %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' } , :method => :delete

@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Grade Scheme Elements Navigation
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for current_course, "Edit Grading Scheme"
 
@@ -23,9 +20,6 @@
 
         = link_to 'Add a Level', '#', class: 'add-element button tiny alert radius'
 
-
       .right
         = f.button :submit, :class => "button tiny radius"
         = link_to 'Cancel', grade_scheme_elements_path, :class => 'button tiny radius transparent'
-
-  .clearfix

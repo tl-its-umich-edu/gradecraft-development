@@ -1,11 +1,15 @@
 .small-12.panel.mainContent
-  / Earned Badge Navigation
-  = content_nav do
-    = render "badges/tabs"
 
   = content_nav_for @badge, "Awarded #{term_for :badge}"
 
   %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to "Edit", edit_badge_earned_badge_path(:id => @earned_badge.id)
 
   .small-12.columns
         
@@ -24,6 +28,3 @@
       = @earned_badge.created_at
 
     %p= raw @earned_badge.feedback
-
-
-  .clearfix

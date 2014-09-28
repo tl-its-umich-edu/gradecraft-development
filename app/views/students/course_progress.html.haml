@@ -1,6 +1,4 @@
 .small-12.panel.mainContent
-  = content_nav do
-    = render "student_profile_tabs"
 
   %h3.pagetitle= @title
   
@@ -48,6 +46,3 @@
   .small-12.columns
     %p= raw current_course.grading_philosophy
     %h5.bold= "– Prof. #{current_course.professor.try(:last_name) }"
-
-
-  .clearfix

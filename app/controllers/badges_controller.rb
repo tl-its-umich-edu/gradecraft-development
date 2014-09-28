@@ -6,7 +6,7 @@ class BadgesController < ApplicationController
     if current_user.is_student?
       redirect_to my_badges_path
     end
-    @title = "View All #{term_for :badges}"
+    @title = "#{term_for :badges}"
   end
 
   def show

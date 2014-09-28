@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Earned Badges Navigation
-  = content_nav do
-    = render "badges/tabs"
 
   = content_nav_for @badge, "Quick Award #{term_for :badge}"
 
@@ -45,5 +42,3 @@
         .right
           = f.button :submit, "Award", :class => "button tiny radius"
           = link_to 'Cancel', badges_path, :class => 'button tiny transparent radius'
-
-  .clearfix

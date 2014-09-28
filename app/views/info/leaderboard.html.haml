@@ -7,10 +7,10 @@
   - if current_course.has_teams?
     .small-12.large-4.medium-6.columns.right
       = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
   .columns
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_dynatable
       %thead
         %tr
           %th{:scope => "row", "data-dynatable-sorts" => "rank"} Rank
@@ -53,8 +53,7 @@
               %td
                 .button-bar
                   %ul.button-group.round.right
-                    %li= link_to "Dashboard", student_path(student), :class => "button tiny"
-                    %li= mail_to student.email, "Email", :class => "button tiny"
-                    %li= link_to "Edit", edit_user_path(student), :class => "button tiny"
+                    %li= link_to "Dashboard", student_path(student), :class => "button"
+                    %li= mail_to student.email, "Email", :class => "button"
+                    %li= link_to "Edit", edit_user_path(student), :class => "button"
             - i += 1
-  .clearfix

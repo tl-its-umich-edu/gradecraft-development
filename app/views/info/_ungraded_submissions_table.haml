@@ -39,15 +39,15 @@
                         %ul.button-group.right.round
                           %li
                             %i.fi-paperclip
-                            = link_to "See Submission", assignment_grade_path(ug.assignment, :student_id => ug.student_id), :class => "button tiny alert"
-                          %li= link_to 'Grade', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => ug.student.try(:id)), :class => "button tiny alert"
+                            = link_to "See Submission", assignment_grade_path(ug.assignment, :student_id => ug.student_id), :class => "button"
+                          %li= link_to 'Grade', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => ug.student.try(:id)), :class => "button"
                   - elsif ug.assignment.has_groups?
                     %td
                       .button-bar
                         %ul.button-group.right.round
                           %li= link_to ug.group.try(:name), group_path(ug.group)
-                          %li= link_to "See Submission", assignment_grade_path(ug.assignment, :student_id => ug.student_id), :class => "button tiny alert"
-                    %td= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group, :class => "button tiny alert")
+                          %li= link_to "See Submission", assignment_grade_path(ug.assignment, :student_id => ug.student_id), :class => "button"
+                    %td= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group, :class => "button")
             - else
               %tr
                 - if ug.assignment.is_individual?
@@ -64,11 +64,11 @@
                             = "See Submission"
                             - if ug.submission_files.present?
                               %i.fi-paperclip
-                        %li= link_to 'Grade', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => ug.student.try(:id)), :class => "button tiny alert"
+                        %li= link_to 'Grade', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => ug.student.try(:id)), :class => "button"
                 - elsif ug.assignment.has_groups?
                   %td= link_to ug.group.try(:name), group_path(ug.group)
                   %td
                     .button-bar
                       %ul.button-group.right.round
-                        %li= link_to "See Submission", assignment_grade_path(ug.assignment, :group_id => ug.group.id), :class => "button tiny alert"
-                        %li= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group), :class => "button tiny alert"
+                        %li= link_to "See Submission", assignment_grade_path(ug.assignment, :group_id => ug.group.id), :class => "button"
+                        %li= link_to 'Grade', group_grade_assignment_path(ug.assignment, :group_id => ug.group), :class => "button"

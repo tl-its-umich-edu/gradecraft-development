@@ -1,7 +1,8 @@
 $(document).ready(function() {
  var options = {
       chart: {
-        plotBackgroundColor: null,
+        backgroundColor: '#eee',
+        plotBackgroundColor: "#eee",
         plotBorderWidth: null,
         plotShadow: false,
         renderTo: 'levels_per_assignment'

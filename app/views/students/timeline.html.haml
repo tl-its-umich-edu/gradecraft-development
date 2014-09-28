@@ -1,16 +1,9 @@
 .small-12.panel.mainContent
-  / Student Dashboard Breadcrumbs
-  = content_nav do
-    = render "student_profile_tabs"
 
   %h3.pagetitle Course Timeline
 
-  
-  .clearfix
   .small-12.medium-9.columns.no_padding
     #time_line{"data-timeline" => render(:partial => 'info/timeline', :handlers => [:jbuilder], :formats => [:js])}
 
   .small-12.medium-3.columns
     = render "staff_view_student_sidebar"
-
-  .clearfix

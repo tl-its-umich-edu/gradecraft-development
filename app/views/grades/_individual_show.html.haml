@@ -1,4 +1,4 @@
-.small-12.medium-6.columns
+.small-12.medium-4.columns
   - if current_student_data.grade_released_for_assignment?(@assignment).present? || current_user.is_staff?
     .panel= render "grades/results"
 
@@ -11,6 +11,5 @@
         - if @assignment.past?
           .label.alert.radius= "Past due"
 
-.small-12.medium-6.columns
+.small-12.medium-8.columns
   .panel= render "grades/analytics"
-

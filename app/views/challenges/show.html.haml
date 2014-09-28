@@ -1,15 +1,18 @@
 .small-12.panel.mainContent
-  / Challenge View Navigation
-
-  = content_nav do
-    - if current_user.is_staff?
-      = render "teams/tabs"
-    - else 
-      = render "students/student_profile_tabs"
 
   = content_nav_for @challenge
 
   %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to_unless_current "Edit", edit_challenge_path(@challenge)
+        %li
+          %i.fi-results-demographics
+          = link_to_unless_current "Quick Grade", mass_edit_challenge_challenge_grades_path(@challenge)
 
   .small-12.columns
     - if @challenge.challenge_files.present?
@@ -64,11 +67,11 @@
                   - if challenge_grade
                     .button-bar
                       %ul.button-group.right.round
-                        %li= link_to "See Grade", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary'
-                        %li= link_to "Edit Grade", edit_challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary'
-                        %li= link_to "Delete", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?', method: :delete }
+                        %li= link_to "See Grade", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button'
+                        %li= link_to "Edit Grade", edit_challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button'
+                        %li= link_to "Delete", challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button', :data => { confirm: 'Are you sure?', method: :delete }
                   - else
-                    = link_to 'Grade', new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button tiny round secondary'
+                    = link_to 'Grade', new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button'
               - if @challenge.release_necessary?
                 %td
                   - if challenge_grade
@@ -77,5 +80,3 @@
       .right
         - if @challenge.release_necessary? && @challenge.challenge_grades.present?
           = submit_tag "Update Grade Statuses", :class => "button tiny radius"
-
-  .clearfix

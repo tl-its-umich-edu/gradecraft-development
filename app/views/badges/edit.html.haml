@@ -1,14 +1,14 @@
 .small-12.panel.mainContent
-  / Badge Navigation
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for @badge, "Edit #{term_for :badge}"
 
-  %h3.pagetitle= @title
+  .small-12.medium-9
+    %h3.pagetitle= @title
   
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+
   .small-12.columns
 
     = render 'form'
-
-  .clear

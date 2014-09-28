@@ -1,6 +1,0 @@
-%li{class: ("active" if current_page?(analytics_root_path)) }
-  = link_to_unless_current "All Users", analytics_root_path
-%li{class: ("active" if current_page?(analytics_students_path)) }
-  = link_to_unless_current "#{term_for :students}", analytics_students_path
-%li{class: ("active" if current_page?(analytics_staff_path)) }
-  = link_to_unless_current "Staff", analytics_staff_path

@@ -30,7 +30,7 @@
             %td
               .button-bar
                 %ul.button-group.round.right
-                  %li= link_to 'See', team, :class => 'button tiny secondary'
-                  %li= link_to 'Edit', edit_team_path(team), :class => 'button tiny secondary'
-                  %li= link_to 'Delete', team, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
+                  %li= link_to 'See', team, :class => 'button'
+                  %li= link_to 'Edit', edit_team_path(team), :class => 'button'
+                  %li= link_to 'Delete', team, :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
         - i += 1

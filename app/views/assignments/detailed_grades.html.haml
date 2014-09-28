@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Assignment Navigation
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for @assignment, "Detailed Grades"
 
@@ -50,5 +47,3 @@
       = render 'group_show'
     - else
       = render 'detailed_individual_show'
-
-  .clearfix

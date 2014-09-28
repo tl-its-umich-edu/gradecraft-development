@@ -3,7 +3,7 @@ class ChallengesController < ApplicationController
   before_filter :ensure_staff?, :except=>[:index, :show]
 
   def index
-    @title = "View All #{term_for :challenges}"
+    @title = "#{term_for :challenges}"
     @challenges = current_course.challenges
   end
 

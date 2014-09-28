@@ -4,6 +4,13 @@
 
   %h3.pagetitle= @title
 
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to_unless_current "Edit", edit_course_path(@course)
+
   .small-12.columns
     .panel
       %h4 THE BASICS
@@ -140,5 +147,3 @@
       %p
         %b What amount should other (unselected) assignment types be multiplied by?
         = @course.default_assignment_weight
-
-  .clearfix

@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Grades Navigation
-  = content_nav do
-    = render "assignments/tabs"
 
   = content_nav_for @assignment, "Update Grade Status"
 
@@ -29,5 +26,3 @@
         %hr
         .right
           = f.button :submit, "Update Statuses", :class => "button tiny radius"
-
-  .clearfix

@@ -349,8 +349,9 @@ class User < ActiveRecord::Base
     @weighted_assignments_present ||= assignment_weights.count > 0
   end
 
-  #Used for self-logged attendance to check if the student already has a grade
-  def present_for_class?(assignment)
+  #Used to allow students to self-log a grade, currently only a boolean (complete or not)
+  #TODO Should allow them to use a select list or slider to determine their grade from a range of options
+  def self_reported_done?(assignment)
     grade_for_assignment(assignment).try(:score) == assignment.point_total
   end
 

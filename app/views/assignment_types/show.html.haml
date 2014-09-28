@@ -1,13 +1,24 @@
 .small-12.panel.mainContent
-  / Assignment Type Navigation
-  = content_nav do
-    = render "assignments/tabs"
 
   = content_nav_for @assignment_type
+  
+  .small-12.medium-8
+    %h3.pagetitle= @title
 
-  %h3.pagetitle= @title
+  .small-12.medium-4.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to "New #{term_for :assignment_type}", new_assignment_type_path
+        %li
+          %i.fi-pencil
+          = link_to "Edit", edit_assignment_type_path(@assignment_type)
+        %li
+          %i.fi-graph-bar
+          = link_to "Performance", all_grades_assignment_type_path(@assignment_type)
 
-  .columns
+  .small-12.columns
     %table.responsive.nofeatures_dynatable
       %thead
         %tr
@@ -30,29 +41,29 @@
                 %td
                   .button-bar
                     %ul.button-group.right.round
-                      %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button tiny"
-                      %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button tiny'
+                      %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button"
+                      %li= link_to "Edit", edit_assignment_path(assignment), :class => 'button'
                       %li
-                        %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button tiny" }
+                        %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
                           Delete
-                      %li= link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button tiny', :method => :copy
+                      %li= link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button', :method => :copy
               - else
                 - if assignment.accepts_submissions? && assignment.has_groups?
                   - if current_student.group_for_assignment(assignment)
-                    %td= link_to "See Group", group_path(current_student.group_for_assignment(assignment)), :class => "button tiny alert radius"
+                    %td= link_to "See Group", group_path(current_student.group_for_assignment(assignment)), :class => "button"
                     - if assignment.accepts_submissions?
                       = render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
                   - else
-                    %td= link_to "Create a Group", new_group_path, :class => "button tiny radius"
+                    %td= link_to "Create a Group", new_group_path, :class => "button"
                 - elsif assignment.accepts_submissions? && assignment.is_individual?
                   - current_student.submission_for_assignment(assignment).tap do |submission|
                     - if submission
-                      %td= link_to "See Submission", assignment_grade_path(assignment.id, :student_id => current_student.id), :class => 'button tiny alert radius'
+                      %td= link_to "See Submission", assignment_grade_path(assignment.id, :student_id => current_student.id), :class => 'button'
                       %td
                       %td
                       %td
                     - else
-                      %td= link_to "Submit", new_assignment_submission_path(assignment, @submission, :user_id => current_student.id, :student_type => "User"), :class => 'button tiny alert radius'
+                      %td= link_to "Submit", new_assignment_submission_path(assignment, @submission, :user_id => current_student.id, :student_type => "User"), :class => 'button'
                       %td
                       %td
                       %td
@@ -60,4 +71,3 @@
                   %td
                   %td
                   %td
-  .clearfix

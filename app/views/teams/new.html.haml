@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Create Team Breadcrumbs
-  = content_nav do
-    = render "tabs"
   
   = content_nav_for Team, "New #{term_for :team}"
 
@@ -9,5 +6,3 @@
   
   .small-12.columns
     = render 'form'
-
-  .clearfix

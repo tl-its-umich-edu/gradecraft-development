@@ -1,11 +1,15 @@
 .small-12.panel.mainContent
-  / Grade Scheme Elements Navigation
-  = content_nav do
-    = render "tabs"
 
-  = content_nav_for current_course, "Grading Scheme"
+  = content_nav_for "Grading Scheme"
 
   %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-pencil
+          = link_to_unless_current "Edit", mass_edit_grade_scheme_elements_path
 
   .small-12.columns
     / Grade Scheme Elements Table Display
@@ -27,5 +31,3 @@
     .small-12.columns
       %p= raw current_course.grading_philosophy
       %h6= "-- Prof. #{current_course.professor.try(:last_name) }"
-
-  .clearfix

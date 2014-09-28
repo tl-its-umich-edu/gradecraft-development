@@ -5,9 +5,6 @@ module NavHelper
         haml_concat breadcrumbs_for(*objects)
         haml_concat content_nav(&block)
       end
-      haml_tag :div, class: 'content-nav hide-for-medium-up' do
-        haml_concat mobile_nav(&block)
-      end
     end
   end
 

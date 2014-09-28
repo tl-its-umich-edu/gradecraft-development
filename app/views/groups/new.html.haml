@@ -1,10 +1,4 @@
 .small-12.panel.mainContent
-  / Group Navigation
-  = content_nav do
-    - if current_user.is_staff?
-      = render "tabs"
-    - else
-      = render "students/student_profile_tabs"
 
   = content_nav_for Group, "New #{term_for :group}"
 
@@ -12,5 +6,3 @@
 
   .small-12.columns
     = render 'form'
-
-  .clearfix

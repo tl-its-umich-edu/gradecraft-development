@@ -1,51 +1,53 @@
-- if current_user.is_staff?
-  .small-12.panel.mainContent
-    / Badge Navigation
-    - if current_user.is_staff?
-      = content_nav do
-        = render "tabs"
-    
-    = content_nav_for Badge
+.small-12.panel.mainContent
   
+  = content_nav_for Badge
+
+  .small-12.medium-9
     %h3.pagetitle= @title
 
-    .small-12.columns
-      
-      //instructor badge index table
-      %table.responsive.nofeatures_default_name_dynatable
-        %thead
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li{class: ("active" if current_page?(new_badge_path)) }
+          %i.fi-plus
+          = link_to_unless_current "New #{term_for :badge}", new_badge_path
+
+  .small-12.columns
+    
+    //instructor badge index table
+    %table.responsive.nofeatures_default_name_dynatable
+      %thead
+        %tr
+          %th.center{"data-dynatable-no-sort" => "true" } Icon
+          %th Name
+          - if current_course.valuable_badges?
+            %th{"data-sort" => "int"} Value
+          %th Awarded
+          %th Visible to Students
+          %th.button-column
+      %tbody
+        - current_course_data.badges.each do |badge|
           %tr
-            %th.center{"data-dynatable-no-sort" => "true" } Icon
-            %th Name
+            %td.center
+              %img{ :src => badge.icon, :alt => badge.name }
+            %td
+              .subtitle= link_to badge.name, badge_path(badge)
+              = raw badge.description
             - if current_course.valuable_badges?
-              %th{"data-sort" => "int"} Value
-            %th Awarded
-            %th Visible to Students
-            %th.button-column
-        %tbody
-          - current_course_data.badges.each do |badge|
-            %tr
-              %td.center
-                %img{:src => badge.icon, :alt => badge.name, :width => "100"}
-              %td
-                .bold= link_to badge.name, badge_path(badge)
-                = raw badge.description
-              - if current_course.valuable_badges?
-                %td= points badge.point_total
-              %td= badge.awarded_count
-              %td
-                - if badge.visible?
-                  Yes
-                - else
-                  No
-              %td
-                .button-bar
-                  %ul.button-group.right.round
-                    %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button tiny secondary"
-                    %li
-                      %a{:href => edit_badge_path(badge), :class => 'button tiny secondary'}
-                        Edit
-                    %li
-                      %a{:href => badge_path(badge),:class => "button tiny secondary" , :data => { confirm: 'Are you sure?',  method: :delete } }
-                        Delete
-    .clearfix
+              %td= points badge.point_total
+            %td= badge.awarded_count
+            %td
+              - if badge.visible?
+                Yes
+              - else
+                No
+            %td
+              .button-bar
+                %ul.button-group.right.round
+                  %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button"
+                  %li
+                    %a{:href => edit_badge_path(badge), :class => 'button'}
+                      Edit
+                  %li
+                    %a{:href => badge_path(badge),:class => "button" , :data => { confirm: 'Are you sure?',  method: :delete } }
+                      Delete

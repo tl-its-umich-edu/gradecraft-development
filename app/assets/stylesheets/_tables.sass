@@ -1,0 +1,140 @@
+
+/** Table Styles **/
+table tbody
+  vertical-align: top
+
+#gradebook
+  overflow: auto !important
+
+/* Set the tables to be full width of the page*/
+table.responsive
+  width: 100%
+  border-spacing: 0 !important
+  margin-bottom: 1rem
+  clear: both
+
+  a:hover
+    color: $alert-color
+
+  td
+    line-height: 1.5rem
+
+  /* Table Header styles */
+  th
+    text-transform: capitalize
+    font-weight: normal
+    padding: .5rem
+
+    a
+      color: #000
+
+  td.text-buttons a
+    margin: 1rem
+    text-transform: uppercase
+    border-bottom: 1px solid $primary-color-3
+
+  button.select-all.button.tiny
+    margin: 0 !important
+    border-top-left-radius: $global-radius
+    border-bottom-left-radius: $global-radius
+
+  button.select-none.button.tiny
+    margin: 0 !important
+    border-top-right-radius: $global-radius
+    border-bottom-right-radius: $global-radius
+
+
+  @media (min-width: 1151px)
+
+  table ul.table-bar 
+    list-style-type: none
+    margin: 0
+    text-transform: uppercase
+    padding: 0
+    
+    li
+    display: inline-block
+
+  .button-column
+    width: 300px
+
+@media (max-width: 1150px)
+  
+  table .button-group li a.button.tiny
+  padding: .25rem
+  border-radius: 0 !important
+  border: none
+  width: 5rem
+
+  table .button-group.round li
+    display: block !important
+
+  .round .button.tiny
+    padding: .4rem
+
+  .button-column
+    width: 6rem
+
+@media (max-width: 640px)
+  table .button-group li a.button.tiny
+  padding: .75rem
+  width: 5rem
+  border: 1px solid #eee
+
+/* Styling pattern tables for assignment outcome overview */ 
+td.complete, tr.achieved
+  background-color: #d7fae0
+
+i.complete
+  color: red
+
+td.absent
+  background-color: #f9adad
+
+i.absent
+  color: black
+
+td.partial, td.need_to_be_released
+  background-color: $primary-color-3
+
+td.in_progress
+  background-color: $alert-color-5
+
+i.partial
+  color: $secondary-color
+
+i.missing_grade
+  color: #CCC
+
+table#leaderboard
+  background: $secondary-color-5
+
+  td
+    color: #000
+
+table#leaderboard tr
+  outline: 1px solid #FFF !important
+
+table#leaderboard tr.complete
+  background-color: $primary-color-4
+
+td.rank
+  width: 35px
+  font-weight: bold
+  text-align: center
+  background-color: #111
+    font-weight: bold
+    color: #FFF !important
+
+td.points
+  font-weight: bold
+    font-weight: bold
+
+table#leaderboard tr#place-1 td.rank
+  background-color: $alert-color
+
+table#leaderboard tr#place-2 td.rank
+  background-color: #adadad
+
+table#leaderboard tr#place-3 td.rank
+  background-color: #8c7853

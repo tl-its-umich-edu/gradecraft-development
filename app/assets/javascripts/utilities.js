@@ -57,6 +57,19 @@ $(".assignmentType").collapse({
   persist: true
 });
 
+$(".challenge").collapse({
+  show: function() {
+    // The context of 'this' is applied to
+    // the collapsed details in a jQuery wrapper 
+    this.slideDown(100);
+  },
+  hide: function() {
+    this.slideUp(100);
+  },
+  accordion: true,
+  persist: true
+});
+
 // Select2 Search forms for group creation
 $("#group_student_ids").select2({
   placeholder: "Select Students",

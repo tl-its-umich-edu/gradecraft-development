@@ -192,6 +192,7 @@ GradeCraft::Application.routes.draw do
 
   get 'using_gradecraft' => 'pages#using_gradecraft'
   get 'contact' => 'pages#contact'
+  get 'features' => 'pages#features'
   get 'ping' => 'pages#ping'
 
   #10. Rubrics & Grade Schemes

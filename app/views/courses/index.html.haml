@@ -2,7 +2,15 @@
 
   = content_nav_for Course
 
-  %h3.pagetitle= @title
+  .small-12.medium-9
+    %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to_unless_current "New Course", new_course_path
 
   .small-12.columns
     %table.responsive.nosearch_dynatable
@@ -32,8 +40,6 @@
             %td
               .button-bar
                 %ul.button-group.round.right
-                  %li= link_to 'Edit', edit_course_path(course), :class => 'button tiny secondary'
-                  %li= link_to 'Delete', course, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
-                  %li= link_to "Copy", copy_courses_path(:id => current_course), :class => 'button tiny secondary', :method => :copy
-
-  .clearfix
+                  %li= link_to 'Edit', edit_course_path(course), :class => 'button'
+                  %li= link_to 'Delete', course, :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
+                  %li= link_to "Copy", copy_courses_path(:id => current_course), :class => 'button', :method => :copy

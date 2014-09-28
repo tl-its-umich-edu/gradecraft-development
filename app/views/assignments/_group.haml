@@ -43,17 +43,15 @@
             %td
               - group.submission_for_assignment(@assignment).tap do |submission|
                 - if submission && grade
-                  = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => "button radius tiny"
+                  = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => "button"
                 - elsif submission
-                  = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => "button radius tiny"
+                  = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => "button"
                 - else
-                  = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :group_id => group.id), :class => "button radius tiny"
+                  = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :group_id => group.id), :class => "button"
           %td
             - if grade
-              = link_to "See Grade", assignment_grade_path(@assignment.id, grade.id, :group_id => group.id), :class => "button radius tiny"
+              = link_to "See Grade", assignment_grade_path(@assignment.id, grade.id, :group_id => group.id), :class => "button"
             - else
-              = link_to 'Grade', group_grade_assignment_path("assignment_id"=>@assignment.id, :group_id => group.id), :class => "button radius tiny"
+              = link_to 'Grade', group_grade_assignment_path("assignment_id"=>@assignment.id, :group_id => group.id), :class => "button"
   - if @assignment.release_necessary? && @assignment.grades.present?
-    = submit_tag "Update Grade Statuses", :class => "button radius tiny"
-
-  .clearfix
+    = submit_tag "Update Grade Statuses", :class => "button"

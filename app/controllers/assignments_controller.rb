@@ -34,6 +34,7 @@ class AssignmentsController < ApplicationController
     @ungraded_submissions_count = @assignment.ungraded_submissions.count
     @ungraded_percentage = @ungraded_submissions_count / @submissions_count rescue 0
     @graded_count = @submissions_count - @ungraded_submissions_count
+    @grades_for_assignment = @assignment.grades_for_assignment(current_student)
 
     if current_user.is_student?
       @rubric_grades = RubricGrade.joins("left outer join submissions on submissions.id = rubric_grades.submission_id").where("submissions.student_id =?", current_user[:id])

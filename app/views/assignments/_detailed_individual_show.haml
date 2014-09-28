@@ -52,19 +52,19 @@
             %td
               - student.submissions.where(:assignment_id => @assignment).each do |submission|
                 - if submission && grade
-                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button tiny secondary round'
+                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
                 - elsif submission
-                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button tiny round secondary'
+                  = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
                 - else
-                  = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button tiny round secondary'
+                  = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button'
           %td
             .button-bar
               %ul.button-group.round.right
-                %li= link_to "Dashboard", student_path(student), :class => 'button tiny secondary'
+                %li= link_to "Dashboard", student_path(student), :class => 'button'
                 - if grade.is_graded? || grade.is_released?
-                  %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny secondary'
+                  %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                 - else
-                  %li= link_to 'Grade', edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny secondary'
+                  %li= link_to 'Grade', edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
           - if @assignment.release_necessary?
             %td.text-center
               - if grade.is_graded?
@@ -127,19 +127,19 @@
               %td
                 - student.submissions.where(:assignment_id => @assignment).each do |submission|
                   - if submission && grade
-                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button tiny secondary round'
+                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
                   - elsif submission
-                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button tiny radius'
+                    = link_to "See Submission", assignment_grade_path(@assignment.id, :student_id => student.id), :class => 'button'
                   - else
-                    = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button tiny secondary round'
+                    = link_to "Submit", new_assignment_submission_path(@assignment, @submission, :user_id => student.id, :student_type => "User"), :class => 'button'
             %td
               .button-bar
                 %ul.button-group.right.round
-                  %li= link_to "Dashboard", student_path(student), :class => 'button tiny secondary'
+                  %li= link_to "Dashboard", student_path(student), :class => 'button'
                   - if grade.is_graded? || grade.is_released?
-                    %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny secondary'
+                    %li= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
                   - else
-                    %li= link_to 'Grade', edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button tiny secondary'
+                    %li= link_to 'Grade', edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'
             - if @assignment.release_necessary?
               %td.text-center
                 - if grade.is_graded?

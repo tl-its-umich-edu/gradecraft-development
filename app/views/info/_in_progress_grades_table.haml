@@ -45,8 +45,8 @@
                 .button-bar
                   %ul.button-group.right.round
                     %li
-                      = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button tiny alert"
-                    %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button tiny alert"
+                      = link_to "See", assignment_grade_path(g.assignment, :student_id => g.student_id), :class => "button"
+                    %li= link_to 'Edit', edit_assignment_grade_path("assignment_id"=>assignment.id, :student_id => g.student.try(:id)), :class => "button"
               %td
                 .center= check_box_tag "grade_ids[]", g.id
       .right

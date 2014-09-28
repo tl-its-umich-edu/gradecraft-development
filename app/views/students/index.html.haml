@@ -1,7 +1,6 @@
 .small-12.panel.mainContent
-  / Student Index breadcrumbs
-  = content_nav do
-    = render "users/tabs"
+  
+  = content_nav_for User, "#{term_for :students}"
 
   %h3.pagetitle= @title
 
@@ -30,5 +29,3 @@
         = render 'students_table', :course => current_course, :students => current_course_data.auditing_students_for_team(@team)
       - else 
         = render 'students_table', :course => current_course, :students => current_course_data.auditing_students
-
-  .clearfix

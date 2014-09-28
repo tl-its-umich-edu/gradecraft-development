@@ -1,8 +1,4 @@
 .small-12.panel.mainContent
-  / Submissions Navigation
-  = content_nav do
-    - if current_user.is_student?
-      = render "students/student_profile_tabs"
 
   %h3.pagetitle= @title
 
@@ -29,5 +25,3 @@
         %h4= "You are editing the assignment submission for Group #{@submission.group.name }"
 
     = render 'form'
-
-  .clearfix

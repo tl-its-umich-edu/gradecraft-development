@@ -20,15 +20,10 @@ body.logged-in, body.logged-out {
   overflow: hidden;
 }
 
-.panel p {
-  /*margin-bottom: 0;*/
-}
-
 .panel.callout {
   background-color: lighten(#666, 50%);
   border-color: #CCC;
 }
-
 
 /* Allow other things to appear above the timeline */
 .vco-storyjs {
@@ -40,8 +35,8 @@ body.logged-in, body.logged-out {
 }
 
 .panel {
-  border-radius: $global-radius;/*
-  overflow: hidden;*/
+  border-radius: $global-radius;
+  overflow: hidden;
 }
 
 .hidden {
@@ -63,7 +58,6 @@ form .tabs-content .content {
 
 /* Responsive outer container */ 
 @media (min-width: 1000px)  {
-
   
   .staff_subnav {
     border-radius: $global-radius;

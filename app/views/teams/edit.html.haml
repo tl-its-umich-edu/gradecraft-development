@@ -1,13 +1,8 @@
 .small-12.panel.mainContent
-  / Team Edit Breadcrumbs
-  = content_nav do
-    = render "tabs"
-  
+
   = content_nav_for @team, "Edit #{term_for :team}"
 
   %h3.pagetitle= @title
   
   .small-12.columns
     = render 'form'
-
-  .clearfix

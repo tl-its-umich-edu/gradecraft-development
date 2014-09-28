@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Staff Navigation
-  = content_nav do
-    = render "users/tabs"
 
   = content_nav_for User, "Staff"
 
@@ -9,7 +6,7 @@
 
   .small-12.columns
 
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           %th First Name
@@ -31,7 +28,6 @@
               %td
                 .button-bar
                   %ul.button-group.right.round
-                    %li= link_to 'See', staff_path(user), {:class => 'button tiny secondary'}
-                    %li= link_to 'Edit', edit_user_path(user), {:class => 'button tiny secondary'}
-                    %li= link_to 'Delete', user, :class => 'button tiny secondary', :data => { confirm: 'Are you sure?'}, :method => :delete
-    .clearfix
+                    %li= link_to 'See', staff_path(user), {:class => 'button'}
+                    %li= link_to 'Edit', edit_user_path(user), {:class => 'button'}
+                    %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'Are you sure?'}, :method => :delete

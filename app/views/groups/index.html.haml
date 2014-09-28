@@ -1,23 +1,30 @@
 .mainContent
-  / Groups Navigation
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for Group
 
+  .small-12.medium-9
+    %h3.pagetitle= "#{term_for :groups}"
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to_unless_current "New #{term_for :group}", new_group_path
+
   - if @groups.pending.present?
 
-    %h3.pagetitle= "Pending Groups"
+    %h4.subtitle= "Pending #{term_for :groups}"
 
     .small-12.columns  
 
       %table.responsive.nofeatures_dynatable
         %thead
           %tr
-            %th Group Name
-            %th= "#{current_course.user_term}s"
+            %th #{term_for :group} Name
+            %th #{current_course.user_term}s
             %th Status
-            %th Assignments
+            %th #{term_for :assignments} 
             %th.button-column
         %tbody
           - @groups.pending.each do |group|
@@ -33,25 +40,25 @@
               %td
                 .button-bar
                   %ul.button-group.round.right
-                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button tiny secondary'
-                    %li= link_to 'Edit', edit_group_path(group), :class => 'button tiny secondary'
-                    %li= link_to 'Delete', group_path(group), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
+                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
+                    %li= link_to 'Edit', edit_group_path(group), :class => 'button'
+                    %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
 
     .clearfix
 
   - if @groups.rejected.present?
 
-    %h3.pagetitle= "Rejected Groups"
+    %h4.subtitle= "Rejected #{term_for :groups}"
 
     .small-12.columns  
 
       %table.responsive.nofeatures_dynatable
         %thead
           %tr
-            %th Group Name
+            %th #{term_for :group} Name
             %th= "#{current_course.user_term}s"
             %th Status
-            %th Assignments
+            %th #{term_for :assignments} 
             %th.button-column
         %tbody
           - @groups.rejected.each do |group|
@@ -67,25 +74,25 @@
               %td
                 .button-bar
                   %ul.button-group.round.right
-                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button tiny secondary'
-                    %li= link_to 'Edit', edit_group_path(group), :class => 'button tiny secondary'
-                    %li= link_to 'Delete', group_path(group), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
+                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
+                    %li= link_to 'Edit', edit_group_path(group), :class => 'button'
+                    %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
 
     .clearfix
 
   - if @groups.approved.present?
     
-    .pagetitle= "Approved Groups"
+    %h4.subtitle= "Approved #{term_for :groups}"
 
     .small-12.columns  
 
       %table.responsive.nofeatures_dynatable
         %thead
           %tr
-            %th Group Name
+            %th #{term_for :group} Name
             %th= "#{current_course.user_term}s"
             %th Status
-            %th Assignments
+            %th #{term_for :assignments} 
             %th.button-column
         %tbody
           - @groups.approved.each do |group|
@@ -101,8 +108,6 @@
               %td
                 .button-bar
                   %ul.button-group.round.right
-                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button tiny secondary'
-                    %li= link_to 'Edit', edit_group_path(group), :class => 'button tiny secondary'
-                    %li= link_to 'Delete', group_path(group), :class => 'button tiny secondary', :data => { confirm: 'Are you sure?' }, :method => :delete
-
-    .clearfix
+                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
+                    %li= link_to 'Edit', edit_group_path(group), :class => 'button'
+                    %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete

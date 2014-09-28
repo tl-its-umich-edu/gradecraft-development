@@ -1,8 +1,4 @@
 .small-12.panel.mainContent
-  / Student Index breadcrumbs
-  = content_nav do
-    - if current_user.is_student?
-      = render "students/student_profile_tabs"
 
   %h3.pagetitle= @title
 
@@ -57,5 +53,3 @@
           .right
             = submit_tag 'Update Settings', :class => 'button tiny radius'
             = link_to 'Cancel', root_path, :class => 'button tiny radius transparent'
-
-    .clearfix

@@ -115,18 +115,27 @@ class Assignment < ActiveRecord::Base
     joins("LEFT OUTER JOIN assignment_weights ON assignments.id = assignment_weights.assignment_id AND assignment_weights.student_id = '#{sanitize student.id}'").select('assignments.*, COALESCE(assignment_weights.point_total, assignments.point_total) AS student_point_total')
   end
 
+  def grades_for_assignment(student)
+    user_score = grades.where(:student_id => student.id).first.raw_score
+    scores = grades.graded.pluck('raw_score')
+    return {
+    :scores => scores,
+    :user_score => user_score
+   }
+  end
+
   #Basic result stats - high, low, average, median
   def high_score
-    grades.graded.maximum('grades.score')
+    grades.graded.maximum('grades.raw_score')
   end
 
   def low_score
-    grades.graded.minimum('grades.score')
+    grades.graded.minimum('grades.raw_score')
   end
 
   #average of all grades for an assignment
   def average
-    grades.graded.average('grades.score').to_i if grades.graded.present?
+    grades.graded.average('grades.raw_score').to_i if grades.graded.present?
   end
 
   def has_rubric?
@@ -290,7 +299,7 @@ class Assignment < ActiveRecord::Base
 
   #Checking to see if the assignment is still open and accepting submissons
   def open?
-    (open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || due_at != nil
   end
 
   #Counting how many grades there are for an assignment
@@ -300,7 +309,7 @@ class Assignment < ActiveRecord::Base
 
   #Counting how many non-zero grades there are for an assignment
   def positive_grade_count
-    grades.where("score > 0").count
+    grades.graded.where("score > 0").count
   end
 
   #Calculating attendance rate, which tallies number of people who have positive grades for attendance divided by the total number of students in the class
@@ -357,7 +366,7 @@ class Assignment < ActiveRecord::Base
 
   # Calculating how many of each score exists
   def percentage_score_count
-    Hash[grades.graded.group_by{ |g| g.score }.map{ |k, v| [k, v.size / grades.graded.count.to_f] }]
+    Hash[grades.graded.group_by{ |g| g.raw_score }.map{ |k, v| [k, v.size / grades.graded.count.to_f] }]
   end
 
   # Creating an array with the set of scores earned on the assignment, and 

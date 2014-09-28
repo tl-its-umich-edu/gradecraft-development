@@ -161,8 +161,56 @@ $('table.nofeatures_dynatable').dynatable({
         recordCount: false, 
         sort: true
       },
+  readers: {
+      dueDate: function(el, record) {
+        record.parsedDate = Date.parse(el.innerHTML);
+        return el.innerHTML;
+      },
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      },
+      maxValue: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
+});
+
+
+$('table.nofeatures_default_due_date_dynatable').dynatable({
+
+  features: {
+        paginate: false,
+        search: false,
+        recordCount: false, 
+        sort: true
+      },
   dataset: {
-      sorts: { 'score': -1 }
+      sorts: { 'dueDate': 1 }
+  },
+  readers: {
+      dueDate: function(el, record) {
+        record.parsedDate = Date.parse(el.innerHTML);
+        return el.innerHTML;
+      },
+      points: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      },
+      maxValue: function(el, record) {
+        return Number(el.innerHTML.replace(",","")) || 0;
+      }
+    }
+});
+
+$('table.nofeatures_default_rank_dynatable').dynatable({
+
+  features: {
+        paginate: false,
+        search: false,
+        recordCount: false, 
+        sort: true
+      },
+  dataset: {
+      sorts: { 'rank': 1 }
   },
   readers: {
       dueDate: function(el, record) {

@@ -1,8 +1,4 @@
 .small-12.panel.mainContent
-  / Assignment Navigation
-  = content_nav do
-    - if current_user.is_student?
-      = render "students/student_profile_tabs"
 
   = content_nav_for @assignment
 
@@ -12,17 +8,26 @@
       .small-12.medium-4.columns.right
         .right= render "assignments/description"
 
-  .small-12.medium-2.right
-    .button-bar
+  .small-12.medium-5.right.columns
+    .button-bar.right
       %ul.button-group.context_menu
+        %li{class: ("active" if current_page?(edit_assignment_path(@assignment))) }
+          %i.fi-pencil
+          = link_to_unless_current "Edit", edit_assignment_path(@assignment)
         - if @team.present?
           %li{class: ("active" if current_page?(mass_grade_assignment_path)) }
+            %i.fi-list-thumbnails
             = link_to_unless_current "Quick Grade", mass_grade_assignment_path(@assignment, :team_id => @team)
         - else
           %li{class: ("active" if current_page?(mass_grade_assignment_path)) }
+            %i.fi-list-thumbnails
             = link_to_unless_current "Quick Grade", mass_grade_assignment_path(@assignment)
-        %li{class: ("active" if current_page?(edit_assignment_path(@assignment))) }
-          = link_to_unless_current "Edit #{@assignment.name}", edit_assignment_path(@assignment)
+        %li{class: ("active" if current_page?(import_grades_assignment_path(@assignment))) }
+          %i.fi-page-csv
+          = link_to_unless_current "Import Grades", import_grades_assignment_path(@assignment)
+        %li
+          %i.fi-page-export-csv
+          = link_to_unless_current "Download Grades"
 
   - if current_user.is_staff?
     / .small-12.columns
@@ -42,8 +47,6 @@
         = render "grades/group_show"
       - else
         = render "grades/individual_show"
-
-  .clearfix
    
   / - if @assignment.rubric.present? && @assignment.rubric.designed?    
   /   - if current_user.is_staff?

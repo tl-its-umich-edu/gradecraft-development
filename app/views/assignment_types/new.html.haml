@@ -1,8 +1,4 @@
 .small-12.panel.mainContent
-  / Assignment Type Navigation
-  .show-for-medium-up
-    = content_nav do
-      = render "assignments/tabs"
 
   = content_nav_for AssignmentType, "New #{term_for :assignment_type}"
 
@@ -10,5 +6,3 @@
 
   .small-12.columns
     = render 'form'
-
-  .clearfix

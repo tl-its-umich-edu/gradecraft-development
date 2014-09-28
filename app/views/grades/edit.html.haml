@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Grades Navigation
-  = content_nav do
-    = render "assignments/tabs"
 
   = content_nav_for @assignment, "Edit Grade"
 
@@ -12,5 +9,3 @@
   
   .small-12.columns    
     = render 'form'
-
-  .clearfix

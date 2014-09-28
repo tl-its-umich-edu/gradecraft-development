@@ -1,13 +1,9 @@
 .small-12.panel.mainContent
-  / Assignment Charts Navigation
-  = content_nav do
-    = render "analytics/tabs"
 
   = content_nav_for "#{term_for :assignment} Analytics"
 
-  %h3.pagetitle= "#{term_for :assignment} Analytics"
-
-  .clearfix
+  .small-12.medium-8
+    %h3.pagetitle= "#{term_for :assignment} Analytics"
   
   - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
     %h4.subtitle= assignment_type.name 

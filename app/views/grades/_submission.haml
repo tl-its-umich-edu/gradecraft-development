@@ -5,7 +5,7 @@
     - else
       Your Submission
     // link to edit the submission
-    %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button tiny radius secondary no-margin"
+    %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button radius"
   // Displaying when the assignment was submitted
   %p
     %span.smallcaps Due:

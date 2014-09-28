@@ -1,36 +1,34 @@
 .small-12.panel.mainContent
-  / Analytics Navigation
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for "Staff Analytics"
 
   .small-12.medium-8 
     %h3.pagetitle= "Staff Analytics"
 
-  .small-12.medium-4.right
-    .button-bar
+  .small-12.medium-4.right.columns
+    .button-bar.right
       %ul.button-group.context_menu
-        %li
+        %li{class: ("active" if current_page?(analytics_root_path)) }
           %i.fi-torso
-          = link_to "User Analytics", :class => "button"
-        %li
+          = link_to "User Analytics", analytics_root_path
+        %li{class: ("active" if current_page?(analytics_students_path)) }
           %i.fi-torsos-all
-          = link_to "Student Analytics", :class => "button"
-        %li
+          = link_to "Student Analytics", analytics_students_path
+        %li{class: ("active" if current_page?(analytics_staff_path)) }
           %i.fi-torso-business
-          = link_to "Staff Analytics", :class => "button"
+          = link_to "Staff Analytics", analytics_staff_path
 
-  .small-12.columns
+  .small-12
 
-    %h3 Interactions
+    %h4.subtitle Interactions
     .small-12.columns
       / Event counts
       = analytics_chart_inputs('role-events-chart', 'past_week')
       #role-events-chart.analytics-chart{:data => {:chart => 'timeseries', :url => '/analytics/role_events.json', :url_data => 'role_group=staff', :title => 'Interactions', :subtitle => '{{granularity}}', :y_axis_label => 'Number of events'}}
       -##events-chart{:data => {:chart => 'timeseries', :url => '/analytics/assignment_events.json', :title => 'Assignment Events', :subtitle => '{{granularity}}', :y_axis_label => 'Number of events'}}
 
-      %h3 Pageviews
+    %h4.subtitle Pageviews
+    .small-12.columns
       .small-12.medium-6.columns
         / Pageviews Total
         = analytics_chart_inputs('all-pageviews-chart', 'past_week')
@@ -45,18 +43,17 @@
             %th{:'data-dynatable-column' => 'total'} Pageviews
           %tbody
 
-      .clearfix
+    .small-12
 
-      %h3 Logins
-      .small-12.medium-6.columns
-        / Login counts
-        = analytics_chart_inputs('role-logins-chart', 'past_week')
-        #role-logins-chart.analytics-chart{:data => {:chart => 'timeseries', :url => '/analytics/login_role_events.json', :url_data => 'role_group=staff', :title => 'Logins', :subtitle => '{{granularity}}', :y_axis_label => 'Logins {{granularity}}'}}
+      %h4.subtitle Logins
+      .small-12.columns
+        .small-12.medium-6.columns
+          / Login counts
+          = analytics_chart_inputs('role-logins-chart', 'past_week')
+          #role-logins-chart.analytics-chart{:data => {:chart => 'timeseries', :url => '/analytics/login_role_events.json', :url_data => 'role_group=staff', :title => 'Logins', :subtitle => '{{granularity}}', :y_axis_label => 'Logins {{granularity}}'}}
 
 
-      .small-12.medium-6.columns
-        / Average User Login Frequencies
-        = analytics_chart_inputs('role-logins-frequencies-chart', 'past_week')
-        #role-logins-frequencies-chart.analytics-chart{:data => {:chart => 'timeseries', :url => '/analytics/role_login_frequencies.json', :url_data => 'role_group=staff', :title => 'Average User Login Frequencies', :subtitle => '{{granularity}}', :y_axis_label => 'User Login Rate (in logins {{granularity}})'}}
-
-  .clearfix
+        .small-12.medium-6.columns
+          / Average User Login Frequencies
+          = analytics_chart_inputs('role-logins-frequencies-chart', 'past_week')
+          #role-logins-frequencies-chart.analytics-chart{:data => {:chart => 'timeseries', :url => '/analytics/role_login_frequencies.json', :url_data => 'role_group=staff', :title => 'Average User Login Frequencies', :subtitle => '{{granularity}}', :y_axis_label => 'User Login Rate (in logins {{granularity}})'}}

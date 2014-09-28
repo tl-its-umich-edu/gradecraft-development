@@ -1,11 +1,16 @@
 .small-12.panel.mainContent
-  / Challenge Navigation
-  = content_nav do
-    = render "teams/tabs"
 
   = content_nav_for Challenge
 
-  %h3.pagetitle= @title
+  .small-12.medium-9
+    %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to_unless_current "New #{term_for :challenge}", new_challenge_path
 
   .small-12.columns
   
@@ -37,8 +42,6 @@
             %td
               .button-bar
                 %ul.button-group.round.right
-                  %li= link_to 'See', challenge, :class => 'button tiny secondary'
-                  %li= link_to 'Edit', edit_challenge_path(challenge), :class => 'button tiny secondary'
-                  %li= link_to 'Delete', challenge, :class => 'button tiny secondary', :method => :delete, data: { confirm: 'Are you sure?' }
-
-  .clearfix
+                  %li= link_to 'See', challenge, :class => 'button'
+                  %li= link_to 'Edit', edit_challenge_path(challenge), :class => 'button'
+                  %li= link_to 'Delete', challenge, :class => 'button', :method => :delete, data: { confirm: 'Are you sure?' }

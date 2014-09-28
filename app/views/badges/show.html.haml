@@ -1,28 +1,27 @@
 
 .small-12.panel.mainContent
-  / Badge Navigation
-  - if current_user.is_staff?
-    = content_nav do
-      = render "tabs"
 
   = content_nav_for @badge
   
-  .small-12.medium-8
+  .small-12.medium-9
     %h3.pagetitle= @title
 
-  .small-12.medium-4.right
-    .button-bar
+  .small-12.medium-3.right.columns
+    .button-bar.right
       %ul.button-group.context_menu
         %li{class: ("active" if current_page?(edit_badge_path(@badge))) }
-          = link_to_unless_current "Edit #{@badge.name}", edit_badge_path(@badge)
+          %i.fi-pencil
+          = link_to_unless_current "Edit", edit_badge_path(@badge)
         %li{class: ("active" if current_page?(new_badge_earned_badge_path(@badge))) }
-          = link_to_unless_current "Award this #{term_for :badge}", new_badge_earned_badge_path(:badge_id => @badge)
+          %i.fi-results
+          = link_to_unless_current "Award", new_badge_earned_badge_path(:badge_id => @badge)
         %li{class: ("active" if current_page?(mass_award_badge_path(@badge))) }
+          %i.fi-results-demographics
           = link_to_unless_current "Quick Award", mass_award_badge_path(@badge)
 
   .small-12.columns
     //badge icon, total awarded, and points
-    .panel.small-12.large-2.columns.text-center
+    .panel.small-12.medium-2.columns.text-center
       %img{:src => @badge.icon, :alt => @badge.name, :width => "100" }
       %hr
         .center
@@ -35,8 +34,6 @@
           %b Point Value:
           ="#{@badge.point_total}"
           
-
-    .small-12.large-8.columns
       - if @badge.description?
         %p
           %b Description:
@@ -54,17 +51,16 @@
 
     - if current_user.is_staff?
 
-      .small-12.columns.responsive
+      .small-12.medium-10.columns.responsive
         //staff individual badge award index
-        %table.responsive.nopage_dynatable
+        %table.responsive.nofeatures_default_last_name_dynatable
           %thead
             %tr
               %th First Name
               %th Last Name
               %th{ :width => 300} Feedback
-              //uncomment to add counts per student
-              //-if @badge.can_earn_multiple_times  
-              //%th Count
+              - if @badge.can_earn_multiple_times  
+                %th Count
               %th{"data-dynatable-sorts" => "dateStamp"} Date Awarded
               %th{:style => "display: none"} Date Stamp
           %tbody
@@ -76,12 +72,11 @@
               %tr
                 %td=link_to student.first_name, student_path(student)
                 %td= link_to student.last_name, student_path(student)
-                %td
+                %td{ :width => 80}
                   - @badge.earned_badges.where(:student_id => student.id).each do |badge|
-                    %div{ :width => 80}= raw badge.feedback
-                //uncomment to add counts per student
-                //-if @badge.can_earn_multiple_times
-                //%td= @badge.earned_badge_count_for_student(student)
+                    = raw badge.feedback
+                - if @badge.can_earn_multiple_times
+                  %td= @badge.earned_badge_count_for_student(student)
                 
                 %td  
                   - @badge.earned_badges.where(:student_id => student.id).each do |badge|
@@ -91,9 +86,3 @@
                       = link_to badge_earned_badge_path(@badge, badge), :method => :delete, :data => { confirm: "Are you sure you want to delete this #{term_for :badge}?" } do
                         %i.fi-trash
                     .clearfix
-
-  .clearfix
-
-
-
-

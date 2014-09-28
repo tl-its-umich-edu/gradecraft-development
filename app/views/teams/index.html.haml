@@ -1,11 +1,16 @@
 .small-12.panel.mainContent
-  / Team Index Breadcrumbs
-  = content_nav do
-    = render "tabs"
   
   = content_nav_for Team
 
-  %h3.pagetitle= @title
+  .small-12.medium-9
+    %h3.pagetitle= @title
+
+  .small-12.medium-3.right.columns
+    .button-bar.right
+      %ul.button-group.context_menu
+        %li
+          %i.fi-plus
+          = link_to_unless_current "New #{term_for :team}", new_team_path
 
   .small-12.columns
     %dl.tabs{:data => {'tab' => true}}
@@ -20,5 +25,3 @@
         = render "leaderboard"
       .content#tabt2
         = render "stats"
-  
-  .clearfix

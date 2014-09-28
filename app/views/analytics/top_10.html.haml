@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Leaderboards
-  = content_nav do
-    = render "tabs"
 
   = content_nav_for "Top 10/Bottom 10"
 
@@ -18,5 +15,3 @@
   
   .columns
     = render 'students_table', :course => current_course, :students => @bottom_ten_students.reverse
-
-  .clearfix

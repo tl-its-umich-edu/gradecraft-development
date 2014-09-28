@@ -1,7 +1,4 @@
 .small-12.panel.mainContent
-  / Staff Navigation
-  = content_nav do
-    = render "users/tabs"
 
   = content_nav_for @user
 
@@ -24,7 +21,6 @@
           %th Feedback
           %th.button-column
       %tbody
-        //- current_course.grades.where(:graded_by => current_user).each do |grade|
         - current_course.grades.where(:graded_by => @user).each do |grade|
           %tr
             %td= link_to grade.assignment.name, assignment_path(grade.assignment)
@@ -34,5 +30,3 @@
             %td
               = grade.created_at
               = grade.updated_at if grade.updated_at != grade.created_at
-
-  .clearfix

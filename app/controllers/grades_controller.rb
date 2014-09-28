@@ -6,6 +6,7 @@ class GradesController < ApplicationController
 
   def show
     @assignment = current_course.assignments.find(params[:assignment_id])
+    @grades_for_assignment = @assignment.grades_for_assignment(current_student)
     if current_user.is_student? 
       redirect_to @assignment
     end
@@ -72,9 +73,9 @@ class GradesController < ApplicationController
       @grade.status = "Graded"
       respond_to do |format|
         if @grade.save
-          format.html { redirect_to dashboard_path, notice: 'Thank you for logging your grade!' }
+          format.html { redirect_to syllabus_path, notice: 'Nice job! Thanks for logging your grade!' }
         else
-          format.html { redirect_to dashboard_path, notice: "We're sorry, this grade could not be added." }
+          format.html { redirect_to syllabus_path, notice: "We're sorry, this grade could not be added." }
         end
       end
     else

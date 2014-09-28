@@ -7,6 +7,7 @@
   if ($('.grades_per_assign').length) {
     var data = JSON.parse($('.grades_per_assign').attr('data-scores'));
     if (data !== null) {
+      sparkOpts.target = data.user_score;
       sparkOpts.tooltipOffsetY = -130;
       sparkOpts.height = '35';
       sparkOpts.width = '200';
@@ -20,7 +21,7 @@
       sparkOpts.outlierFillColor = '#F4A425';
       sparkOpts.spotRadius = '10';
       sparkOpts.medianColor = '#0D9AFF';
-      $('.grades_per_assign').sparkline(data, sparkOpts);
+      $('.grades_per_assign').sparkline(data.scores, sparkOpts);
     }
   }
 
@@ -31,4 +32,4 @@
       sparkResize = setTimeout(sparkOpts, 500);
   });
 
-  $('#myStat').circliful();
+  $('#numberComplete').circliful();
