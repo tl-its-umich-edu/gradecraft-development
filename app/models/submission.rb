@@ -13,7 +13,7 @@ class Submission < ActiveRecord::Base
   belongs_to :group
   belongs_to :course
 
-  before_save :clean_html
+  before_save :clean_html, :submit_something
 
   has_one :grade, :dependent => :destroy
   has_one :assignment_weight, through: :assignment
@@ -88,6 +88,10 @@ class Submission < ActiveRecord::Base
 
   def clean_html
     self.text_comment = Sanitize.clean(text_comment, Sanitize::Config::RESTRICTED)
+  end
+
+  def submit_something
+    link.present? || text_comment.present? || submission_files.present?
   end
 
   def cache_associations

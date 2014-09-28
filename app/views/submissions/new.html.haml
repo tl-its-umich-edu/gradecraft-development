@@ -1,10 +1,4 @@
 .small-12.panel.mainContent
-  / Submissions Navigation
-  = content_nav do
-    - if current_user.is_student?
-      = render "students/student_profile_tabs"
-    - else 
-      = render "assignments/tabs"
 
   %h3.pagetitle
     - if @assignment.has_groups? && @group.present?
