@@ -1,29 +1,22 @@
-= simple_form_for([@challenge, @challenge_grade]) do |f|
-  .small-12.large-4.columns
-    = f.association :team, :collection => @teams
+.panel
+  = simple_form_for([@challenge, @challenge_grade]) do |f|
+    .small-12.large-4.columns
+      = f.association :team, :collection => @teams
 
-  .small-12.large-4.columns
-    = f.label :score
-    = f.text_field :score, data: {autonumeric: true, "m-dec" => "0"}
-    .form_label out of #{points @challenge.point_total} points
+    .small-12.large-4.columns
+      = f.label :score
+      = f.text_field :score, data: {autonumeric: true, "m-dec" => "0"}
+      .form_label out of #{points @challenge.point_total} points
 
+    .small-12.large-4.columns
+      - if @challenge.release_necessary?
+        = f.label :status
+        = f.select :status, Grade::STATUSES
+        .form_label= "Can the #{term_for :team} see this grade?"
 
-  .small-12.large-4.columns
-    - if @challenge.release_necessary?
-      = f.label :status
-      = f.select :status, Grade::STATUSES
-      .form_label= "Can the #{term_for :team} see this grade?"
+    .small-12.columns.panel.callout
+      = f.bootsy_area :text_feedback
 
-  .clearfix
-
-  %br
-
-  .small-12.columns
-    = f.bootsy_area :text_feedback
-
-    .clearfix
-
-    %br
-
-  .right
-    = f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade for' : 'Grade'} #{ term_for :challenge }",  :class => "button tiny radius"
+    .right
+      = f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade for' : 'Grade'} #{ term_for :challenge }",  :class => "button tiny radius alert"
+      = link_to 'Cancel', challenges_path, :class => 'button tiny radius transparent'

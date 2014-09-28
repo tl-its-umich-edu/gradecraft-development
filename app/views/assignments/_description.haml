@@ -1,12 +1,12 @@
 %a.radius.tiny.button{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } See Description
 #assignment_description.reveal-modal{:data => {:reveal => "true" }}
-  %h3= @assignment.name
-  = "Due: #{@assignment.due_at}"
+  %h3.bold= @assignment.name
+  .italic= "Due: #{@assignment.due_at}"
   %p= raw @assignment.description
 
   %hr
 
-  %h3 #{ @assignment.assignment_type.name} Guidelines
+  %h3.uppercase #{ @assignment.assignment_type.name} Guidelines
 
   %p= raw @assignment.assignment_type.predictor_description
 

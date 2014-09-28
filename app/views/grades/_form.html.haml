@@ -118,11 +118,7 @@
       = f.label :feedback
       = f.bootsy_area :feedback
 
-    .clearfix
-
-  .clearfix
-
 
   .right
-    = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius"
+    = submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button tiny radius alert"
     = link_to 'Cancel', assignment_path(@assignment), :class => 'button tiny radius'

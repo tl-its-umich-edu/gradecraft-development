@@ -61,20 +61,29 @@
     border-bottom-left-radius:  $global-radius;
   }
 
-  dl.tabs dd > a {
-    border-collapse: true !important;
+  dl.tabs dd {
     border-top-right-radius: $global-radius;
     border-top-left-radius: $global-radius;
     background-color: $primary-color-3 !important;
+  }
+
+  dl.tabs dd > a {
+    border-collapse: true !important;
     color: #FFF;
     font-size: 100%;
     text-transform: none;
   }
 
+   dl.tabs dd:hover {
+    background-color: darken($primary-color-3, 10%);
+    color: #000 !important;
+   }
+
   dl.tabs dd.active > a {
     background-color: #eee !important;
-    color: #000;
+    color: #000 !important;
   }
+
 
   .right {
     margin-right: 25px;

@@ -104,9 +104,7 @@
       .small-12.large-4.columns
         
         = f.simple_fields_for :assignment_files, @assignment.assignment_files.new do |aff|
-          = aff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden        
-
-      .clearfix
+          = aff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
 
       .small-12.textarea
         = f.bootsy_area :description
@@ -128,7 +126,6 @@
               = f.simple_fields_for :assignment_score_levels, assignment_score_level, class: 'form-inline' do |slf|
                 = render 'assignment_score_level_fields', f: slf
         = link_to 'Add a Level', '#', class: 'add-assignment-score-level button tiny radius'
-      .clearfix
 
     .panel
       %h4.bold Timeline
@@ -149,8 +146,6 @@
         = f.label :media_caption, "Caption"
         = f.text_field :media_caption
 
-      .clearfix  
-
     .right
-      = f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}", :class => "button radius tiny"
+      = f.button :submit, "#{@assignment.persisted? ? 'Update' : 'Create'} #{term_for :assignment}", :class => "button radius tiny alert"
       = link_to 'Cancel', assignments_path, :class => "button radius transparent tiny"
