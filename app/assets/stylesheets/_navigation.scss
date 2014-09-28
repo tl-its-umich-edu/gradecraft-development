@@ -25,12 +25,12 @@
 }
 
 .alert.button:hover {
-  background-color: $primary-color-5;
+  background-color: darken($primary-color-4, 15%);
 }
 
 .top-bar-section ul ul.dropdown li a {
   padding: 0.2rem;
-  color: $secondary-color;
+  color: $primary-color-3;
   line-height: 2rem !important;
 }
 
@@ -49,7 +49,7 @@
 
   a {
     margin: 0;
-    color: $secondary-color;
+    color: $primary-color-3;
     padding: 0;
     line-height: 1.5rem;
   }
@@ -60,11 +60,11 @@
 }
 
   .top-bar-section ul ul.dropdown a, .top-bar-section ul ul.dropdown a:hover {
-    color: $secondary-color;
+    color:  $primary-color-3;
   }
 
  .top-bar-section ul ul.dropdown a:hover {
-    color: $secondary-color;
+    color: $primary-color-3;
     background-color: transparent !important;
   }
 
@@ -90,7 +90,7 @@ img.img-rounded {
 ul.dropdown-menu li.active a {
   padding: 0.5rem;
   color: #FFF !important;
-  background-color: $secondary-color !important;
+  background-color: $primary-color-3 !important;
 }
 
 .tabs-content {
@@ -103,8 +103,12 @@ ul.dropdown-menu li.active a {
 dl.tabs dd > a {
   border-top-right-radius: $global-radius;
   border-top-left-radius:  $global-radius;
-  text-transform: uppercase;
-  font-size: 90%;
+  text-transform: capitalize;
+}
+
+dl.tabs dd > a:hover {
+  color: #FFF !important;
+  background-color: $primary-color-4;
 }
 
 dl.tabs dd.active > a {
