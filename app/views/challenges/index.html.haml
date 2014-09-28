@@ -1,16 +1,18 @@
 .small-12.panel.mainContent
 
-  = content_nav_for Challenge
+  - if current_user.is_staff?
+    = content_nav_for Challenge
 
   .small-12.medium-9
     %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %i.fi-plus
-          = link_to "New #{term_for :challenge}", new_challenge_path
+  - if current_user.is_staff?
+    .small-12.medium-3.right.columns
+      .button-bar.right
+        %ul.button-group.context_menu
+          %li
+            %i.fi-plus
+            = link_to "New #{term_for :challenge}", new_challenge_path
 
   .small-12.columns
   

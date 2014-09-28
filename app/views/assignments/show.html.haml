@@ -1,6 +1,7 @@
 .small-12.panel.mainContent
 
-  = content_nav_for @assignment
+  - if current_user.is_staff?
+    = content_nav_for @assignment
 
   .small-12.medium-9
     %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
@@ -8,26 +9,27 @@
       .small-12.medium-4.columns.right
         .right= render "assignments/description"
 
-  .small-12.medium-5.right.columns
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %i.fi-pencil
-          = link_to "Edit", edit_assignment_path(@assignment)
-        - if @team.present?
+  - if current_user.is_staff?
+    .small-12.medium-5.right.columns
+      .button-bar.right
+        %ul.button-group.context_menu
           %li
-            %i.fi-list-thumbnails
-            = link_to "Quick Grade", mass_grade_assignment_path(@assignment, :team_id => @team)
-        - else
+            %i.fi-pencil
+            = link_to "Edit", edit_assignment_path(@assignment)
+          - if @team.present?
+            %li
+              %i.fi-list-thumbnails
+              = link_to "Quick Grade", mass_grade_assignment_path(@assignment, :team_id => @team)
+          - else
+            %li
+              %i.fi-list-thumbnails
+              = link_to "Quick Grade", mass_grade_assignment_path(@assignment)
           %li
-            %i.fi-list-thumbnails
-            = link_to "Quick Grade", mass_grade_assignment_path(@assignment)
-        %li
-          %i.fi-page-csv
-          = link_to "Import Grades", import_grades_assignment_path(@assignment)
-        %li
-          %i.fi-page-export-csv
-          = link_to "Download Grades"
+            %i.fi-page-csv
+            = link_to "Import Grades", import_grades_assignment_path(@assignment)
+          %li
+            %i.fi-page-export-csv
+            = link_to "Download Grades", export_grades_assignment_path(format: 'csv')
 
   - if current_user.is_staff?
     / .small-12.columns
