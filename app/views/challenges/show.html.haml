@@ -10,11 +10,13 @@
       .button-bar.right
         %ul.button-group.context_menu
           %li
-            %i.fi-pencil
-            = link_to "Edit", edit_challenge_path(@challenge)
+            %a{:href => edit_challenge_path(@challenge) }
+              %i.fi-pencil
+              Edit
           %li
-            %i.fi-results-demographics
-            = link_to "Quick Grade", mass_edit_challenge_challenge_grades_path(@challenge)
+            %a{:href => mass_edit_challenge_challenge_grades_path(@challenge) }
+              %i.fi-results-demographics
+              Quick Grade
 
   .small-12.columns
     - if @challenge.challenge_files.present?

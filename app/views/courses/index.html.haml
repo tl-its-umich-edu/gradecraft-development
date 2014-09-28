@@ -9,8 +9,9 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-plus
-          = link_to "New Course", new_course_path
+          %a{:href => new_course_path }
+            %i.fi-plus
+            New Course
 
   .small-12.columns
     %table.responsive.nosearch_dynatable

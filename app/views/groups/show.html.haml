@@ -8,8 +8,9 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-pencil
-          = link_to "Edit #{term_for :group}", edit_group_path(@group)
+          %a{:href => edit_group_path(@group) }
+            %i.fi-pencil
+            Edit #{term_for :group} 
 
   .small-12.columns
     .label.right.radius

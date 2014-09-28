@@ -8,8 +8,9 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-pencil
-          = link_to_unless_current "See #{term_for :team}", team_path(@team)
+          %a{:href => team_path(@team) }
+            %i.fi-list-thumbnails
+            See #{term_for :team} 
   
   .small-12.columns
     = render 'form'

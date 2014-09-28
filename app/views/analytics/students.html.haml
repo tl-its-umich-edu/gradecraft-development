@@ -9,14 +9,17 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li{class: ("active" if current_page?(analytics_root_path)) }
-          %i.fi-torso
-          = link_to "User Analytics", analytics_root_path
+          %a{:href => analytics_root_path }
+            %i.fi-torso
+            User Analytics
         %li{class: ("active" if current_page?(analytics_students_path)) }
-          %i.fi-torsos-all
-          = link_to "Student Analytics", analytics_students_path
+          %a{:href => analytics_students_path }
+            %i.fi-torsos-all
+            Student Analytics
         %li{class: ("active" if current_page?(analytics_staff_path)) }
-          %i.fi-torso-business
-          = link_to "Staff Analytics", analytics_staff_path
+          %a{:href => analytics_staff_path }
+            %i.fi-torso-business
+            Staff Analytics
 
   .small-12
 

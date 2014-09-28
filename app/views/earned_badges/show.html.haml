@@ -8,8 +8,9 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-pencil
-          = link_to "Edit", edit_badge_earned_badge_path(:id => @earned_badge.id)
+          %a{:href => edit_badge_earned_badge_path(:id => @earned_badge.id) }
+            %i.fi-pencil
+            Edit 
 
   .small-12.columns
         

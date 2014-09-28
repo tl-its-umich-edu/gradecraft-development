@@ -69,20 +69,25 @@ ul.button-group.context_menu {
     margin: 0;
     border: 1px solid #666;
     background-color: $secondary-color-4;
-    padding: .5rem;
     color: #FFF;
   }
 
   li a {
     color: #FFF;
+    display: block;
+    padding: .5rem;
   }
 
-  li:first-child {
+  li a:hover {
+    color: #FFF !important;
+  }
+
+  li:first-child, li:first-child a {
     border-bottom-left-radius: $global-radius;
     border-top-left-radius: $global-radius;
   }
 
-  li:last-child {
+  li:last-child, li:last-child a {
     border-top-right-radius: $global-radius;
     border-bottom-right-radius: $global-radius;
   }

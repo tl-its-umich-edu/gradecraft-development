@@ -14,22 +14,27 @@
       .button-bar.right
         %ul.button-group.context_menu
           %li
-            %i.fi-pencil
-            = link_to "Edit", edit_assignment_path(@assignment)
+            %a{:href => edit_assignment_path(@assignment) }
+              %i.fi-pencil
+              Edit 
           - if @team.present?
             %li
-              %i.fi-list-thumbnails
-              = link_to "Quick Grade", mass_grade_assignment_path(@assignment, :team_id => @team)
+              %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
+                %i.fi-list-thumbnails
+                Quick Grade
           - else
             %li
-              %i.fi-list-thumbnails
-              = link_to "Quick Grade", mass_grade_assignment_path(@assignment)
+              %a{:href => mass_grade_assignment_path(@assignment) }
+                %i.fi-list-thumbnails
+                Quick Grade
           %li
-            %i.fi-page-csv
-            = link_to "Import Grades", import_grades_assignment_path(@assignment)
+            %a{:href => import_grades_assignment_path(@assignment) }
+              %i.fi-upload
+              Import Grades
           %li
-            %i.fi-page-export-csv
-            = link_to "Download Grades", export_grades_assignment_path(format: 'csv')
+            %a{:href => export_grades_assignment_path(format: 'csv') }
+              %i.fi-page-export-csv
+              Download Grades
 
   - if current_user.is_staff?
     / .small-12.columns

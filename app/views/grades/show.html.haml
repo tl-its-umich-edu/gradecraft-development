@@ -9,8 +9,9 @@
       .button-bar.right
         %ul.button-group.context_menu
           %li
-            %i.fi-pencil
-            = link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => current_student.id)
+            %a{:href => edit_assignment_grade_path(@assignment, :student_id => current_student.id) }
+              %i.fi-pencil
+              Edit Grade
 
     .small-12.columns= render "individual_show"
     

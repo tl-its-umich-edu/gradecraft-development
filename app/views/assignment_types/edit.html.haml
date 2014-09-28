@@ -2,20 +2,24 @@
 
   = content_nav_for @assignment_type, "Edit #{term_for :assignment_type}"
 
-  %h3.pagetitle= @title
+  .small-12.medium-6
+    %h3.pagetitle= @title
 
-  .small-12.medium-4.right.columns
+  .small-12.medium-6.right.columns
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-plus
-          = link_to "New #{term_for :assignment_type}", new_assignment_type_path
+          %a{:href => new_assignment_type_path }
+            %i.fi-plus
+            New #{term_for :assignment_type}
         %li
-          %i.fi-pencil
-          = link_to "See #{@assignment_type.name}", assignment_type_path(@assignment_type)
+          %a{:href => assignment_type_path(@assignment_type) }
+            %i.fi-list-thumbnails
+            See #{@assignment_type.name} 
         %li
-          %i.fi-graph-bar
-          = link_to "#{@assignment_type.name} Performance", all_grades_assignment_type_path(@assignment_type)
+          %a{:href => all_grades_assignment_type_path(@assignment_type) }
+            %i.fi-graph-bar
+            #{@assignment_type.name} Performance
 
   / Display Assignment Type form
   .small-12.columns

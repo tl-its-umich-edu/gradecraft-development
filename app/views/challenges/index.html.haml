@@ -11,8 +11,9 @@
       .button-bar.right
         %ul.button-group.context_menu
           %li
-            %i.fi-plus
-            = link_to "New #{term_for :challenge}", new_challenge_path
+            %a{:href => new_challenge_path }
+              %i.fi-plus
+              New #{term_for :challenge}
 
   .small-12.columns
   

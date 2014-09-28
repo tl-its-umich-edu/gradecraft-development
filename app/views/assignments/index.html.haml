@@ -9,11 +9,13 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-plus
-          = link_to "New #{term_for :assignment}", new_assignment_path
+          %a{:href => new_assignment_path }
+            %i.fi-plus
+            New #{term_for :assignment}
         %li
-          %i.fi-results
-          = link_to "Settings Overview", settings_assignments_path
+          %a{:href => settings_assignments_path }
+            %i.fi-results
+            Settings Overview
 
 
   .small-12.columns

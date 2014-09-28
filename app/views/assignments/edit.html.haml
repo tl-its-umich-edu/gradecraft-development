@@ -8,11 +8,13 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-plus
-          = link_to "New #{term_for :assignment}", new_assignment_path
+          %a{ :href => new_assignment_path }
+            %i.fi-plus
+            New #{term_for :assignment}
         %li
-          %i.fi-plus
-          = link_to "See #{@assignment.name}", assignment_path(@assignment)
+          %a{ :href => assignment_path(@assignment) }
+            %i.fi-list-thumbnails
+            See #{@assignment.name}
   
   .small-12.columns
 

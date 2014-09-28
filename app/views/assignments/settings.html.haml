@@ -9,8 +9,9 @@
     .button-bar.right
       %ul.button-group.context_menu
         %li
-          %i.fi-plus
-          = link_to "New #{term_for :assignment}", new_assignment_path
+          %a{:href => new_assignment_path }
+            %i.fi-plus
+            New #{term_for :assignment}
 
   .small-12.columns
     
@@ -20,10 +21,14 @@
           %h3.collapse= "#{assignment_type.name} – #{points assignment_type.max_value} points"
           %div
             .small-3.right
-              .button-bar
-                %ul.button-group.round.right
-                  %li= link_to "See Overview", all_grades_assignment_type_path(assignment_type), :class => "button tiny aindex"
-                  %li= link_to "Edit", edit_assignment_type_path(assignment_type), :class => "button tiny aindex"
+              .button-bar.aindex
+                %ul.button-group.radius.right
+                  %li.button.tiny
+                    %i.fi-graph-trend
+                    = link_to "Grade Patterns", all_grades_assignment_type_path(assignment_type)
+                  %li.button.tiny
+                    %i.fi-pencil
+                    = link_to "Edit #{ assignment_type.name }", edit_assignment_type_path(assignment_type)
             %table.responsive
               %thead
                 %tr
@@ -127,7 +132,11 @@
                           Accepted Until:
                           = assignment.try(:accept_until) || "Always Accepted"
                     %td 
-                      %a.button{:href => edit_assignment_path(assignment) }
-                        Edit
-                      %a.button{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete } }
-                        Delete
+                      .button-bar
+                        %ul.button-group.right.round
+                          %li
+                            %a{:href => edit_assignment_path(assignment), :class => 'button' }
+                              Edit
+                          %li
+                            %a{:href => assignment_path(assignment), :class => 'button', :data => { confirm: 'Are you sure?', method: :delete } }
+                              Delete
