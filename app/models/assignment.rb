@@ -299,7 +299,7 @@ class Assignment < ActiveRecord::Base
 
   #Checking to see if the assignment is still open and accepting submissons
   def open?
-    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || due_at != nil
+    ((open_at != nil && open_at < Time.now) && (due_at != nil && due_at > Time.now)) || due_at.nil?
   end
 
   #Counting how many grades there are for an assignment
