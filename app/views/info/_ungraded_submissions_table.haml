@@ -4,9 +4,10 @@
 
 - @ungraded_submissions.group_by(&:assignment).each do |assignment, submissions|
   .small-12.columns
-    %h5.bold
+    %h5.section-title
       = link_to assignment.name, assignment
-      = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny round success"
+      .right 
+        = link_to 'Quick Grade', mass_grade_assignment_path(assignment), :class => "button tiny radius success"
 
   .columns
     %table.responsive.nofeatures_default_last_name_dynatable
@@ -36,7 +37,7 @@
                         = link_to ug.student.team_for_course(current_course).try(:name), ug.student.team_for_course(current_course)
                     %td
                       .button-bar
-                        %ul.button-group.right.round
+                        %ul.button-group.right.radius
                           %li
                             %i.fi-paperclip
                             = link_to "See Submission", assignment_grade_path(ug.assignment, :student_id => ug.student_id), :class => "button"
@@ -60,7 +61,7 @@
                     .button-bar
                       %ul.button-group.right.round
                         %li
-                          %a.button.tiny.secondary{:href => "#{assignment_grade_path(ug.assignment, :student_id => ug.student_id)}" }
+                          %a.button{:href => "#{assignment_grade_path(ug.assignment, :student_id => ug.student_id)}" }
                             = "See Submission"
                             - if ug.submission_files.present?
                               %i.fi-paperclip

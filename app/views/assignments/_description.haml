@@ -3,4 +3,11 @@
   %h3= @assignment.name
   = "Due: #{@assignment.due_at}"
   %p= raw @assignment.description
+
+  %hr
+
+  %h3 #{ @assignment.assignment_type.name} Guidelines
+
+  %p= raw @assignment.assignment_type.predictor_description
+
   %a.close-reveal-modal &#215;

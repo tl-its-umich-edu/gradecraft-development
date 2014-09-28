@@ -27,11 +27,11 @@
               .button-bar.aindex
                 %ul.button-group.radius.right
                   %li.button.tiny
-                    %i
-                    = link_to "See Overview", all_grades_assignment_type_path(assignment_type)
+                    %i.fi-graph-trend
+                    = link_to "Grade Patterns", all_grades_assignment_type_path(assignment_type)
                   %li.button.tiny
                     %i.fi-pencil
-                    = link_to "Edit", edit_assignment_type_path(assignment_type)
+                    = link_to "Edit #{ assignment_type.name }", edit_assignment_type_path(assignment_type)
 
             %table.responsive.nofeatures_default_due_date_dynatable
               %thead
@@ -67,7 +67,7 @@
                     %td= assignment.point_total
                     %td
                       .button-bar
-                        %ul.button-group.right.round
+                        %ul.button-group.right.radius
                           %li
                             %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
                               Quick Grade

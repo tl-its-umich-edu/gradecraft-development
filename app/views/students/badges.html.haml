@@ -37,7 +37,8 @@
           %tbody
             - current_course_data.badges.each do |badge|
               %tr
-                %td.center= image_tag badge.icon, :alt => badge.name, :width => 80
+                %td.center
+                  %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
                 %td
                   - if badge.can_earn_multiple_times
                     = badge.earned_badge_count_for_student(current_student.id)
