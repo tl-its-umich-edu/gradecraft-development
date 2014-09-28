@@ -13,8 +13,6 @@
         = f.label :role, "Select Role"
         = f.select :role, [["Student", "student"],["GSI", "gsi"],["Professor", "professor"],["Admin", "admin"]]
 
-    .clearfix
-
     .small-12.medium-4.columns.columns-no-padding
       = f.label :username
       = f.text_field :username
@@ -25,8 +23,6 @@
       = f.label :display_name
       = f.text_field :display_name
 
-    .clearfix
-
     - if current_user.is_admin?
       .small-12.medium-4.columns.columns-no-padding
         = f.label :password
@@ -34,8 +30,6 @@
       .small-12.medium-4.columns
         = f.label :password_confirmation
         = f.password_field :password_confirmation, :as => :password
-
-    .clearfix
 
   - if current_user.is_staff?
     .panel
@@ -75,12 +69,6 @@
               .form_label This #{term_for :student}'s #{term_for :badges} will be displayed on a class leaderboard
             .clearfix
 
-      .clearfix
-      
-
-      
-
-
   .right
-    = submit_tag "#{@user.persisted? ? 'Update' : 'Create'} User", :class => "button tiny radius"
+    = submit_tag "#{@user.persisted? ? 'Update' : 'Create'} User", :class => "button tiny radius alert"
     = link_to 'Cancel', users_path, :class => 'button tiny radius transparent'

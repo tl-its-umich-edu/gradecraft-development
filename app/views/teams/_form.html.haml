@@ -18,5 +18,5 @@
   .clearfix
   
   .right
-    = f.submit "#{@team.persisted? ? 'Update' : 'Create'} #{ term_for :team }", :class => 'button tiny radius'
+    = f.submit "#{@team.persisted? ? 'Update' : 'Create'} #{ term_for :team }", :class => 'button tiny radius alert'
     = link_to 'Cancel', teams_path, :class => 'button tiny radius transparent'

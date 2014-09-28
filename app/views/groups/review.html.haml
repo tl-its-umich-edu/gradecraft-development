@@ -57,5 +57,5 @@
         %br
 
         .right
-          = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button tiny radius'
+          = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button tiny radius alert'
           = link_to 'Cancel', groups_path, :class => 'button tiny radius transparent'
