@@ -352,7 +352,7 @@ class User < ActiveRecord::Base
   #Used to allow students to self-log a grade, currently only a boolean (complete or not)
   #TODO Should allow them to use a select list or slider to determine their grade from a range of options
   def self_reported_done?(assignment)
-    grade_for_assignment(assignment).try(:score) == assignment.point_total
+    grade_for_assignment(assignment).try(:score) == grade_for_assignment(assignment).try(:point_total)
   end
 
   #Counts how many assignments are weighted for this student - note that this is an ASSIGNMENT count, and not the assignment type count. Because students make the choice at the AT level rather than the A level, this can be confusing.
