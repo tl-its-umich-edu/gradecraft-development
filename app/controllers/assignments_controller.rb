@@ -81,7 +81,7 @@ class AssignmentsController < ApplicationController
         @assignment.assign_attributes(params[:assignment])
         if @assignment.save
           set_assignment_weights
-          format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully created" }
+          format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize}  #{@assignment.name} successfully created" }
         else
           respond_with @assignment
         end
@@ -116,7 +116,7 @@ class AssignmentsController < ApplicationController
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       else
         if @assignment.save
-          format.html { respond_with @assignment, notice: "#{term_for :assignment} #{@assignment.name} successfully updated" }
+          format.html { respond_with @assignment, notice: "#{(term_for :assignment).titleize} #{@assignment.name} successfully updated" }
         else
           format.html { redirect_to edit_assignment_path(@assignment) }
           format.json { render json: @assignment.errors, status: :unprocessable_entity }
@@ -129,7 +129,7 @@ class AssignmentsController < ApplicationController
     @assignment = current_course.assignments.find(params[:id])
     @name = @assignment.name
     @assignment.destroy
-    redirect_to assignments_url, notice: "#{term_for :assignment} #{@name} successfully deleted"
+    redirect_to assignments_url, notice: "#{(term_for :assignment).titleize} #{@name} successfully deleted"
   end
 
   # Calendar feed of assignments

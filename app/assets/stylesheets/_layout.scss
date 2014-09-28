@@ -30,10 +30,6 @@ body.logged-in, body.logged-out {
   z-index: 0;
 }
 
-.content#boxplot, .content#submitted, .content#levels {
-  padding: 1rem;
-}
-
 .panel {
   border-radius: $global-radius;
   overflow: hidden;
@@ -58,18 +54,8 @@ form .tabs-content .content {
 
 /* Responsive outer container */ 
 @media (min-width: 1000px)  {
-  
-  .staff_subnav {
-    border-radius: $global-radius;
-  }
 
   .outerContainer {
     padding-right: 0;
-  }
-}
-
-@media (max-width: 1000px)  {
-  .staff_subnav {
-    border-radius: $global-radius;
   }
 }
