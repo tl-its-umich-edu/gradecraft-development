@@ -20,8 +20,10 @@ polsci_grade_levels = ['Hammurabi', 'Confucius', 'Socrates', 'Cicero', 'William 
 
 majors = ['Engineering','American Culture','Anthropology','Asian Studies','Astronomy','Cognitive Science','Creative Writing and Literature','English','German','Informatics','Linguistics','Physics']
 
+courses = []
+
 # Generate Videogames
-educ_course = Course.create! do |c|
+courses << educ_course = Course.create! do |c|
   c.name = "Videogames & Learning"
   c.courseno = "EDUC222"
   c.year = Date.today.year
@@ -58,7 +60,7 @@ end
 puts "Videogames and Learning has been installed"
 
 # Generate Political Theory
-polsci_course = Course.create! do |c|
+courses << polsci_course = Course.create! do |c|
   c.name = "Introduction to Political Theory"
   c.courseno = "POLSCI 101"
   c.year = Date.today.year
@@ -96,7 +98,7 @@ end
 puts "Introduction to Political Theory has arrived"
 
 # Generate Information Science
-information_course = Course.create! do |c|
+courses << information_course = Course.create! do |c|
   c.name = "Intro to Information Studies"
   c.courseno = "SI110"
   c.year = Date.today.year
@@ -189,7 +191,13 @@ User.create! do |u|
   u.role = 'admin'
   u.email = 'dumbledore@hogwarts.edu'
   u.password = 'fawkes'
- u.courses << [ educ_course, polsci_course, information_course ]
+  u.save!
+  courses.each do |c|
+    u.course_memberships.create! do |cm|
+      cm.course = c
+      cm.role = "professor"
+    end
+  end
 end
 puts "Albus Dumbledore just apparated into Hogwarts"
 
@@ -201,7 +209,11 @@ User.create! do |u|
   u.role = 'professor'
   u.email = 'snape@hogwarts.edu'
   u.password = 'lily'
-  u.courses << information_course
+  u.save!
+  u.course_memberships.create! do |cm|
+    cm.course = information_course
+    cm.role = "professor"
+  end
 end
 puts "Severus Snape has been spotted in Slytherin House"
 
@@ -213,7 +225,11 @@ User.create! do |u|
   u.role = 'professor'
   u.email = 'mcgonagall@hogwarts.edu'
   u.password = 'pineanddragonheart'
-  u.courses << educ_course 
+  u.save!
+  u.course_memberships.create! do |cm|
+    cm.course = educ_course
+    cm.role = "professor"
+  end 
 end
 puts "Headmistress McGonagall is here...shape up!"
 
@@ -225,7 +241,11 @@ User.create! do |u|
   u.role = 'professor'
   u.email = 'headless_nick@hogwarts.edu'
   u.password = 'october31'
-  u.courses << polsci_course 
+  u.save!
+  u.course_memberships.create! do |cm|
+    cm.course = polsci_course
+    cm.role = "professor"
+  end
 end
 puts "Shhhh... he hates being called Nearly Headless Nick!"
 
@@ -237,7 +257,13 @@ User.create! do |u|
   u.role = 'gsi'
   u.email = 'percy.weasley@hogwarts.edu'
   u.password = 'bestprefect'
-  u.courses << [ educ_course, polsci_course, information_course ]
+  u.save!
+  courses.each do |c|
+    u.course_memberships.create! do |cm|
+      cm.course = c
+      cm.role = "gsi"
+    end
+  end
 end
 puts "Percy Weasley has arrived on campus, on time as usual"
 

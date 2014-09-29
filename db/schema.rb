@@ -708,7 +708,7 @@ ActiveRecord::Schema.define(version: 20140924181943) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username",                                        null: false
+    t.string   "username",                                            null: false
     t.string   "email"
     t.string   "crypted_password"
     t.string   "salt"
@@ -723,6 +723,7 @@ ActiveRecord::Schema.define(version: 20140924181943) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string   "role",                            default: "student", null: false
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "rank"
