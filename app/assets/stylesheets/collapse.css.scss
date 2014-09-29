@@ -9,7 +9,7 @@ h3.collapse.open a {
   background-position: 13px -25px;
 }
 
-h3.collapse+div { padding: 10px; }
+h3.collapse+div { padding: 0px; }
 
 /* Pre hide sections with JavaScript on */
 
@@ -20,12 +20,3 @@ h3.collapse+div {
 .assignment_type {
   margin-bottom: 2rem !important;
 }
-
-.assignment_type table {
-  margin: 0;
-}
-
-.assignment_type .small-3 {
-  height: 0;
-}
-

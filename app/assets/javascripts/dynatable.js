@@ -153,6 +153,19 @@ $('table.nofeatures_default_score_dynatable').dynatable({
     }
 });
 
+$('table.nofeatures_default_desc_score_dynatable').dynatable({
+
+  features: {
+        paginate: false,
+        search: false,
+        recordCount: false, 
+        sort: true
+      },
+  dataset: {
+      sorts: { 'score': -1 }
+  }
+});
+
 $('table.nofeatures_dynatable').dynatable({
 
   features: {

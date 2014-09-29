@@ -8,6 +8,10 @@
   font-size: 80%;
 }
 
+.button-bar .button-group {
+  margin-right: 0 !important;
+}
+
 .button-bar.aindex {
   margin-top: -2.8rem;
 
@@ -50,7 +54,11 @@ table {
 
 /* Used on cancel buttons to reduce distraction */
 .button.transparent {
-  background-color: #CCC !important;
+  background-color: lighten($primary-color-4, 5%);
+}
+
+.button.transparent:hover {
+  background-color: darken($primary-color-4, 15%);
 }
 
 a.btn.btn-primary {

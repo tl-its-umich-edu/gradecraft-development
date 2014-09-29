@@ -2,7 +2,8 @@
 
   = content_nav_for Assignment, "#{term_for :assignment} Settings"
 
-  %h3.pagetitle= @title
+  .small-12.medium-6
+    %h3.pagetitle= @title
 
   
   .small-12.medium-6.right.columns
@@ -20,7 +21,7 @@
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
           %h3.collapse= "#{assignment_type.name} – #{points assignment_type.max_value} points"
           %div
-            .small-3.right
+            .small-12.medium-6.right.columns
               .button-bar.aindex
                 %ul.button-group.radius.right
                   %li.button.tiny
@@ -133,7 +134,7 @@
                           = assignment.try(:accept_until) || "Always Accepted"
                     %td 
                       .button-bar
-                        %ul.button-group.right.round
+                        %ul.button-group.right.radius
                           %li
                             %a{:href => edit_assignment_path(assignment), :class => 'button' }
                               Edit

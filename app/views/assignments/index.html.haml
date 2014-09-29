@@ -5,7 +5,7 @@
   .small-12.medium-6
     %h3.pagetitle= @title
 
-  .small-12.medium-6.right.columns
+  .small-12.medium-7.right.columns
     .button-bar.right
       %ul.button-group.context_menu
         %li
@@ -23,9 +23,10 @@
     .assignments
       - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
-          %h3.collapse= "#{assignment_type.name} – #{points assignment_type.max_value} points"
+          %h3.collapse
+            = "#{assignment_type.name} – #{points assignment_type.max_value} points"
           %div
-            .small-3.right
+            .small-12.medium-7.right.hide-for-small
               .button-bar.aindex
                 %ul.button-group.radius.right
                   %li.button.tiny

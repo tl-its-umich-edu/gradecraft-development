@@ -105,25 +105,25 @@ i.partial
 i.missing_grade
   color: #CCC
 
-table#leaderboard
-  background: $secondary-color-5
+table.responsive#leaderboard, table#leaderboard tr:nth-of-type(even)
+  background: $secondary-color-5 
 
   td
     color: #000
 
 table#leaderboard tr
-  outline: 1px solid #FFF !important
+  outline: 1px solid #FFF
 
-table#leaderboard tr.complete
-  background-color: $primary-color-4
+table.responsive#leaderboard tr.complete
+  background-color: $primary-color-4 !important
 
 td.rank
   width: 35px
   font-weight: bold
   text-align: center
   background-color: #111
-    font-weight: bold
-    color: #FFF !important
+  font-weight: bold
+  color: #FFF !important
 
 td.points
   font-weight: bold

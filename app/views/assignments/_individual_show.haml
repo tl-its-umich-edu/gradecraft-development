@@ -1,5 +1,5 @@
 - if current_course.has_teams? && @assignment.is_individual?
-  .small-12.medium-4.columns.right
+  .small-12.medium-4.right
     = form_tag assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
       = hidden_field_tag :assignment_id, @assignment.id
       = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"

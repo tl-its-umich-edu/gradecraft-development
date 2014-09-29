@@ -59,6 +59,7 @@ input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="ch
 select {
   background-color: #F0F8FF !important;
   border-radius: $global-radius;
+  margin-right: 0 !important;
 }
 
 select:hover {
