@@ -10,7 +10,7 @@
       - if current_course.assignment_weight_open? || current_user.is_staff?
         %h4.bold Rules of The Game
         %ul 
-          %li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision
+          //%li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision
           %li You may place up to #{current_course.max_assignment_weight} #{ ( term_for :weights).titleize } on a single #{ (term_for :assignment_type).downcase}
           %li You may work on up to #{ current_course.max_assignment_types_weighted} #{ (term_for :assignment_types).downcase}
           %li Any #{(term_for :assignment_types).downcase} you do not place #{ ( term_for :weights).titleize } on but do have grades for will be multiplied by #{current_course.default_assignment_weight}. For example, this would adjust a 1000 point Essay to be worth #{ (1000 * current_course.default_assignment_weight).to_i } points.
