@@ -4,7 +4,11 @@ body.logged-in, body.logged-out {
   background: image-url("cloud_bg.gif");
   padding-top: 3.6rem;
 }
-
+/*
+#leaderboard .name, #leaderboard .score {
+  padding: 0.5rem;
+  background: image-url("cloud_bg.gif");
+}*/
 
 /* Primary page content */ 
 .mainContent {
@@ -43,6 +47,11 @@ form .tabs-content .content {
   border: 1px solid #eee;
   padding: 1rem;
 } 
+
+.assignment_weights .panel.callout.columns {
+  margin-right: 1rem; 
+  width: 23%;
+}
 
 @media (min-width: 400px) {
   

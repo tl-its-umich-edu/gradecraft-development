@@ -8,42 +8,21 @@
         %th Points
         %th Team
     %tbody
-      / - if current_course.team_score_average?
-      /   - current_course.teams.order_by_average_high_score.each do |team|
-      /     %tr
-      /       %td= team.name
-      /       - if current_course.team_score_average?
-      /         %td.right.points= team.try(:average_points)
-      /       - else
-      /         %td.right.points= team.try(:score)
-      / - else
       - current_course.teams.order_by_high_score.each do |team|
         %tr
           %td= team.name
-          - if current_course.team_score_average?
-            %td.right.points= team.try(:average_points)
-          - else
-            %td.right.points= team.try(:score)
+          %td.right.points= team.try(:score)
 
 .small-12.columns
-  %table.responsive.nofeatures_default_desc_score_dynatable#leaderboard
-    %thead
-      %tr
-        //%th
-        %th #{term_for :team}
-        %th Score
-    %tbody
-      - i = 1
-      - current_course.teams.order_by_high_score.each do |team|
-        %tr{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course))}
-          //%td.rank= i
-          %td
-            - if current_user.is_student?
-              = team.name
-            -else 
-              = link_to team.name, team_path(team)
-          - if current_course.team_score_average?
-            %td.right.points= team.try(:average_points)
-          - else
-            %td.right.points= team.try(:score)
-          - i += 1
+  #leaderboard
+    - i = 1
+    - current_course.teams.order_by_high_score.each do |team|
+      .small-12.columns.team{:id => "place-#{i}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course)) }
+        .small-1.columns.rank= i
+        .small-9.columns.name
+          - if current_user.is_student?
+            = team.name
+          - else 
+            = link_to team.name, team_path(team)
+        .small-2.columns.score= points team.try(:score)
+      - i += 1

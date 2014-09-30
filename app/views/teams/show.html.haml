@@ -47,7 +47,7 @@
                 %th{:style => "display: none"}= student.earned_badges.count
               %td
                 .button-bar
-                  %ul.button-group.round.right
+                  %ul.button-group.radius.right
                     %li= link_to 'Dashboard', student_path(student), :class => 'button'
                     %li= link_to 'Edit', edit_user_path(student), :class => 'button'
 
@@ -76,6 +76,6 @@
             %td= challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
-                = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button'
+                = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button radius'
               - else
-                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button'
+                = link_to "Grade", new_challenge_challenge_grade_path(:challenge_id => challenge, :team_id => @team.id), :class => 'button radius'

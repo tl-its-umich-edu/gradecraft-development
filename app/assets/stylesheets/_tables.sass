@@ -105,35 +105,29 @@ i.partial
 i.missing_grade
   color: #CCC
 
-table.responsive#leaderboard, table#leaderboard tr:nth-of-type(even)
-  background: $secondary-color-5 
+.small-12.columns.team
+  border: 3px solid #FFF
 
-  td
-    color: #000
-
-table#leaderboard tr
-  outline: 1px solid #FFF
-
-table.responsive#leaderboard tr.complete
-  background-color: $primary-color-4 !important
-
-td.rank
-  width: 35px
+#leaderboard .rank
   font-weight: bold
   text-align: center
   background-color: #111
   font-weight: bold
   color: #FFF !important
+  padding: .5rem
 
-td.points
+#leaderboard .name, #leaderboard .score
+  padding: 0.5rem
+  background-color: $secondary-color-5
+
+#leaderboard .score
   font-weight: bold
-    font-weight: bold
 
-table#leaderboard tr#place-1 td.rank
+#leaderboard #place-1 .rank
   background-color: $alert-color
 
-table#leaderboard tr#place-2 td.rank
+#leaderboard #place-2 .rank
   background-color: #adadad
 
-table#leaderboard tr#place-3 td.rank
+#leaderboard #place-3 .rank
   background-color: #8c7853

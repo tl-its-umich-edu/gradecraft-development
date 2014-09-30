@@ -38,14 +38,13 @@
             - current_course_data.badges.each do |badge|
               %tr
                 %td.center
-                  %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
-                %td
                   - if badge.can_earn_multiple_times
-                    = badge.earned_badge_count_for_student(current_student.id)
+                    - badge.earned_badges_for_student(current_student.id).each do
+                      %img{ :src => badge.icon, :alt => badge.name, :width => "30" }
                   - elsif current_student_data.earned_badge?(badge)
-                    .fi-check
-                  - else
-                    .transparent.fi-minus
+                    %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
+                  - else current_student_data.earned_badge?(badge)
+                    %img{ :src => badge.icon, :alt => badge.name, :width => "100", :style => "width: 100px, opacity: .5"}
                 %td
                   .bold= badge.name
                   = raw badge.description

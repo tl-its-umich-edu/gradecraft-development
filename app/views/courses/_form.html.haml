@@ -153,6 +153,44 @@
       = f.number_field :min_group_size
 
   .panel
+    %span.has-tip{:title => "Multipliers allow students to 'boost' their grades on specific assignment types. You decide how many multipliers students can allocate, then the students select which assignment types will get a boost (through their dashboard) and those assignment type's points are multiplied by the number of multipliers that the student allocates.", :data => {'tooltip' => true} } MULTIPLIERS
+
+    %hr
+    .small-12.large-4.columns
+      = f.label :total_assignment_weight, "Multiplier Count"
+      = f.number_field :total_assignment_weight
+      .form_label= "How many multipliers do #{term_for :students} have to allocate?"
+
+    .small-12.large-4.columns
+      = f.label :assignment_weight_close_at, "Decision By..."
+      = f.input :assignment_weight_close_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @assignment.try(:open_at) }, :label => false
+      .form_label What date must they make this decision by?
+
+    .small-12.large-4.columns
+      = f.label :max_assignment_weight, "Maximum Per #{term_for :assignment_type}"
+      = f.number_field :max_assignment_weight
+      .form_label Is there a maximum weight they may place on a single assignment type?
+
+    .clearfix
+
+    .small-12.large-4.columns
+      = f.label :max_assignment_types_weighted, "Maximum Multiplied Assignment Types"
+      = f.number_field :max_assignment_types_weighted
+      .form_label Is there a maximum number of assignment types they can weight?
+
+    .small-12.large-4.columns
+      = f.label :default_assignment_weight
+      = f.text_field :default_assignment_weight
+      .form_label What amount should the assignment types that the student doesn't select to boost be multiplied by?
+
+    .small-12.large-4.columns
+      = f.label :weight_term
+      = f.text_field :weight_term
+      .form_label What do you want to call these weights/multipliers?
+
+    .clearfix
+
+  .panel
     %h4 TERMINOLOGY
     %hr
 

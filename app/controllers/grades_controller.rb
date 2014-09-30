@@ -36,7 +36,11 @@ class GradesController < ApplicationController
     if @assignment.notify_released? && @grade.is_released?
       NotificationMailer.grade_released(@grade.id).deliver
     end
-    redirect_to session[:return_to]
+    if session[:return_to].present?
+      redirect_to session[:return_to]
+    else
+      redirect_to @assignment
+    end
   end
 
   def submit_rubric
