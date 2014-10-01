@@ -340,7 +340,7 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def sample_grade_import(assignment, options = {})
+  def email_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["First Name", "Last Name", "Email", "Score"]
       course.students.each do |student|
@@ -349,7 +349,16 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def sample_grade_import_2(assignment, options = {})
+  def username_based_grade_import(assignment, options = {})
+    CSV.generate(options) do |csv|
+      csv << ["First Name", "Last Name", "Email", "Score"]
+      course.students.each do |student|
+        csv << [student.first_name, student.last_name, student.username, student.grade_for_assignment(assignment).try(:score)]
+      end
+    end
+  end
+
+  def name_based_grade_import(assignment, options = {})
     CSV.generate(options) do |csv|
       csv << ["Student", "ID", "Section", assignment.name]
       csv << ["    Points Possible", "", "", assignment.point_total]

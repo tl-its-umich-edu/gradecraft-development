@@ -143,22 +143,32 @@ class AssignmentsController < ApplicationController
   end
 
   # Export an example for grade imports
-  def sample_import
+  def email_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: @assignment }
-      format.csv { send_data @assignment.sample_grade_import(@assignment) }
+      format.csv { send_data @assignment.email_based_grade_import(@assignment) }
       format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end
 
-  def sample_import_2
+  def username_based_grade_import
     @assignment = current_course.assignments.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: @assignment }
-      format.csv { send_data @assignment.sample_grade_import_2(@assignment) }
+      format.csv { send_data @assignment.username_based_grade_import(@assignment) }
+      format.xls { send_data @assignment.to_csv(col_sep: "\t") }
+    end
+  end
+
+  def name_based_grade_import
+    @assignment = current_course.assignments.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @assignment }
+      format.csv { send_data @assignment.name_based_grade_import(@assignment) }
       format.xls { send_data @assignment.to_csv(col_sep: "\t") }
     end
   end
