@@ -10,6 +10,7 @@ class UserSessionsController < ApplicationController
   def create
     respond_to do |format|
       if @user = login(params[:user][:email], params[:user][:password], params[:user][:remember_me])
+        User.increment_counter(:visit_count, @user.id)
         log_course_login_event
         format.html { redirect_back_or_to dashboard_path }
         format.xml { render :xml => @user, :status => :created, :location => @user }
@@ -36,6 +37,7 @@ class UserSessionsController < ApplicationController
     save_lti_context
     session[:course_id] = @course.id
     auto_login @user
+    User.increment_counter(:visit_count, @user.id)
     respond_with @user, notice: t('sessions.create.success'), location: dashboard_path
   end
 
@@ -47,6 +49,7 @@ class UserSessionsController < ApplicationController
       redirect_to auth_failure_path and return
     end
     auto_login @user
+    User.increment_counter(:visit_count, @user.id)
     respond_with @user, notice: t('sessions.create.success'), location: dashboard_path
   end
 

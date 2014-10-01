@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
       @user = User.find_by_username(request.env["REMOTE_USER"])
       if @user
         auto_login(@user)
-        User.increment_counter(:visit_count, current_user.id) if current_user
+        User.increment_counter(:visit_count, @user.id)
         redirect_to dashboard_path
       else
         redirect_to root_url, :alert => "Please login first."
