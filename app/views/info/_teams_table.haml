@@ -15,5 +15,6 @@
 
         %td= points team.try(:average_points)
         %td
+          // If put back in use, change to team.leaders
           - if team.team_leader.present?
             = link_to team.team_leader.try(:name), team.team_leader

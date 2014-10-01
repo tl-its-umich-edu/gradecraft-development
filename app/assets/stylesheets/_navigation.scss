@@ -1,4 +1,4 @@
-/* Coloring the brand */ 
+/* Coloring the brand */
 .title-area li.name h1 a {
   color: $secondary-color;
   white-space:nowrap;
@@ -37,6 +37,9 @@
 
   li {
     margin-bottom: .5rem;
+    &.leader-list {
+      padding-left: .8rem;
+    }
   }
 
   li:hover {
@@ -77,19 +80,19 @@ tagline doesn't actually link anywhere we're disabling the perception of the lin
   cursor: default;
 }
 
-/* Rounding the gravatar edges */ 
+/* Rounding the gravatar edges */
 img.img-rounded {
   border-radius: .25rem;
 }
 
-/* Styling the mobile active link dropdown */ 
+/* Styling the mobile active link dropdown */
 .f-dropdown li.active {
   padding: 0.5rem;
   background-color: $secondary-color;
 }
 
 .past_courses {
-  
+
   hr {
     margin: 1.5rem 0 .5rem;
   }

@@ -152,6 +152,10 @@ class User < ActiveRecord::Base
     teams.first.try(:team_leader)
   end
 
+  def team_leaders(course)
+    course_team(course).leaders rescue nil
+  end
+
   ROLES.each do |role|
     define_method("is_#{role}?") do |course|
       self.role(course) == role
@@ -177,7 +181,7 @@ class User < ActiveRecord::Base
 
   # Find the team associated with the team membership for a given course id
   def course_team(course)
-    team_memberships.where("teams.course_id = ?", course.id) rescue nil
+    team_memberships.joins(:team).where("teams.course_id = ?", course.id).first.team rescue nil
   end
 
   def character_profile(course)

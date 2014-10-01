@@ -34,11 +34,17 @@
           %i.fi-crown
           Professor #{ current_course.professor.try(:name) }
         - if current_user_is_student?
-          - current_student.team_leader.tap do |team_leader|
-            - if team_leader.present?
+          - current_student.team_leaders(current_course).tap do |team_leaders|
+            - if team_leaders.present?
               %li
                 %i.fi-torso-business
-                = "#{current_course.team_leader_term} #{team_leader.first_name}"
+                = "#{term_for :team_leaders}"
+                %ul
+                - team_leaders.each do |team_leader|
+                  %a{:href => "mailto:#{team_leader.email}"}
+                    %li.leader-list
+                      %i.fi-mail
+                      = "#{team_leader.name}"
         - if current_user_is_student? && current_user.team_for_course(current_course).present?
           %li
             %i.fi-torsos-all
