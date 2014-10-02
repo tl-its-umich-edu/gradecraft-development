@@ -6,7 +6,7 @@
     .small-12.medium-7
       %h3.pagetitle= "#{@assignment_type.name} Grade Patterns"
 
-    .small-12.medium-5.right.columns
+    .small-12.medium-7.right.columns
       .button-bar.right
         %ul.button-group.context_menu
           %li
@@ -20,7 +20,7 @@
           %li
             %a{:href => edit_assignment_type_path(@assignment_type)}
               %i.fi-pencil
-              Edit
+              Edit #{@assignment_type.name}
 
     .small-12.columns
 
@@ -45,6 +45,9 @@
             %th
               %i.fi-skull.missing_grade
               No Grade
+      .small-12
+        %p.italic
+          Numbers reflect streaks - how many times in a row a #{(term_for :student).downcase} has earned full points
 
     / Gradebook Pattern Table
     .columns
@@ -54,7 +57,7 @@
             %tr
               %th First Name
               %th Last Name
-              - for assignment in @assignment_type.assignments.chronological
+              - for assignment in @assignment_type.assignments.chronological.alphabetical
                 - if assignment.point_total > 0
                   %th.sortable{"data-sort" => "int"}= assignment.due_at.strftime("%b %d") if assignment.due_at.present?
           %tbody

@@ -209,7 +209,7 @@ class GradesController < ApplicationController
   end
 
   #upload based on username
-  def upload
+  def username_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
 
@@ -245,8 +245,8 @@ class GradesController < ApplicationController
     end
   end
 
-  #upload based on "LastName, FirstName"
-  def upload2
+  #upload based on "email"
+  def email_import
     @assignment = current_course.assignments.find(params[:id])
     @students = current_course.students
 
@@ -258,7 +258,7 @@ class GradesController < ApplicationController
     else
       CSV.foreach(params[:file].tempfile, :headers => true, :encoding => 'ISO-8859-1') do |row|
         @students.each do |student|
-          if student.last_name + ", " + student.first_name == row[0] && row[3].present?
+          if student.email == row[2] && row[3].present?
             if student.grades.where(:assignment_id => @assignment).present?
               @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
                 grade.raw_score = row[3].to_i
@@ -271,6 +271,43 @@ class GradesController < ApplicationController
                 g.assignment_id = @assignment.id
                 g.student_id = student.id
                 g.raw_score = row[3].to_i
+                #g.feedback = row[4]
+                g.status = "Graded"
+              end
+            end
+          end
+        end
+      end
+    redirect_to assignment_path(@assignment), :notice => "Upload successful"
+    end
+  end
+
+  #upload based on "LastName, FirstName"
+  def name_import
+    @assignment = current_course.assignments.find(params[:id])
+    @students = current_course.students
+
+    require 'csv'
+
+    if params[:file].blank?
+      flash[:notice] = "File missing"
+      redirect_to assignment_path(@assignment)
+    else
+      CSV.foreach(params[:file].tempfile, :headers => true, :encoding => 'ISO-8859-1') do |row|
+        @students.each do |student|
+          if student.last_name + ", " + student.first_name == row[0] && row[5].present?
+            if student.grades.where(:assignment_id => @assignment).present?
+              @assignment.all_grade_statuses_grade_for_student(student).tap do |grade|
+                grade.raw_score = row[5].to_i
+                #grade.feedback = row[4]
+                grade.status = "Graded"
+                grade.save!
+              end
+            else
+              @assignment.grades.create! do |g|
+                g.assignment_id = @assignment.id
+                g.student_id = student.id
+                g.raw_score = row[5].to_i
                 #g.feedback = row[4]
                 g.status = "Graded"
               end

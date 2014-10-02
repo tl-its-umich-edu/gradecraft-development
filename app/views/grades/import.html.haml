@@ -17,7 +17,7 @@
         %b By Email<br/>
         #{term_for :student}'s first name, #{term_for :student}'s last name, email, score, and any text feedback you'd like to include. #{link_to "Download Sample File", email_based_grade_import_assignment_path(format: 'csv'), :class => "bold"}
 
-      = form_tag({:action => :upload}, :multipart => true) do
+      = form_tag({:action => :email_import}, :multipart => true) do
         = file_field_tag 'file'
         = submit_tag("Import", :class => "button tiny secondary radius")
         %br
@@ -28,7 +28,7 @@
         %b By Uniqname<br/>
         #{term_for :student}'s first name, #{term_for :student}'s last name, uniqname, score, and any text feedback you'd like to include. #{link_to "Download Sample File", username_based_grade_import_assignment_path(format: 'csv'), :class => "bold"}
 
-      = form_tag({:action => :upload}, :multipart => true) do
+      = form_tag({:action => :username_import}, :multipart => true) do
         = file_field_tag 'file'
         = submit_tag("Import", :class => "button tiny secondary radius")
         %br
@@ -36,9 +36,9 @@
         %br
 
       %p
-        %b By Full Name<br/>
+        %b By Full Name [Canvas Import]<br/>
         #{term_for :student}'s "Lastname, Firstname", ID, section, and score. #{ link_to "Download Sample File", name_based_grade_import_assignment_path(format: 'csv'), :class => "bold" }
 
-      = form_tag({:action => :upload2}, :multipart => true) do
+      = form_tag({:action => :name_import}, :multipart => true) do
         = file_field_tag 'file'
         = submit_tag("Import", :class => "button tiny secondary radius")
