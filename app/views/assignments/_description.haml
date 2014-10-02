@@ -1,4 +1,6 @@
-%a.radius.tiny.button{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } See Description
+%a{:href => "#", "data-reveal-id" => "assignment_description", :data => {:reveal => "true" } } 
+  %i.fi-eye
+  Rules
 #assignment_description.reveal-modal{:data => {:reveal => "true" }}
   %h3.bold= @assignment.name
   .italic= "Due: #{@assignment.due_at}"

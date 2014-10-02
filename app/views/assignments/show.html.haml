@@ -5,18 +5,17 @@
 
   .small-12.medium-9
     %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
-    - if @assignment.description.present?
-      .small-12.medium-4.columns.right
-        .right= render "assignments/description"
 
   - if current_user.is_staff?
-    .small-12.medium-5.right.columns
+    .small-12.medium-6.right.columns
       .button-bar.right
         %ul.button-group.context_menu
           %li
+            = render "assignments/description"
+          %li
             %a{:href => edit_assignment_path(@assignment) }
               %i.fi-pencil
-              Edit 
+              Edit #{@assignment.name}
           - if @team.present?
             %li
               %a{:href => mass_grade_assignment_path(@assignment, :team_id => @team) }
