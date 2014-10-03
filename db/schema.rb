@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140902182913) do
+ActiveRecord::Schema.define(version: 20141003041511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -454,6 +454,7 @@ ActiveRecord::Schema.define(version: 20140902182913) do
     t.integer  "predicted_score",    default: 0, null: false
   end
 
+  add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -653,6 +654,13 @@ ActiveRecord::Schema.define(version: 20140902182913) do
   add_index "tasks", ["assignment_id", "assignment_type"], name: "index_tasks_on_assignment_id_and_assignment_type", using: :btree
   add_index "tasks", ["course_id"], name: "index_tasks_on_course_id", using: :btree
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
+
+  create_table "team_leaderships", force: true do |t|
+    t.integer  "team_id"
+    t.integer  "leader_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "team_memberships", force: true do |t|
     t.integer  "team_id"
