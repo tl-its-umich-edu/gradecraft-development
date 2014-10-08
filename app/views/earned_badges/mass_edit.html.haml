@@ -3,12 +3,14 @@
   = content_nav do
     = render "badges/tabs"
 
-  %span.pagetitle= @title
+  %h3.pagetitle= @title
 
   - if current_course.has_teams?
     .small-12.medium-4.columns.right
       = form_tag mass_award_badge_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = hidden_field_tag :badge_id, @badge.id
+        %label.sr-only{ :for => "team_id"}
+          Select team
         = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
     .small-12.columns#massGrade
@@ -34,6 +36,7 @@
               %td.right
                 = f.simple_fields_for :earned_badges, eb do |ebf|
                   = ebf.hidden_field :student_id
+                  = ebf.label :score, "Select #{eb.student.name}", class: 'sr-only'
                   - if @badge.can_earn_multiple_times? 
                     = ebf.check_box :score, {}, @badge.point_total, nil
                   - elsif ! eb.student.earned_badges.where(:badge_id => @badge).present?

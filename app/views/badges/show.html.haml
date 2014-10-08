@@ -7,7 +7,7 @@
 
   = content_nav_for @badge
   
-  .pagetitle= @title
+  %h3.pagetitle= @title
 
   .small-12.columns
     //badge icon, total awarded, and points
@@ -75,9 +75,19 @@
                 %td  
                   - @badge.earned_badges.where(:student_id => student.id).each do |badge|
                     %img{:src => @badge.icon, :alt => @badge.name, :width => "20" }
-                    %span.has-tip{:title => "Edit this #{term_for :badge}", :data => {'tooltip' => true} }= link_to "(#{badge.created_at.strftime("%b %d")})", edit_badge_earned_badge_path(@badge, badge.id)
+                    %span.has-tip{:title => "Edit this #{term_for :badge}", :data => {'tooltip' => true} }
+                      %a{:href => edit_badge_earned_badge_path(@badge, badge.id)}
+                        #{badge.created_at.strftime("%b %d")}
+                        %span.sr-only
+                          Edit this Achievement for 
+                        %span.sr-only= student.first_name
+                        %span.sr-only= student.last_name
                     %span
                       = link_to badge_earned_badge_path(@badge, badge), :method => :delete, :data => { confirm: "Are you sure you want to delete this #{term_for :badge}?" } do
+                        %span.sr-only
+                          Delete this achievement for
+                        %span.sr-only= student.first_name
+                        %span.sr-only= student.last_name
                         %i.fi-trash
                     .clearfix
 

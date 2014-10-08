@@ -7,7 +7,7 @@
     
     = content_nav_for Badge
   
-    .pagetitle= @title
+    %h3.pagetitle= @title
     
     %span  
       %b #{term_for :badges} :
@@ -36,7 +36,11 @@
                 %img{:src => badge.icon, :alt => badge.name, :width => "80"}
               %td= badge.awarded_count
               %td
-                .bold= link_to badge.name, badge_path(badge)
+                .bold
+                  %a{:href => badge_path(badge)}
+                    %span.sr-only
+                      View details for
+                    %span= badge.name
                 = raw badge.description
               - if current_course.valuable_badges?
                 %td= points badge.point_total
@@ -48,11 +52,16 @@
               %td
                 .button-bar
                   %ul.button-group.right.round
-                    %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button tiny secondary"
+                    %li
+                      %a{:href => mass_award_badge_path(badge), :class => 'button tiny secondary'}
+                        Quick Award
+                        %span.sr-only= badge.name
                     %li
                       %a{:href => edit_badge_path(badge), :class => 'button tiny secondary'}
                         Edit
+                        %span.sr-only= badge.name
                     %li
                       %a{:href => badge_path(badge),:class => "button tiny secondary" , :data => { confirm: 'Are you sure?',  method: :delete } }
                         Delete
+                        %span.sr-only= badge.name
     .clearfix

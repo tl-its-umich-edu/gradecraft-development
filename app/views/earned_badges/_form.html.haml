@@ -1,6 +1,7 @@
 = simple_form_for([@badge, @earned_badge]) do |f|
   .small-12.columns
-    %h5= "You are awarding the #{@badge.name} #{term_for :badge} to..."
+    %label{:for => "student"}
+      %h5= "You are awarding the #{@badge.name} #{term_for :badge} to..."
 
   = hidden_field_tag :badge_id, @badge.id
   .small-12.medium-4.columns
