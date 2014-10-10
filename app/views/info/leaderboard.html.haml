@@ -57,8 +57,18 @@
               %td
                 .button-bar
                   %ul.button-group.round.right
-                    %li= link_to "Dashboard", student_path(student), :class => "button tiny"
-                    %li= mail_to student.email, "Email", :class => "button tiny"
-                    %li= link_to "Edit", edit_user_path(student), :class => "button tiny"
+                    %li
+                      %a{:href => student_path(student), :class => 'button tiny' }
+                        Dashboard
+                        %span.sr-only for #{student.first_name} #{student.last_name}
+                    %li
+                      %a{:href => "mailto:#{student.email}", :class => 'button tiny' }
+                        Email
+                        %span.sr-only #{student.first_name} #{student.last_name}
+                    %li
+                      %a{:href => edit_user_path(student), :class => 'button tiny' }
+                        Edit
+                        %span.sr-only record for #{student.first_name} #{student.last_name}
+
             - i += 1
   .clearfix
