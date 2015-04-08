@@ -1,0 +1,64 @@
+.small-12.panel.mainContent
+
+  %h3.pagetitle= "Grade Predictor Preview"
+
+  .small-12.columns
+
+    .gradePredictor
+      #predictorWrapper#studentID{ 'data-student-id' => nil }
+        %h4
+          Predicted points:
+          %span#predictor-score-display.bold
+          = "/"
+          %span= "#{ points current_course.total_points } possible points"
+          –
+          Predicted final grade:
+          %span.bold#predictor-course-grade{:'data-grade-levels' => "#{@grade_levels_json}"}
+
+      .charts.dashboard-charts
+        .chart-wrapper
+          .chart-inner
+            #prediction
+
+      .clear
+
+    #predictorPage{ 'data-course-total' => current_course.total_points }
+      %br
+      %ul.slides.small-12.columns
+        - current_course.assignment_types.sorted.each do |assignment_type|
+          %li{:id => "slide-#{assignment_type.id}", :'data-assignment-type-id' => assignment_type.id, :'data-assignment-type-name' => assignment_type.name}
+            .slide-panel.assignmentType
+              %h3.collapse
+                = assignment_type.name
+                .right.radius.label.fade
+                  = "#{points assignment_type.max_value} points possible"
+              .small-12
+                - assignments = assignment_type.assignments.sorted
+                - assignments.each do |assignment|
+                  .clear
+                  - if assignment.point_total > 0
+                    .assignment
+                      .small-12.medium-7.columns
+
+                        - if assignment.required?
+                          %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
+                            %i.fi-star
+                        %span.bold= assignment.name
+                        %span.earned 
+                          = points 0
+                          = " / #{points assignment.point_total} points"
+                      
+                      .small-12.medium-5.columns.assignmentData{:data => {:assignment => assignment.id, :'possible-points' => assignment.point_total}}  
+
+                        - if assignment.fixed?
+                          %input{:type => "checkbox", :name => assignment.name, :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id, :value => assignment.point_total }
+                        - elsif assignment.select?
+                          = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','formatted_name'),  :class => 'point-value', :id => "total-#{assignment.id}", :include_blank => true
+                        - else
+                          %span.pScore= "0 "
+                          %span.score-level-name
+                          .slider{:id => "slider-#{assignment.id}", :max => assignment.point_total, :value => 0, :'data-scorelevelvals' => "#{assignment.assignment_score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_score_levels.map(&:name)}", :'data-highlight' => "true"}
+                      .clear
+        //= render 'students/predictor/badges'
+        //= render 'students/predictor/challenges'
+        

@@ -4,8 +4,8 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-6.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{ :href => new_assignment_path }
@@ -15,7 +15,8 @@
           %a{ :href => assignment_path(@assignment) }
             %i.fi-list-thumbnails
             See #{@assignment.name}
-  
+    %br
+
   .small-12.columns
 
     = render 'form'

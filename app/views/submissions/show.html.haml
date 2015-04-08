@@ -1,0 +1,15 @@
+.small-12.panel.mainContent
+  - if current_user_is_student?
+
+    %h3.pagetitle
+      - if @assignment.has_groups? && @group.present?
+        = "#{@title} for #{term_for :group} #{@group.name} (#{points @assignment.point_total} points)"
+      - else
+        = "#{@title} (#{points @assignment.point_total} points)"
+    = render 'submissions/student_show'
+
+  - else
+
+    = content_nav_for @assignment, "See Submission"
+    
+    = render 'submissions/instructor_show'

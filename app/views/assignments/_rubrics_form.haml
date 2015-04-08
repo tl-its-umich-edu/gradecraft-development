@@ -4,7 +4,7 @@
     - assignment_rubrics.each do |assignment_rubric|
       .assignment_rubric.panel(id="rubric-#{assignment_rubric.rubric_id}" class="#{'hidden' unless assignment_rubric.persisted?}")
         = f.simple_fields_for :assignment_rubrics, assignment_rubric do |arf|
-          .panel-heading.clearfix
+          .panel-heading.clear
             = arf.hidden_field :rubric_id
             = arf.hidden_field :_destroy, value: !assignment_rubric.persisted?, class: 'destroy'
             = link_to "#rubric-#{assignment_rubric.rubric_id}", class: 'button tiny radius remove-assignment-rubric pull-right' do

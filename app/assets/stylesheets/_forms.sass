@@ -1,0 +1,138 @@
+.select2-container
+  display: block
+
+label
+  text-transform: capitalize
+  font-weight: bold
+  display: inline-block
+  margin-bottom: 5px
+
+label, input
+  padding-bottom: 0
+
+.radio label,
+.checkbox label
+  cursor: pointer
+  display: inline
+
+label.checkbox input, label.check_boxes input, label.checkbox, label.radio, label.radio input
+  clear: both
+
+.score-level .remove-level.button, .remove-element.button, .assignment-score-levels .remove-assignment-score-level.button
+  margin-top: 1.8rem
+  color: #FFF
+
+fieldset
+  border: none
+  padding: 0
+
+/** Styling to make labels on checkboxes and radio forms align properly**/
+.radio,
+.checkbox
+  display: block
+  margin-bottom: 10px
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"]
+  float: left
+
+input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+select,
+.checkbox-inline input[type="checkbox"],
+input[type="text"]
+  margin-bottom: 0.5rem
+
+input[type="checkbox"]
+  margin-top: 0.26rem
+
+label.boolean
+  margin-left: 0
+
+select
+  background-color: #FFF !important
+  border-radius: $global-radius
+  margin-right: 0 !important
+
+select:hover
+  background-color: $primary-color-3
+
+ul.dropdown-menu
+  background-color: #FFF
+  padding: 2px
+  margin: 0 !important
+  border-radius: $global-radius
+
+  li
+    padding: 0 !important
+    margin: 0 !important
+    line-height: 2.1rem
+    border-radius: $global-radius
+    width: 100% !important
+
+  li a
+    background-color: #FFF !important
+    color: #333 !important
+    width: 100% !important
+
+  li:hover, li.active a
+    background-color: $primary-color-2 !important
+    border-radius: $global-radius
+    color: #fff !important
+
+ul.accepts_submission_types
+  list-style-type: none
+
+.form_buttons
+  margin-top: 1rem
+
+.form_label
+  font-size: 80%
+  line-height: 130%
+  color: #666
+  font-style: italic
+  font-weight: normal
+  text-transform: none
+
+.checkbox label
+  margin-left: .5rem
+
+.checkbox .form_label
+  margin-left: 1.6rem
+
+.textarea .form_label
+  background-color: $medium-grey
+  font-style: italic
+  color: #FFF
+  padding: 1rem
+  margin-top: -.35rem
+  margin-bottom: 1rem
+  border-bottom-right-radius: $global-radius
+  border-bottom-left-radius: $global-radius
+
+.textarea ul.wysihtml5-toolbar
+  background-color: $medium-grey
+
+.bootsy_text_area
+  font-weight: normal
+
+.img.form_label
+  background-color: $dark-grey
+  padding: .5rem
+  border-bottom-right-radius: $global-radius
+  border-bottom-left-radius: $global-radius
+
+.assignment_weights small
+  font-size: 100%
+  font-style: italic
+  background-color: $alert-color
+  border-radius: $global-radius
+  color: #FFF
+  padding: .3rem .7rem
+
+.inline-list > li > *
+  display: block
+  width: 100%

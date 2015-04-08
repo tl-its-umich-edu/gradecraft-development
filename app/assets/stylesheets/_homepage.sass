@@ -1,0 +1,82 @@
+
+/* Front facing page, not logged in */ 
+.row.panel.publicContent
+  margin-bottom: 0
+  margin-top: 1.5rem
+  padding-top: 2rem
+  border: none
+  background-color: #FFF
+  min-height: 30rem
+  border-bottom-right-radius: 0
+  border-bottom-left-radius: 0
+
+.row.panel.footer
+  border-top-right-radius: 0
+  border-top-left-radius: 0
+  margin-top: 0
+  background-color: $primary-color-5
+  border: none
+  color: #FFF
+  padding-bottom: 0
+
+  h5
+    color: $primary-color-4
+    font-size: 110%
+
+  a
+    color: #FFF
+
+  ul
+    margin: 0
+    padding: 0
+
+  li
+    list-style-type: none
+    font-size: .9rem
+
+  h6
+    color: #FFF
+    font-size: 90%
+
+.logged_in_footer, .logged_in_footer a, .logged_in_footer h5, .logged_in_footer h6
+  color: #FFF
+
+.logged_in_footer h5
+  font-size: 120%
+  font-weight: bold
+
+  /** Login Forms  **/
+
+.login_forms
+  background-color: #FFF
+  border: none
+
+  .content
+    border-top-right-radius: $global-radius
+    padding: 1rem 0
+    border-bottom-right-radius: $global-radius
+    border-bottom-left-radius: $global-radius
+
+    input
+      width: 90% !important
+      margin-left: 15px !important
+    button
+      margin: 0
+
+  .tabs-content
+    border: none
+    padding-bottom: 1rem
+    background-color: $light-grey
+    border-top-right-radius: $global-radius
+    border-bottom-right-radius: $global-radius
+    border-bottom-left-radius:  $global-radius
+
+  dl.tabs dd > a
+    margin: 0 !important
+
+  .right
+    margin-right: 1.25rem
+
+@media (max-width: 600px)
+  .row.panel.publicContent
+    padding-top: 1.25rem !important

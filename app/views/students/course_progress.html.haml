@@ -3,7 +3,7 @@
     = render "students/student_profile_tabs"
 .small-12.panel.mainContent
 
-  %h3.pagetitle= @title
+  = render 'students/earned_points_and_level'
   
   .small-12.columns
     - if current_course.grade_scheme_elements.present?
@@ -44,7 +44,7 @@
           .progress.secondary.radius.bar_magic
             .meter{:style => "width: #{element.progress_percent(current_student, current_course)}%"}
               .striped
-  .clearfix
+  .clear
   
   .small-12.columns
     %p= raw current_course.grading_philosophy

@@ -7,44 +7,9 @@
  *= require select2
  *= require foundation-icons
  *= require bootstrap
- *= require collapse
- *= require rubrics
- *= require grades
- *= require assignments
+ *= require jquery.dynatable
  
 /* Branding colors */
-
-/*$primary-color: #1A1EB2;
-$primary-color-2: #303285;
-$primary-color-3: #6dd8f0;
-$primary-color-4: #6dd8f0;
-$primary-color-5: #080B74;
-$secondary-color: #00BD39;
-$secondary-color-2: #238D43;
-$secondary-color-3: #007B25;
-$secondary-color-4: #37DE6A;
-$secondary-color-5: #64DE89;
-$alert-color: #FFCC00;
-$alert-color-2: #BFBD30;
-$alert-color-3: #A6A400;
-$alert-color-4: #FFFD40;
-$alert-color-5: #FFFD73;*/
-
-/*$primary-color: #13157F;
-$primary-color-2: #13157F;
-$primary-color-3: #6dd8f0;
-$primary-color-4: #56AABD;
-$primary-color-5: #080B74;
-$secondary-color: #00BD39;
-$secondary-color-2: #238D43;
-$secondary-color-3: #007B25;
-$secondary-color-4: #556B70;
-$secondary-color-5: #64DE89;
-$alert-color: #FFCC00;
-$alert-color-2: #BFBD30;
-$alert-color-3: #A6A400;
-$alert-color-4: #FFFD40;
-$alert-color-5: #FFFD73;*/
 
 $primary-color: #002d62;
 $primary-color-2: #234879;
@@ -64,12 +29,34 @@ $alert-color-5: #FFFD73;
 $light-grey: #CCC;
 $medium-grey: #666;
 $dark-grey: #444444;
+$light_green: #EFFFED;
+$dark_green: #54BA3F;
+$inactive_red: #CC0000;
+$dark_red: #B40D0D;
+$badass_blue: #269ECC;
+$badge_blue: #009BD6;
+$badge_green: #54B141;
+$badge_green_border: #439A31;
+$global-radius: 5px;
 
-
+@mixin transition($property, $duration) {
+  -webkit-transition: $property $duration;
+  -ms-transition: $property $duration;
+  -o-transition: $property $duration;
+  transition: $property $duration;
+}
+@mixin linear-gradient($fromColor, $toColor) {
+  background-color: $toColor; //* Fallback Color */
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor); // Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor); /* FF3.6 */
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor); /* IE10 */
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor); /* Opera 11.10+ */
+  background-image:         linear-gradient(top, $fromColor, $toColor);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}');
+}
 /* Importing supporting files. If you create a new css file you'll need to add it here.  */
 @import 'foundation_and_overrides';
-@import 'compass';
-@import 'compass/css3';
 @import 'sidebars';
 @import 'forms';
 @import 'tables';
@@ -84,3 +71,5 @@ $dark-grey: #444444;
 @import 'buttons_and_icons';
 @import 'typography';
 @import 'homepage';
+@import 'rubrics';
+@import 'collapse';

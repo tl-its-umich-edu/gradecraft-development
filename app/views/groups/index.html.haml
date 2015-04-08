@@ -2,110 +2,35 @@
 
   = content_nav_for Group
 
-  .small-12.medium-9
+  .small-12
     %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_group_path }
             %i.fi-plus
             New #{term_for :group}
 
-  - if @groups.pending.present?
+  - if @pending_groups.present?
 
     %h4.subtitle= "Pending #{term_for :groups}"
 
-    .small-12.columns  
+    = render 'groups_table', :course => current_course, :groups => @pending_groups
 
-      %table.responsive.nofeatures_dynatable
-        %thead
-          %tr
-            %th #{term_for :group} Name
-            %th #{current_course.user_term}s
-            %th Status
-            %th #{term_for :assignments} 
-            %th.button-column
-        %tbody
-          - @groups.pending.each do |group|
-            %tr
-              %td= link_to group.name, group_path(group)
-              %td
-                - group.group_memberships.each do |gm|
-                  %li= link_to gm.student.name, student_path(gm.student)
-              %td= group.approved
-              %td
-                - group.assignment_groups.each do |ag|
-                  %li= link_to ag.assignment.name, ag.assignment
-              %td
-                .button-bar
-                  %ul.button-group.radius.right
-                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
-                    %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
+    .clear
 
-    .clearfix
+  - if @rejected_groups.present?
 
-  - if @groups.rejected.present?
+    %h4.subtitle.fail= "Rejected #{term_for :groups}"
 
-    %h4.subtitle= "Rejected #{term_for :groups}"
+    = render 'groups_table', :course => current_course, :groups => @rejected_groups
 
-    .small-12.columns  
+    .clear
 
-      %table.responsive.nofeatures_dynatable
-        %thead
-          %tr
-            %th #{term_for :group} Name
-            %th= "#{current_course.user_term}s"
-            %th Status
-            %th #{term_for :assignments} 
-            %th.button-column
-        %tbody
-          - @groups.rejected.each do |group|
-            %tr
-              %td= link_to group.name, group_path(group)
-              %td
-                - group.group_memberships.each do |gm|
-                  %li= link_to gm.student.name, student_path(gm.student)
-              %td= group.approved
-              %td
-                - group.assignment_groups.each do |ag|
-                  %li= link_to ag.assignment.name, ag.assignment
-              %td
-                .button-bar
-                  %ul.button-group.radius.right
-                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
-                    %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
-
-    .clearfix
-
-  - if @groups.approved.present?
+  - if @approved_groups.present?
     
-    %h4.subtitle= "Approved #{term_for :groups}"
+    %h4.subtitle.success= "Approved #{term_for :groups}"
 
-    .small-12.columns  
-
-      %table.responsive.nofeatures_dynatable
-        %thead
-          %tr
-            %th #{term_for :group} Name
-            %th= "#{current_course.user_term}s"
-            %th Status
-            %th #{term_for :assignments} 
-            %th.button-column
-        %tbody
-          - @groups.approved.each do |group|
-            %tr
-              %td= link_to group.name, group_path(group)
-              %td
-                - group.group_memberships.each do |gm|
-                  %li= link_to gm.student.name, student_path(gm.student)
-              %td= group.approved
-              %td
-                - group.assignment_groups.each do |ag|
-                  %li= link_to ag.assignment.name, ag.assignment
-              %td
-                .button-bar
-                  %ul.button-group.radius.right
-                    %li= link_to "Review #{term_for :group}", review_groups_path(:id => group), :class => 'button'
-                    %li= link_to 'Delete', group_path(group), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete
+    = render 'groups_table', :course => current_course, :groups => @approved_groups

@@ -5,7 +5,7 @@
   %h3.pagetitle= @title
 
   .small-12.columns            
-    %table.responsive.nopage_dynatable
+    %table.responsive.nofeatures_dynatable
       %thead
         %tr
           %th= term_for :student
@@ -23,6 +23,8 @@
         - for grade in @grades
           = hidden_field_tag "grade_ids[]", grade.id
         .medium-3.right= f.input :status, :label => "Update Status to:", :as => :select, :collection => Grade::STATUSES
-        %hr
-        .right
-          = f.button :submit, "Update Statuses", :class => "button radius"
+        .clear
+        .button-bar
+          %ul.button-group.radius.right
+            %li= f.button :submit, "Update Statuses"
+            %li= link_to 'Cancel', assignment_path(@assignment), :class => 'button'

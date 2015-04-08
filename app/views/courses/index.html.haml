@@ -2,20 +2,20 @@
 
   = content_nav_for Course
 
-  .small-12.medium-9
+  .small-12s
     %h3.pagetitle#tableCaption= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_course_path }
             %i.fi-plus
             New Course
+    %br
 
-
-  .small-12.columns
-    %table.columns.nosearch_dynatable{"aria-describedby" => "tableCaption"}
+  .columns{:style => "overflow: auto"}
+    %table.responsive.nosearch_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
           %th{:scope => "col"} Name
@@ -24,7 +24,9 @@
           %th{:scope => "col"} Semester
           %th{:scope => "col"} Badges
           %th{:scope => "col"} Total Points
-          %th{:scope => "col"}
+          - if current_user_is_admin?
+            %th
+          %th{:scope => "col", :style => "min-width: 200px" }
             %span.sr-only Actions
       %tbody
         - @courses.each do |course|
@@ -52,6 +54,6 @@
                       Delete
                       %span.sr-only #{course.name}
                   %li
-                    = link_to copy_courses_path(:id => current_course), :class => 'button', :method => :copy do
+                    = link_to copy_courses_path(:id => course.id), :class => 'button', :method => :copy do
                       Copy
                       %span.sr-only #{course.name}

@@ -2,27 +2,18 @@
   
   = content_nav_for Team
 
-  .small-12.medium-9
+  .small-12
     %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_team_path }
             %i.fi-plus
-            New #{term_for :team}
+            New #{(term_for :team).titleize}
+    %br
 
   .small-12.columns
-    %dl.tabs{:data => {'tab' => true}}
-      %dd.active
-        %a{ "href" => "#tabt1"} #{term_for :team} Leaderboard
-      %dd
-        %a{ "href" => "#tabt2"} #{term_for :teams} Stats
-
-  .small-12.columns
-    .tabs-content
-      .content#tabt1.active
-        = render "leaderboard"
-      .content#tabt2
-        = render "stats"
+    = render "leaderboard"
+    = render "stats"

@@ -1,0 +1,40 @@
+.small-12.panel.mainContent
+
+  = content_nav_for Event
+
+  .small-12
+    %h3.pagetitle= @title
+
+  .small-12.columns
+    .button-bar
+      %ul.button-group.context_menu
+        %li
+          %a{:href => new_event_path }
+            %i.fi-plus
+            New Event
+
+
+    %br
+            
+  .columns{:style => "overflow: auto"}
+    %table.responsive.nofeatures_default_due_date_dynatable
+      %thead
+        %tr
+          %th{:width => "20%"} Name
+          %th Description
+          %th Open date
+          %th Close date
+          %th{:style => "min-width: 200px"}
+
+      %tbody
+        - @events.each do |event|
+          %tr
+            %td= link_to event.name, event
+            %td= raw event.description
+            %td= event.open_at
+            %td= event.due_at
+            %td
+              .button-bar
+                %ul.button-group.radius.right
+                  %li= link_to 'Edit', edit_event_path(event), :class => "button"
+                  %li= link_to 'Delete', event, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => "button"

@@ -18,7 +18,16 @@
               = link_to challenge.name, challenge
             - else
               = challenge.name
-          %td= raw challenge.description
+          %td
+            = raw challenge.description
+
+            - if challenge.challenge_files.present?
+              %b Attachments:
+              %ul
+                - challenge.challenge_files.each do |cf|
+                  %li
+                    = link_to cf.filename, cf.url
+
           %td= challenge.due_at
           - if current_student.team_for_course(current_course).present?
             %td

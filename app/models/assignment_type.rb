@@ -1,27 +1,29 @@
 class AssignmentType < ActiveRecord::Base
+  acts_as_list scope: :course
+  
   attr_accessible :due_date_present, :levels, :max_value, :name,
     :percentage_course, :point_setting, :points_predictor_display,
     :predictor_description, :resubmission, :universal_point_value, :order_placement, 
     :student_weightable, :mass_grade, :score_levels_attributes, :score_level, :mass_grade_type, 
-    :student_logged_revert_button_text, :student_logged_button_text,
-    :notify_released, :include_in_timeline, :include_in_predictor, :include_in_to_do
+    :student_logged_revert_button_text, :student_logged_button_text, :position
 
   belongs_to :course
-  has_many :assignments
+  has_many :assignments, -> { order('position ASC') }
   has_many :submissions, :through => :assignments
   has_many :assignment_weights
   has_many :grades
   has_many :score_levels, -> { order "value" }
   accepts_nested_attributes_for :score_levels, allow_destroy: true, :reject_if => proc { |a| a['value'].blank? || a['name'].blank? }
 
-  validates_presence_of :name, :points_predictor_display
+  validates_presence_of :name
+  validate :positive_universal_value, :positive_max_points
   before_save :ensure_score_levels, :if => :multi_select?
 
   scope :student_weightable, -> { where(:student_weightable => true) }
   scope :timelinable, -> { where(:include_in_timeline => true) }
   scope :todoable, -> { where(:include_in_to_do => true) }
   scope :predictable, -> { where(:include_in_predictor => true) }
-  scope :ordered, -> { order 'order_placement ASC' }
+  scope :sorted, -> { order 'position' }
   scope :weighted_for_student, ->(student) { joins("LEFT OUTER JOIN assignment_weights ON assignment_types.id = assignment_weights.assignment_type_id AND assignment_weights.student_id = '#{sanitize student.id}'") }
 
   def self.weights_for_student(student)
@@ -48,6 +50,10 @@ class AssignmentType < ActiveRecord::Base
 
   def per_assignment?
     points_predictor_display == "Set per Assignment"
+  end
+
+  def has_predictable_assignments?
+    assignments.any?(&:include_in_predictor?)
   end
 
   #Checks if the assignment type has associated score levels
@@ -92,7 +98,7 @@ class AssignmentType < ActiveRecord::Base
   end
 
   def score_for_student(student)
-    student.grades.where(:assignment_type => self).pluck('score').sum
+    student.grades.released.where(:assignment_type => self).pluck('score').sum
   end
 
   def raw_score_for_student(student)
@@ -119,10 +125,22 @@ class AssignmentType < ActiveRecord::Base
 
   private
 
+  def positive_universal_value
+    if universal_point_value? && universal_point_value < 1
+      errors.add :base, "Point value must be a positive number."
+    end
+  end
+
+  def positive_max_points
+    if max_value? && max_value < 1
+      errors.add :base, "Maximum points must be a positive number."
+    end
+  end
+
   #Checking to make sure there are score levels and warning if not
   def ensure_score_levels
-    if score_levels.count <= 1
-      errors.add(:assignment_type, "To use the selected method of quick grading you must create at least 2 score levels")
+    if score_levels.count <= 2
+      errors.add :base, "To use the selected method of quick grading you must create at least 2 score levels."
     end
   end
 end

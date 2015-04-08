@@ -1,5 +1,8 @@
 .small-12.panel.mainContent
 
   %h3.pagetitle Course Timeline
+  
+  #loading
+    Loading data please wait... 
+  #time_line{}
 
-  #time_line{"data-timeline" => render(:partial => 'info/timeline', :handlers => [:jbuilder], :formats => [:js])}

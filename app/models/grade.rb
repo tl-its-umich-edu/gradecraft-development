@@ -4,9 +4,10 @@ class Grade < ActiveRecord::Base
   attr_accessible :raw_score, :predicted_score, :final_score, :feedback, :assignment,
     :assignment_id, :status, :attempted, :student, :student_id, :submission, :submission_id, :released,
     :group, :group_id, :group_type, :task, :task_id, :graded_by_id, :team_id, :grade_file_ids,
-    :grade_files_attributes, :grade_file, :assignments_attributes, :point_total
+    :grade_files_attributes, :grade_file, :assignments_attributes, :point_total, :assignment_type_id, :course_id,
+    :instructor_modified
 
-  STATUSES=%w(Graded Released)
+  STATUSES= ["In Progress", "Graded", "Released"]
 
   belongs_to :course
   belongs_to :assignment, touch: true
@@ -35,14 +36,21 @@ class Grade < ActiveRecord::Base
   delegate :name, :description, :due_at, :assignment_type, :to => :assignment
 
   before_save :clean_html
-  after_save :save_student, :save_team
-  after_destroy :save_student, :save_team
+  #TODO: removed these callback check with cait
+  #after_save :save_student, :save_team
+  #after_destroy :save_student, :save_team
+  #TODO: called only destroy callback since worker is executing cache_student_and_team_scores
+  after_destroy :cache_student_and_team_scores
 
   scope :completion, -> { where(order: "assignments.due_at ASC", :joins => :assignment) }
   scope :graded, -> { where('status = ?', 'Graded') }
   scope :in_progress, -> { where('status = ?', 'In Progress') }
   scope :released, -> { joins(:assignment).where("status = 'Released' OR (status = 'Graded' AND NOT assignments.release_necessary)") }
+  scope :graded_or_released, -> { where("status = 'Graded' OR status = 'Released'")}
   scope :not_released, -> { joins(:assignment).where("status = 'Graded' AND assignments.release_necessary")}
+  scope :instructor_modified, -> { where('instructor_modified = ?', true) }
+  scope :positive, -> { where('score > 0')}
+
 
   validates_numericality_of :raw_score, integer_only: true
 
@@ -111,6 +119,7 @@ class Grade < ActiveRecord::Base
   def status_is_graded_or_released?
     self.status == "Graded" || self.status == "Released"
   end
+  alias_method :graded_or_released?, :status_is_graded_or_released?
 
   #Canable Permissions
   def updatable_by?(user)
@@ -135,6 +144,16 @@ class Grade < ActiveRecord::Base
     #end
   end
 
+  def cache_student_and_team_scores
+    self.student.cache_course_score(self.course.id)
+    if self.course.has_teams? && self.student.team_for_course(self.course).present?
+      self.student.team_for_course(self.course).cache_score
+    end
+  end
+
+  def altered?
+    self.score_changed? == true
+  end
 
   private
 
@@ -165,6 +184,6 @@ class Grade < ActiveRecord::Base
     self.assignment_id ||= submission.try(:assignment_id) || task.try(:assignment_id)
     self.assignment_type_id ||= assignment.try(:assignment_type_id)
     self.course_id ||= assignment.try(:course_id)
-    self.team_id ||= student.team_for_course(course).try(:id)
+    #self.team_id ||= student.team_for_course(course).try(:id)
   end
 end

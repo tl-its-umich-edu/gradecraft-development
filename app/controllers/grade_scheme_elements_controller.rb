@@ -5,7 +5,7 @@ class GradeSchemeElementsController < ApplicationController
   before_filter :ensure_staff?
 
   def index
-    @title = "#{current_course.name} Grading"
+    @title = "Grade Scheme"
     @grade_scheme_elements = current_course.grade_scheme_elements
   end
 

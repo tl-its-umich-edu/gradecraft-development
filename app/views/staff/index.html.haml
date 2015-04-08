@@ -4,7 +4,7 @@
 
   %h3.pagetitle= @title
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
 
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
@@ -13,21 +13,23 @@
           %th Last Name
           %th Role
           %th #{term_for :team}
-          %th.button-column
+          %th{:style => "min-width: 200px"}
       %tbody
-        - current_course.users.each do |user|
-          - if user.is_staff?(current_course)
-            %tr
-              %td= link_to user.first_name, staff_path(user)
-              %td= link_to user.last_name, staff_path(user)
-              %td= user.role(current_course).capitalize
-              %td
-                %ul
-                  - user.teams.each do |team|
-                    %li= link_to team.try(:name), team
-              %td
-                .button-bar
-                  %ul.button-group.right.radius
-                    %li= link_to 'See', staff_path(user), {:class => 'button'}
-                    %li= link_to 'Edit', edit_user_path(user), {:class => 'button'}
-                    %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'Are you sure?'}, :method => :delete
+        - @staff.each do |user|
+          %tr
+            %td
+              - if user.avatar_file_name.present?
+                %img.img-rounded{:src => user.avatar_file_name, :width => 30} 
+              = link_to user.first_name, staff_path(user)
+            %td= link_to user.last_name, staff_path(user)
+            %td= user.course_memberships.where(:course_id => current_course.id).first.role.capitalize
+            %td
+              %ul
+                - user.team_leaderships.each do |leadership|
+                  %li= link_to leadership.team.try(:name), leadership.team
+            %td
+              .button-bar
+                %ul.button-group.right.radius
+                  %li= link_to 'Dashboard', staff_path(user), {:class => 'button'}
+                  %li= link_to 'Edit', edit_user_path(user), {:class => 'button'}
+                  %li= link_to 'Delete', user, :class => 'button', :data => { confirm: 'Are you sure?'}, :method => :delete

@@ -1,0 +1,40 @@
+= content_nav_for @assignment
+
+.small-12
+  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+
+.small-12.columns
+  // Button bar at the top of the page
+  = render "buttons"
+
+.small-12.columns
+  %br
+  %dl.tabs{:data => {'tab' => true}}
+    %dd.active
+      %a{ "href" => "#tab"} Grades
+    %dd
+      %a{ "href" => "#tabt2"} Description & Downloads
+    - if @assignment.rubric and @assignment.rubric.designed?
+      %dd
+        %a{ "href" => "#tabt3"} Grading Rubric
+
+    - if @assignment.grades.present?
+      %dd
+        %a{ :href => "#tabt4"} Class Analytics
+
+.small-12.columns
+  .tabs-content
+    .content#tab.active
+      - if @assignment.has_groups?
+        = render 'assignments/group_show'
+      - else
+        = render 'assignments/individual_show'
+    .content#tabt2
+      = render 'assignments/guidelines'
+    
+    - if @assignment.rubric and @assignment.rubric.designed?
+      .content#tabt3
+        %br
+        = render 'assignments/rubric_preview'
+    .content#tabt4
+      = render "grades/instructor_analytics"

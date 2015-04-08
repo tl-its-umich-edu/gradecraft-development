@@ -1,0 +1,60 @@
+.small-12.columns
+
+  - if @assignment.accepts_submissions? && @student.submission_for_assignment(@assignment).present?
+    .panel
+
+      %h4.uppercase= "#{@student.first_name}'s Submission"
+      = render 'submissions/instructor_data'
+
+  = simple_form_for @grade, url: assignment_grade_path(@assignment), method: :patch do |f|
+    = hidden_field_tag :student_id, current_student.id
+
+    .panel
+      .small-12.medium-4.columns
+        = f.label :raw_score, "Raw Score (#{@assignment.point_total} points Possible)"
+        - if @assignment.has_levels?
+          = f.select :raw_score, @assignment_score_levels.map { |l| [l.formatted_name,l.value] }, :include_blank => true
+        - else
+          - if @grade.instructor_modified || @grade.status.present?
+            = f.text_field :raw_score, :default => @assignment.point_total, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+          - else
+            = f.text_field :raw_score, :value => nil, :label => "Score", :hint => "Total Assignment Points: #{ points @assignment.point_total }", data: {autonumeric: true, "m-dec" => "0"}
+
+      - if @assignment.release_necessary?
+        .small-12.medium-4.columns
+          = f.input :status,  as: :select, :collection => ["In Progress", "Graded", "Released"], :selected => @grade.status, :include_blank => true
+          .form_label Can the student see this grade?
+      - elsif @grade.status.blank?
+        = f.hidden_field :status, value: 'Graded'
+
+      .small-12.columns.textarea
+        = f.hidden_field :graded_by_id, :value => current_user.id
+        = f.label :feedback
+        = f.bootsy_area :feedback
+      .clear
+
+    .panel
+      .small-12
+        %h4.uppercase Attachments
+        = f.simple_fields_for :grade_files, @grade.grade_files.new do |gf|
+          = gf.file_field :file, :multiple => true
+        - if @grade.grade_files.exists?
+          %h5.bold Uploaded files
+          %ul.uploaded-files
+            - @grade.grade_files.each do |gf|
+              - next if gf.new_record?
+              %li
+                - if ! gf.file_processing
+                  = "#{gf.filename}"
+                  %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                    = "(upload in progress)"
+                - else
+                  = link_to gf.filename, gf.url, :target => "_blank"
+                  = link_to "(Remove)", remove_uploads_path({ :model => "GradeFile", :grade_id => @grade.id, :upload_id => gf.id } )
+        .clear
+
+
+    .button-bar
+      %ul.button-group.radius.right
+        %li= submit_tag "#{@grade.persisted? && @grade.is_graded? ? 'Update' : 'Submit'} Grade", :class => "button"
+        %li= link_to 'Cancel', assignment_path(@assignment), :class => 'button'

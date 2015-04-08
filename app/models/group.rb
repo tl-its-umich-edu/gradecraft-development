@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  
+
   APPROVED_STATUSES = ['Pending', 'Approved', 'Rejected']
 
   attr_accessible :name, :approved, :assignment_id, :assignment_ids, :student_ids,
@@ -27,11 +27,11 @@ class Group < ActiveRecord::Base
   has_many :earned_badges, :as => :group
 
   before_save :clean_html
-  before_validation :cache_associations, :unique_assignment_per_group_membership
+  before_validation :cache_associations
 
-  validates_presence_of :name
+  validates_presence_of :name, :approved
 
-  validate :max_group_number_not_exceeded, :min_group_number_met
+  validate :max_group_number_not_exceeded, :min_group_number_met, :unique_assignment_per_group_membership, :assignment_group_present
 
   scope :approved, -> { where approved: "Approved" }
   scope :rejected, -> { where approved: "Rejected" }
@@ -40,6 +40,10 @@ class Group < ActiveRecord::Base
   #Instructors need to approve a group before the group is allowed to proceed
   def approved?
     approved == "Approved"
+  end
+
+  def rejected?
+    approved == "Rejected"
   end
 
   #Group submissions
@@ -66,15 +70,22 @@ class Group < ActiveRecord::Base
 
 
   #Checking to make sure any constraints the instructor has set up around min/max group members are honored
+  #TODO verify that the course accepts groups? Otherwise comparison with nil fails
   def min_group_number_met
     if self.students.to_a.count < course.min_group_size
-      errors.add(:group, "Nope, not enough group members!")
+      errors.add :base, "You don't have enough group members."
     end
   end
 
   def max_group_number_not_exceeded
     if self.students.to_a.count > course.max_group_size
-      errors.add(:group, "Woah, too many group members, try again.")
+      errors.add :base, "You have too many group members."
+    end
+  end
+
+  def assignment_group_present
+    if self.assignment_groups.to_a.count == 0
+      errors.add :base, "You need to check off which #{(course.assignment_term).downcase} your #{(course.group_term).downcase} will work on."
     end
   end
 
@@ -82,14 +93,15 @@ class Group < ActiveRecord::Base
   def unique_assignment_per_group_membership
     assignments.each do |a|
       students.each do |s|
-        if s.group_for_assignment(a).present? 
-          errors.add(:group, "Uh... #{s.name} is already working on this.")
+        if s.group_for_assignment(a).present? && s.group_for_assignment(a).id != self.id
+          errors.add :base, "#{s.name} is already working on this with another #{(course.group_term)}."
         end
       end
     end
   end
 
   def cache_associations
+    # TODO: no method assignment for group!
     self.course_id ||= assignment.try(:course_id)
   end
 end

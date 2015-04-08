@@ -6,8 +6,8 @@
     Professor #{ current_course.professor.try(:name) }
   
   - if current_user_is_student?
-    - current_student.team_leader.tap do |team_leader|
-      - if team_leader.present?
+    - if current_student.team_leaders(current_course).present?
+      - current_student.team_leaders(current_course).each do |team_leader|
         .small-12
           %i.fi-torso-business
           = "#{current_course.team_leader_term} #{team_leader.first_name}"

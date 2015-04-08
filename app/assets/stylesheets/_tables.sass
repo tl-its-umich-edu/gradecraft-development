@@ -1,13 +1,16 @@
-#gradebook
-  overflow: auto !important
+.table-wrapper
+  clear: both
+
+th
+  text-transform: capitalize
+  padding: .5rem
 
 /* Set the tables to be full width of the page*/
-table.responsive
+table
   width: 100%
   border-radius: $global-radius
   border-spacing: 0 !important
   clear: both
-  overflow-x: scroll !important
 
   thead
     tr:first-child th:first-child 
@@ -20,41 +23,14 @@ table.responsive
       background-color: $light-grey
       color: #FFF !important
 
-  .button
-    font-size: .7rem
-    background-color: $secondary-color-2
-
-  .button:hover 
-    background-color: darken($secondary-color-2, 15%)
-
   /* Table Header styles */
-  th
-    text-transform: capitalize
-    font-weight: normal
-    padding: .5rem
 
+  th
+    font-weight: normal
     a
       color: #000
 
-  button.select-all.button.tiny
-    margin: 0 !important
-    border-top-left-radius: $global-radius
-    border-bottom-left-radius: $global-radius
-    background-color: $primary-color-2
-    padding: .3rem
-  
-  button.select-all.button.tiny:hover, button.select-none.button.tiny:hover
-    background-color: $secondary-color-2
-
-  button.select-none.button.tiny
-    margin: 0 !important
-    left: -4px
-    border-top-right-radius: $global-radius
-    border-bottom-right-radius: $global-radius
-    background-color: $primary-color-2
-    padding: .3rem
-
-table.responsive.no_radius 
+table.responsive.no_radius
   border-top: none
 
   thead
@@ -62,6 +38,27 @@ table.responsive.no_radius
       border-top-left-radius: 0
     tr:first-child th:last-child 
       border-top-right-radius: 0
+
+table#grade-rubric-table
+  border-collapse: collapse
+
+  thead
+    background-color: $primary-color-3 !important
+    
+    td
+      color: #FFF !important
+
+  .metric-name
+    font-weight: bold
+    font-size: 120%
+
+  tbody
+    tr
+      background-color: #FFF
+      vertical-align: top
+
+  td
+    border: 1px solid #999
 
 /* Styling pattern tables for assignment outcome overview */ 
 td.complete, tr.achieved
@@ -99,16 +96,11 @@ i.missing_grade
 
 #leaderboard .name, #leaderboard .score
   padding: 0.5rem
-  background-color: $secondary-color-5
+  background-color: $primary-color-4
 
 #leaderboard .score
   font-weight: bold
 
-#leaderboard #place-1 .rank
-  background-color: $alert-color
-
-#leaderboard #place-2 .rank
-  background-color: #adadad
-
-#leaderboard #place-3 .rank
-  background-color: #8c7853
+@media (max-width: 867px)
+  th.draggable, td.draggable
+    display: none

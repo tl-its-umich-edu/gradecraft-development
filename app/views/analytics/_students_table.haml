@@ -4,7 +4,7 @@
       %th{ :scope => "column", :width => "20%" }= course.user_term
       %th{ :scope => "column", :width => "10%"} Score
       - if course.has_badges?
-        %th{ :scope => "column" } Badges
+        %th{ :scope => "column", :width => "5%" } Badges
       - if course.has_teams?
         %th{ :scope => "column" }= course.team_term
         %th{ :scope => "column" }= course.team_leader_term
@@ -20,13 +20,11 @@
 
         - if course.has_teams?
           %td
+            - if student.team_for_course(course)
+              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
+          %td
             - if student.team_for_course(course) && student.team_for_course(course).leaders.present?
               %ul
                 - student.team_for_course(course).leaders.each do |leader|
                   %li= link_to leader.first_name, staff_path(leader)
-
-              = link_to student.team_for_course(current_course).name, student.team_for_course(current_course)
-          %td
-            - if student.team_for_course(course) && student.team_for_course(course).team_leader.present?
-              = link_to student.team_for_course(course).team_leader.first_name, staff_path(student.team_for_course(course).team_leader)
         %td= student.try(:last_activity_at) || "(never)"

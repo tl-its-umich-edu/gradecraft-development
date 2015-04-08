@@ -5,14 +5,6 @@
   - if @assignment.is_individual?
     %h3.pagetitle= @title
 
-    .small-12.medium-3.right.columns.columns-no-padding
-      .button-bar.right
-        %ul.button-group.context_menu
-          %li
-            %a{:href => edit_assignment_grade_path(@assignment, :student_id => current_student.id) }
-              %i.fi-pencil
-              Edit Grade
-
     .small-12.columns= render "individual_show"
     
   - else

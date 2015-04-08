@@ -1,0 +1,52 @@
+%table#rubric-results-table.small-12
+  %thead
+    %tr
+      %td.metric.heading
+        Criterion:&nbsp;Max&nbsp;points
+
+      %td.tier.heading(colspan="#{@rubric.max_tier_count}")
+        Level: Point value
+      %td.comments.heading(ng-show="tiersSelected().length > 0")
+        Comments
+
+
+  %tbody
+    - @metrics.ordered.each do |metric|
+      %tr
+        %td.metric
+          .metric-heading
+            .metric-name= metric.wrapped_name(28).html_safe
+            .metric-points= "#{points metric.max_points} Points"
+            .clear
+          .metric-description= metric.wrapped_description(40).html_safe
+
+        - metric.tiers.order("points ASC").each do |tier|
+          %td.tier
+            .tier-heading
+              .tier-name= tier.wrapped_name(25).html_safe
+              .clear
+              .tier-points= "#{points tier.points} Points"
+            .clear
+            .tier-description= tier.description
+
+            .row.badge-row
+              - tier.tier_badges.each_with_index do |badge, index|
+                - if index < 2
+                  %span.tier-badge-image
+                    %img{:src => badge.badge.icon, width: "30px", height: "30px" }
+              .clear
+
+            
+            - if current_user_is_staff? && @viewable_rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
+              .earned_tier.italic #{current_student.first_name} earned this level
+            - elsif current_user_is_student? && @rubric_grades.select {|rubric_grade| rubric_grade.tier_id == tier[:id] }.count > 0
+              .earned_tier.italic I earned this level
+
+            - if tier.rubric_grades.size > 0
+              .students-padding
+              .graded-students= "#{pluralize(tier.rubric_grades.size, 'student')} earned this level"
+        - if metric.tiers.size < @rubric.max_tier_count
+          %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")
+        %td.tier.tier-comments.italic
+          - if @comments_by_metric_id.size > 0
+            = @comments_by_metric_id[metric.id]

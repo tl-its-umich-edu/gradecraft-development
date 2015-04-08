@@ -2,83 +2,73 @@
 
   = content_nav_for Assignment
 
-  .small-12.medium-6
+  .small-12
     %h3.pagetitle= @title
 
-  .small-12.medium-6.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_assignment_path }
             %i.fi-plus
-            New #{term_for :assignment}
-        %li
-          %a{:href => settings_assignments_path }
-            %i.fi-results
-            Settings Overview
-            
-  .small-12
-    
+            New #{(term_for :assignment).titleize}
+
+  .small-12.columns
+
     .assignments
-      - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
+      %br
+      - @assignment_types.each do |assignment_type|
         .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
-          %h3.collapse
-            = "#{assignment_type.name} – #{points assignment_type.max_value} points"
+          %h3.collapse.medium-8
+            = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -6px"
+            #{assignment_type.name} – #{points assignment_type.max_value} points
           .collapse-hidden
-            .small-12.medium-7.right.hide-for-small
+            .small-12.medium-3.right.hide-for-small
               .button-bar.aindex
                 %ul.button-group.radius.right
-                  %li.button.tiny
-                    %i.fi-graph-trend
-                    = link_to "Grade Patterns", all_grades_assignment_type_path(assignment_type)
                   %li.button.tiny
                     %i.fi-pencil
                     = link_to "Edit", edit_assignment_type_path(assignment_type)
 
-            .columns
-              %table.responsive.nofeatures_default_due_date_dynatable{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
+            .columns{:style => "overflow: auto"}
+              %table.responsive{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
                 %thead
                   %tr
                     %th{:scope => "col", :width => "20%"} Name
-                    - if assignment_type.name == "Class Attendance"
-                      %th{:width => "5%"} Attendance Rate
-                    %th{"data-dynatable-sorts" => "dueDate", :scope => "col", :width => "20%"} Due
+                    %th Due
                     %th{:style => "display: none"} Due Date
                     %th{:scope => "col", :width => "10%"}  Max Value
-                    %th
-                %tbody
+                    %th Rubric?
+                    %th{ :style => "min-width: 300px" }
+                %tbody.sort-assignments
+                  - assignments = assignment_type.assignments.sorted
                   - assignments.each do |assignment|
-                    %tr
-                      %td= link_to assignment.name, assignment
-                      // If an attendance assignment has past and students could earn points for the class,
-                      // display visual of attendance percentage. Otherwise display empty space.
-                      - if assignment.assignment_type.name == "Class Attendance" 
-                        %td
-                          - if assignment.past? && assignment.point_total != 0
-                            // Provide mouseover with actual attendance percentage.
-                            %span.has-tip.tip-top{:title => "#{assignment.attendance_rate_int(current_course)}%", :data => {'tooltip' => true}}
-                              // Display 10 person icons to show attendance percentage by percents of 10.
-                              - for i in 1..10
-                                - if i <= ((assignment.attendance_rate_int(current_course) / 10).round)
-                                  %i.fi-male.present
-                                - else
-                                  %i.fi-male.absent
+                    %tr{:id => "assignment-#{assignment.id}"}
+                      %td
+                        .draggable
+                          = image_tag "draggable_transparent.png", :width => 10, :style => "margin-top: -2px"
+                        = link_to assignment.name, assignment
                       %td= assignment.try(:due_at) || "Ongoing"
                       %td{:style => "display: none"}
                         - if assignment.due_at.present?
                           = assignment.try(:due_at).to_formatted_s(:db)
                       %td= assignment.point_total
+                      %td= "Yes" if assignment.rubric and assignment.rubric.designed?
                       %td
                         .button-bar
                           %ul.button-group.right.radius
-                            %li
-                              %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
-                                Quick Grade
-                                %span.sr-only=assignment.name
+                            - if ! ( assignment.rubric and assignment.rubric.designed? and assignment.use_rubric? )
+                              %li
+                                %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
+                                  Quick Grade
+                                  %span.sr-only=assignment.name
                             %li
                               %a{:href => edit_assignment_path(assignment), :class => 'button' }
                                 Edit
                                 %span.sr-only=assignment.name
+                            %li
+                              = link_to "Copy", copy_assignments_path(:id => assignment), :class => 'button', :method => :copy
+                              %span.sr-only=assignment.name
                             %li
                               %a{:href => assignment_path(assignment), :class => "button", :data => { confirm: 'Are you sure?', method: :delete } }
                                 Delete

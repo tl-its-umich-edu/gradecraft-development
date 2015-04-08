@@ -1,0 +1,33 @@
+
+%br
+
+.small-12.medium-12.large-6.columns.box
+  %h4.bold Basic Stats
+  %ul
+    %li
+      %span.small_uppercase Average Score:
+      = points @assignment.average
+    %li
+      %span.small_uppercase Minimum Score:
+      = points @assignment.low_score
+    %li
+      %span.small_uppercase High Score: 
+      = points @assignment.high_score
+
+.small-12.medium-12.large-6.columns.box
+  %h4.bold Grade Distribution
+  %br
+    .small-8
+      .chartcontainer
+        .grades_per_assign{ "data-scores" => @grades_for_assignment.to_json }
+
+.row
+.small-12.medium-12.large-6.columns.box
+  %h4.bold Participants
+
+  .small-7
+    #numberComplete{:"data-type" => "full", "data-info" => "#{term_for :students} Participated", "data-percent" => "#{@assignment.completion_rate(current_course)}", "data-fgcolor" => "#61a9dc", "data-bgcolor" => "#333333", "data-text" => "#{@assignment.grade_count}", "data-dimension" => "250", "data-fontsize" => "38", "data-border" => "#222222", "data-bordersize" => "2"   }
+
+/ .small-12.medium-12.large-6.columns.box
+/   %h4.bold Percentage Scores Earned
+/   #levels_per_assignment{'data-levels' =>  @assignment.percentage_score_earned.to_json }

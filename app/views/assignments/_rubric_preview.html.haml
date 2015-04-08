@@ -1,0 +1,40 @@
+%table#grade-rubric-table.small-12
+  %thead
+    %tr
+      %td
+        %strong Criterion
+        .not_bold.italic Max points
+      %td(colspan="#{@assignment.rubric.try(:max_tier_count)}")
+        .larger
+          %strong Level
+          .not_bold.italic Point value
+
+  %tbody
+    - @metrics.ordered.each do |metric|
+      %tr
+        %td.metric(style="font-size: 12px !important; width: 20%" )
+          .metric-heading
+            .metric-name= metric.wrapped_name(28).html_safe
+            .metric-points.italic= "#{points metric.max_points} Points"
+            .clear
+          .metric-description= metric.wrapped_description(40).html_safe
+
+        - metric.tiers.order("points ASC").each do |tier|
+          %td.tier
+            .tier-heading
+              .tier-name.uppercase= tier.wrapped_name(25).html_safe
+              .clear
+              .tier-points.italic= "#{points tier.points} Points"
+            .clear
+            .tier-description= tier.description
+
+            .row.badge-row
+              %br
+              - tier.tier_badges.each_with_index do |badge, index|
+                - if index < 2
+                  %span.tier-badge-image
+                    %img{:src => badge.badge.icon, width: "30px", height: "30px" }
+            .clear
+
+        - if metric.tiers.size < @rubric.max_tier_count
+          %td.filler(colspan="#{@rubric.max_tier_count - metric.tiers.size}")

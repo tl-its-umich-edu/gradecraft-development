@@ -23,6 +23,10 @@ module ApplicationHelper
     classes.join ' '
   end
 
+  def goat_url
+    "http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg"
+  end
+
   # Return a title on a per-page basis.
   def title
     base_title = ""
@@ -51,18 +55,6 @@ module ApplicationHelper
     options[:scope] ||= self
     options[:url_options] ||= url_options
     target.active_model_serializer.new(target, options).to_json
-  end
-
-  # Search items
-  def autocomplete_items
-    return [] unless current_user_is_staff?
-    current_course.students.map do |u|
-      { :name => [u.first_name, u.last_name].join(' '), :id => u.id }
-    end
-  end
-
-  def success_button_class(classes = nil)
-    [classes, 'button radius tiny'].compact.join(' ')
   end
 
   def table_link_to(name = nil, options = nil, html_options = nil, &block)

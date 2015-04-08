@@ -4,13 +4,14 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => team_path(@team) }
             %i.fi-list-thumbnails
             See #{term_for :team} 
+    %br
   
   .small-12.columns
     = render 'form'

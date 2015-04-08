@@ -4,42 +4,51 @@
 
   %h3.pagetitle= "#{term_for :assignments} Analytics"
   
-  - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
-    %h4.subtitle= assignment_type.name 
+  - @assignment_types.each do |assignment_type|
+    - if assignment_type.assignments.select {|a| a.grades.graded_or_released.length > 1}.present?
+      %h4.subtitle= assignment_type.name 
 
-    .columns
-      %table.responsive.nofeatures_dynatable
-        %caption.sr-only= assignment_type.name 
-        %thead
-          %tr
-            %th{"scope" => "col"} Name
-            %th{"scope" => "col"} Min
-            %th{"scope" => "col"} Max
-            %th{"scope" => "col"} Median
-            %th{"scope" => "col"} 
-              Ave
-              %i.fi-info{:title => "The average of all grades, including those who earned zero", :data => {'tooltip' => true} }
-              %span.sr-only
-                The average of all grades, including those who earned zero
-            %th 
-              Avg Earned
-              %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
-              %span.sr-only
-                The average of all scores above zero
-            %th # Submissions
-            %th # Grades 
-            %th
-        %tbody
-          - assignments.each do |assignment|
+      .columns{:style => "overflow: auto"}
+        %table.responsive.nofeatures_dynatable
+          %caption.sr-only= assignment_type.name 
+          %thead
             %tr
-              %td= link_to assignment.name, assignment
-              %td= assignment.low_score
-              %td= assignment.high_score
-              %td= assignment.median
-              %td= assignment.average
-              %td= assignment.earned_average
-              %td
-                - if assignment.accepts_submissions?
-                  = assignment.submissions.count
-              %th= assignment.grade_count
-              %th= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button radius"
+              %th{"scope" => "col"} Name
+              %th{"scope" => "col"} Min
+              %th{"scope" => "col"} Max
+              %th{"scope" => "col"} Median
+              %th{"scope" => "col"} 
+                Ave
+                %i.fi-info{:title => "The average of all grades, including those who earned zero", :data => {'tooltip' => true} }
+                %span.sr-only
+                  The average of all grades, including those who earned zero
+              %th 
+                Avg Earned
+                %i.fi-info{:title => "The average of all scores above zero", :data => {'tooltip' => true} }
+                %span.sr-only
+                  The average of all scores above zero
+              %th # Submissions
+              %th # Grades 
+              %th{:style => "min-width: 250px"}
+          %tbody
+            - assignments = assignment_type.assignments.sorted
+            - assignments.each do |assignment|
+              - if assignment.grades.graded_or_released.present?
+                %tr
+                  %td= link_to assignment.name, assignment
+                  %td= assignment.low_score
+                  %td= assignment.high_score
+                  %td= assignment.median
+                  %td= assignment.average
+                  %td= assignment.earned_average
+                  %td
+                    - if assignment.accepts_submissions?
+                      = assignment.submissions.count
+                  %th= assignment.grade_count
+                  %th
+                    .button-bar
+                      %ul.button-group.right.radius
+                        %li= link_to "Quick Grade", mass_grade_assignment_path(assignment), :class => "button"
+                        %li
+                          %a.button{:href => export_grades_assignment_path(assignment, format: 'csv') }
+                            Download Grades

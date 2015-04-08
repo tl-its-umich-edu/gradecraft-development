@@ -6,7 +6,7 @@
 
   .small-12.columns
     %p
-      %b #{term_for :team}:
+      %b #{(term_for :team).titleize}:
       = link_to @challenge_grade.team.name, @challenge_grade.team
     %p
       %b Score:

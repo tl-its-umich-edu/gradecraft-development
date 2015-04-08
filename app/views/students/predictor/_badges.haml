@@ -1,6 +1,6 @@
 - if current_course.valuable_badges?
   %li#slide-badges.assignmentType(data-assignment-type-id="badges" data-assignment-type-name)
-    %h3.bold.collapse
+    %h3.collapse
       ="#{term_for :badges}"
       .right.label.radius #{points current_student.earned_badge_score} possible points
     .slide-panel
@@ -16,7 +16,7 @@
                   %b= badge.name
                   %div= "#{points badge.point_total} points"
                   = hidden_field_tag badge.name, badge.point_total
-                .clearfix
+                .clear
             - else
               .badgeField.panel
                 .small-12.medium-5.columns
@@ -25,4 +25,4 @@
                   = badge.name
                   %b #{points badge.point_total} points
                   = check_box_tag badge.name, badge.point_total, false, :class => 'class-checkbox', :'data-assignment-type-id' => 'grades'
-                .clearfix
+                .clear

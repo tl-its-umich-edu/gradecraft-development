@@ -2,16 +2,16 @@
 
   = content_nav_for @assignment_type
   
-  .small-12.medium-8
+  .small-12
     %h3.pagetitle#pageCaption= @title
 
-  .small-12.medium-4.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_assignment_type_path }
             %i.fi-plus
-            New #{term_for :assignment_type}
+            New #{(term_for :assignment_type).titleize}
         %li
           %a{:href => edit_assignment_type_path(@assignment_type) }
             %i.fi-pencil
@@ -20,6 +20,7 @@
           %a{:href => all_grades_assignment_type_path(@assignment_type) }
             %i.fi-graph-bar
             Performance
+    %br
 
   .columns
     %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
@@ -43,7 +44,7 @@
               %td= points assignment.point_total
               - if current_user_is_staff?
                 %td
-                  %ul.button-group.right.round
+                  %ul.button-group.right.radius
                     %li
                       %a{:href => mass_grade_assignment_path(assignment), :class => 'button' }
                         Quick Grade

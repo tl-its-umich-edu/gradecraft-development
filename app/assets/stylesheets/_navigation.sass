@@ -1,7 +1,38 @@
 /* Coloring the brand */
-.title-area li.name h1 a
-  color: $secondary-color-2
-  white-space:nowrap
+
+.top-bar
+  height: auto
+  &.expanded
+    background: #333333
+
+.top-bar .toggle-topbar.menu-icon 
+  right: initial
+  &.left-off-canvas-toggle
+    position: relative
+    margin-top: 6px
+    float: left
+    left: 0
+    padding-left: 0px
+
+.top-bar .toggle-topbar.right-off-canvas-toggle
+  position: absolute
+  float: right
+  right: 0
+  padding-top: 6px
+  padding-right: 6px
+
+  .user_icon
+    font-size: 200%
+
+.title-area li.name
+  background: image-url("GradeCraft_Logo_Horizontal_White_Blue.png") no-repeat 10px 7px
+  padding-left: 2.5rem
+  margin-left: .5rem
+  overflow-x: hidden
+  h1 a
+    width: auto
+    color: $secondary-color-2
+    white-space:nowrap
 
 .top-bar-section ul ul.dropdown 
   padding: .2rem .6rem
@@ -12,25 +43,18 @@
   border-bottom-left-radius: $global-radius
   border-bottom-right-radius: $global-radius
 
-.top-bar-section .has-form input
-  border-top-left-radius: $global-radius
-  border-bottom-left-radius: $global-radius
+.top-bar-section ul ul.dropdown
+  li a
+    padding: 0.2rem
+    color: $secondary-color-2 !important
+    line-height: 2rem !important
 
-.alert.button
-  border-top-right-radius: $global-radius
-  border-bottom-right-radius: $global-radius
-  background-color: $primary-color-3
-
-.alert.button:hover
-  background-color: darken($primary-color-3, 15%)
-
-.top-bar-section ul ul.dropdown li a
-  padding: 0.2rem
-  color: $secondary-color-2
-  line-height: 2rem !important
+  li a:hover 
+    color: $primary-color-3 !important
 
 .top-bar-section ul ul.dropdown.classInfo
-
+  width: 20rem !important
+ 
   li
     margin-bottom: .5rem
     &.leader-list
@@ -51,31 +75,21 @@
   .top-bar-section ul ul.dropdown a, .top-bar-section ul ul.dropdown a:hover
     color:  $secondary-color, 15%
 
-  .top-bar-section ul ul.dropdown a:hover
-    color: $primary-color-3
-    background-color: transparent !important
-
 /** Styling the tagline **/
 /** Foundation requires that the items in the menu bar be links, and since the **/
 /** tagline doesn't actually link anywhere we're disabling the perception of the link **/
-.top-bar-section .left a, .top-bar-section .left li a:hover
-  color: $primary-color-3
+.top-bar-section .tagline a, .top-bar-section .tagline li a:hover
+  color: $primary-color-3 !important
   margin-top: 1px
-  height: 1rem !important
+  height: 1rem
   position: relative
   margin-right: 0
   background-color: #333 !important
   cursor: default
 
-/* Rounding the gravatar edges */
+/* Rounding the avatar edges */
 img.img-rounded
   border-radius: .25rem
-
-/* Styling the mobile active link dropdown */ 
-ul.dropdown-menu li.active a
-  padding: 0.5rem
-  color: #FFF !important
-  background-color: $primary-color-3 !important
 
 .tabs-content
   border: none
@@ -93,13 +107,20 @@ dl.tabs dd > a
   border-top-right-radius: $global-radius
   border-top-left-radius:  $global-radius
   text-transform: capitalize
+  background-color: #eee
+  color: #000
+  margin: 1px
 
 dl.tabs dd > a:hover
-  color: #FFF !important
-  background-color: $primary-color-4
+  background-color: $primary-color-5
+  color: #FFF
 
 dl.tabs dd.active > a
-  background-color: $primary-color-2
+  background-color: $light-grey
+
+dl.tabs dd.active > a:hover
+  color: #000
+
 
 .past_courses
 

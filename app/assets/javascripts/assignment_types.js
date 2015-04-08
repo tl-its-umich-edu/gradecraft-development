@@ -42,7 +42,7 @@
       $link.prev('input.destroy').val(true);
       $link.closest('fieldset.challenge-score-level').hide();
       return false;
-    })
+    });
 
     $form.on('click', '.add-proposal', function(e) {
       var $wrapper = $('.proposals');
@@ -56,7 +56,47 @@
       $link.prev('input.destroy').val(true);
       $link.closest('fieldset.proposal').hide();
       return false;
-    })
+    });
+  
+    // persistence plugin and accordion behaviour
+    $(".assignment_type").collapse({
+      show: function() {
+        // The context of 'this' is applied to
+        // the collapsed details in a jQuery wrapper 
+        this.slideDown(100);
+      },
+      hide: function() {
+        this.slideUp(100);
+      },
+      accordion: true,
+      persist: true
+    });
+
+    $('.assignments').sortable({
+      items: 'div.assignment_type',
+      update: function(event){
+        $.ajax({          
+          url: '/assignment_types/sort',
+          type: 'post',
+          data: $('.assignments').sortable('serialize'),
+          dataType: 'script',
+          complete: function(){}
+        });
+      }
+    });
+
+    $('.sort-assignments').sortable({
+      update: function(event, ui){
+        var element = ui.item[0].parentElement;
+        $.ajax({          
+          url: '/assignments/sort',
+          type: 'post',
+          data: $(element).sortable('serialize'),
+          dataType: 'script',
+          complete: function(event){}
+        });
+      }
+    });
   };
   $(init);
 }(jQuery);

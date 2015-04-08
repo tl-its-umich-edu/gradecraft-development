@@ -39,7 +39,7 @@ class AnalyticsController < ApplicationController
 
   # Displaying per assignment summary outcome statistics
   def per_assign
-    respond_with @assignments = current_course.assignments.order('name ASC').select {|a| a.grades.graded.length > 1}
+    @assignment_types = current_course.assignment_types.sorted
   end
 
   # Display per team summary scores
@@ -66,6 +66,7 @@ class AnalyticsController < ApplicationController
     data = CourseLogin.data(@granularity, @range, {course_id: current_course.id})
 
     data[:lookup_keys] = ['{{t}}.average']
+
     data.decorate! do |result|
       result[:name] = "Average #{data[:granularity]} login frequency"
       # Get frequency
@@ -81,6 +82,7 @@ class AnalyticsController < ApplicationController
     data = CourseRoleLogin.data(@granularity, @range, {course_id: current_course.id, role_group: params[:role_group]})
 
     data[:lookup_keys] = ['{{t}}.average']
+
     data.decorate! do |result|
       result[:name] = "Average #{data[:granularity]} login frequency"
       # Get frequency
@@ -176,9 +178,51 @@ class AnalyticsController < ApplicationController
     render json: data
   end
 
+  def export
+    respond_to do |format|
+      format.zip do
+        export_dir = Dir.mktmpdir
+        export_zip "#{current_course.courseno}_anayltics_export_#{Time.now.strftime('%Y-%m-%d')}", export_dir do
+
+          id = current_course.id
+          events = Analytics::Event.where(:course_id => id)
+          predictor_events = Analytics::Event.where(:course_id => id, :event_type => "predictor")
+          user_pageviews = CourseUserPageview.data(:all_time, nil, {:course_id => id}, {:page => "_all"})
+          user_predictor_pageviews = CourseUserPagePageview.data(:all_time, nil, {:course_id => id, :page => "/dashboard#predictor"})
+          user_logins = CourseUserLogin.data(:all_time, nil, {:course_id => id})
+
+          user_ids = events.collect(&:user_id).compact.uniq
+          assignment_ids = events.select { |event| event.respond_to? :assignment_id }.collect(&:assignment_id).compact.uniq
+
+          users = User.where(:id => user_ids).select(:id, :username)
+          assignments = Assignment.where(:id => assignment_ids).select(:id, :name)
+
+          data = {
+            :events => events,
+            :predictor_events => predictor_events,
+            :user_pageviews => user_pageviews[:results],
+            :user_predictor_pageviews => user_predictor_pageviews[:results],
+            :user_logins => user_logins[:results],
+            :users => users,
+            :assignments => assignments
+          }
+          Analytics.configuration.exports[:course].each do |export|
+            export.new(data).generate_csv(export_dir)
+          end
+        end
+      end
+    end
+  end
+
   private
   def set_granularity_and_range
-    @granularity = params[:granularity].presence && params[:granularity].to_sym
-    @range = params[:range].presence && params[:range].to_sym
+
+    @granularity = :daily
+
+    if current_course.start_date && current_course.end_date
+      @range = (current_course.start_date..current_course.end_date)
+    else
+      @range = :past_year
+    end
   end
 end

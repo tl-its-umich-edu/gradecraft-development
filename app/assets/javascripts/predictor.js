@@ -5,8 +5,8 @@ function addCommas(i){
 };
 
 function isStaff(){
-  return !!$(".staff").length
-}
+  return !!$(".staff").length;
+};
 
 var chartOptions = {
   chart: {
@@ -21,18 +21,17 @@ var chartOptions = {
     }
   },
   colors: [
-     '#1A1EB2',
-     '#303285',
-     '#6dd8f0',
-     '#080B74',
-     '#238D43',
-     '#007B25',
-     '#37DE6A',
-     '#64DE89',
-     '#FFCC00',
-     '#BFBD30',
-     '#A6A400',
-     '#FFFD40',
+     '#002d62',
+     '#234879',
+     '#55a9bc',
+     '#72cdf4',
+     '#0079c0',
+     '#00BD39',
+     '#6ac777',
+     '#f1592a',
+     '#f7941e',
+     '#fcb040',
+     '#ffcf06',
      '#FFFD73'
   ],
   subtitle: {

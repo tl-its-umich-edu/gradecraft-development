@@ -1,5 +1,5 @@
 .small-12
-  %h3.text-center #{term_for :weight}
+  %h3.text-center #{term_for :weights}
   %hr
   .small-12
     - current_course.assignment_types.each do |at|
@@ -8,12 +8,17 @@
           %span.bold= at.name
           = "- #{current_student_data.weight_for_assignment_type(at)} #{(term_for :weight).capitalize}"
     %br
-    .center= link_to "Edit Your Choices", assignment_type_weights_path(:student_id => current_student.id), :class => "button radius alert"
+    - if current_course.assignment_weight_open?
+      .center= link_to "Edit Your Choices", assignment_type_weights_path(:student_id => current_student.id), :class => "button radius alert"
     %hr
     %h5.text-center.italic Rules of The Game
     %ul.small 
       //%li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision
-      %li You may place up to #{current_course.max_assignment_weight} #{ ( term_for :weights).titleize } on a single #{ (term_for :assignment_type).downcase}
-      %li You may work on up to #{ current_course.max_assignment_types_weighted} #{ (term_for :assignment_types).downcase}
-      %li You must make your decision by <b>#{current_course.assignment_weight_close_at}</b>
-      %li Any #{(term_for :assignment_types).downcase} you do not place #{ ( term_for :weights).titleize } on but have grades for will be multiplied by #{current_course.default_assignment_weight}.
+      - if current_course.max_assignment_weight.present?
+        %li You may place up to #{current_course.max_assignment_weight} #{ ( term_for :weights).titleize } on a single #{ (term_for :assignment_type).downcase}
+      - if current_course.max_assignment_types_weighted.present?
+        %li You may work on up to #{ current_course.max_assignment_types_weighted} #{ (term_for :assignment_types).downcase}
+      - if current_course.assignment_weight_close_at.present?
+        %li You must make your decision by <b>#{current_course.assignment_weight_close_at}</b>
+      - if current_course.default_assignment_weight.present?
+        %li Any #{(term_for :assignment_types).downcase} you do not place #{ ( term_for :weights).titleize } on but have grades for will be multiplied by #{current_course.default_assignment_weight}.

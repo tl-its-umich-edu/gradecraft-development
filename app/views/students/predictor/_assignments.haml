@@ -1,57 +1,59 @@
-- assignment_type, assignments = assignment_type_and_assignments
-%li{:id => "slide-#{assignment_type.id}", :'data-assignment-type-id' => assignment_type.id, :'data-assignment-type-name' => assignment_type.name}
-  .slide-panel.assignmentType
-    %h3.collapse
-      = assignment_type.name
-      .right.radius.label
-        = "#{points current_student_data.score_for_assignment_type(assignment_type)} / "
-        - if assignment_type.max_value?
-          = "#{points assignment_type.max_value} possible points"
-        - else
-          = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} possible points"
-    
-    .collapse-hidden        
-      .small-12.columns
-        .clearfix
-        - assignments.each do |assignment|
-          - if assignment.point_total > 0
-            .assignment
-              .small-12.medium-7.columns
-                - if assignment.required?
-                  %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
-                    %i.fi-star
-                %span.bold= assignment.name
-                - if current_student_data.grade_released_for_assignment?(assignment)
-                  - grade = current_student_data.grade_for_assignment(assignment)
-                  %span.earned= points grade.score
-                  = " / #{points current_student_data.point_total_for_assignment(assignment)} points"
-                  = hidden_field_tag assignment.name, current_student_data.score_for_assignment(assignment), :'data-assignment-type-id' => assignment.assignment_type_id
-                - else
-                  - if assignment.past? && assignment.accepts_submissions && ! current_student.submission_for_assignment(assignment).present?
-                    %span.label.alert.radius Late!
-                  = "–"
-                  = "#{points current_student_data.point_total_for_assignment(assignment)} possible points"
-            
-              .small-12.medium-5.columns.assignmentData{:data => {:assignment => assignment.id, :'possible-points' => current_student_data.point_total_for_assignment(assignment)}}  
+%br
+- current_course.assignment_types.sorted.each do |assignment_type|
+  - if assignment_type.has_predictable_assignments?
+    %li{:id => "slide-#{assignment_type.id}", :'data-assignment-type-id' => assignment_type.id, :'data-assignment-type-name' => assignment_type.name}
+      .slide-panel.assignmentType
+        %h3.collapse
+          = assignment_type.name
+          - if current_student_data.score_for_assignment_type(assignment_type) > 0
+            .right.radius.label.success
+              = "#{points current_student_data.score_for_assignment_type(assignment_type)}"
+              - if assignment_type.max_value?
+                = "/ #{points assignment_type.max_value} points earned"
+              - else
+                = "/ #{points current_student_data.point_total_for_assignment_type(assignment_type)} points earned"
+          - else
+            .right.radius.label.fade
+              - if assignment_type.max_value?
+                = "#{points assignment_type.max_value} points possible"
+              - else
+                = "#{points current_student_data.point_total_for_assignment_type(assignment_type)} points possible"
+        
+        .collapse-hidden        
+          .small-12.columns
+            .clear
+            - assignments = assignment_type.assignments.sorted
+            - assignments.each do |assignment|
+              - if assignment.point_total > 0
+                .assignment
+                  .small-12.medium-7.columns
+                    - if assignment.required?
+                      %span.has-tip{:title => "This #{term_for :assignment} is required!", :data => {'tooltip' => true} }
+                        %i.fi-star
+                    %span.bold= assignment.name
+                    - if current_student_data.grade_released_for_assignment?(assignment)
+                      - grade = current_student_data.grade_for_assignment(assignment)
+                      %span.earned= points grade.score
+                      = " / #{points current_student_data.point_total_for_assignment(assignment)} points"
+                      = hidden_field_tag assignment.name, current_student_data.score_for_assignment(assignment), :'data-assignment-type-id' => assignment.assignment_type_id
+                    - else
+                      - if assignment.past? && assignment.accepts_submissions && ! current_student.submission_for_assignment(assignment).present?
+                        %span.label.alert.radius Late!
+                      = "–"
+                      = "#{points current_student_data.point_total_for_assignment(assignment)} possible points"
 
-                - if ! current_student_data.grade_released_for_assignment?(assignment)
-                  - if assignment_type.fixed?
-                    %input{:type => "checkbox", :name => assignment.name, :value => current_student_data.point_total_for_assignment(assignment), :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id, :checked => current_student_data.grade_for_assignment(assignment).predicted_score > 0 }
-                  - elsif assignment_type.slider?
-                    %span.pScore= "0 "
-                    %span.score-level-name 
-                    .slider{:id => "slider-#{assignment.id}", :max => current_student_data.point_total_for_assignment(assignment), :value => "#{current_student_data.grade_for_assignment(assignment).predicted_score}", :'data-scorelevelvals' => "#{assignment_type.score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment_type.score_levels.map(&:name)}", :'data-highlight' => "true"}
-                    
-                  - elsif assignment_type.select?
-                    = select_tag assignment.name, options_from_collection_for_select(assignment_type.score_levels,'value','name', current_student_data.grade_for_assignment(assignment).predicted_score), :class => 'point-value right', :id => "total-#{assignment.id}", :include_blank => true
-                  - elsif assignment_type.per_assignment?
-                    - if assignment.fixed?
-                      %input{:type => "checkbox", :name => assignment.name, :value => current_student_data.point_total_for_assignment(assignment), :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id, :checked => current_student_data.grade_for_assignment(assignment).predicted_score > 0 }
-                    - elsif assignment.slider?
-                      %span.pScore= "0 "
-                      %span.score-level-name 
-                      .slider{:id => "slider-#{assignment.id}", :max => current_student_data.point_total_for_assignment(assignment) , :value => "#{current_student_data.grade_for_assignment(assignment).predicted_score}", :'data-scorelevelvals' => "#{assignment.assignment_score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_score_levels.map(&:name)}", :'data-highlight' => "true"}
-                    - elsif assignment.select?
-                      = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','name', current_student_data.grade_for_assignment(assignment).predicted_score), :class => 'point-value right', :id => "total-#{assignment.id}", :include_blank => true
-              .clearfix
-        %hr
+                    - if assignment.future?
+                      .italic= assignment.due_at
+                
+                  .small-12.medium-5.columns.assignmentData{:data => {:assignment => assignment.id, :'possible-points' => current_student_data.point_total_for_assignment(assignment)}}  
+
+                    - if ! current_student_data.grade_released_for_assignment?(assignment)
+                      - if assignment.fixed?
+                        %input{:type => "checkbox", :name => assignment.name, :value => current_student_data.point_total_for_assignment(assignment), :class => "class-checkbox right", :'data-assignment-type-id' => assignment.assignment_type_id, :checked => current_student_data.grade_for_assignment(assignment).predicted_score > 0 }
+                      - elsif assignment.select?
+                        = select_tag assignment.name, options_from_collection_for_select(assignment.assignment_score_levels,'value','formatted_name', current_student_data.grade_for_assignment(assignment).predicted_score), :class => 'point-value right', :id => "total-#{assignment.id}", :include_blank => true
+                      - else
+                        %span.pScore= "0 "
+                        %span.score-level-name 
+                        .slider{:id => "slider-#{assignment.id}", :max => current_student_data.point_total_for_assignment(assignment) , :value => "#{current_student_data.grade_for_assignment(assignment).predicted_score}", :'data-scorelevelvals' => "#{assignment.assignment_score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.assignment_score_levels.map(&:name)}", :'data-highlight' => "true"}
+                  .clear

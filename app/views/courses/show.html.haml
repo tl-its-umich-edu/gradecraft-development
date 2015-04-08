@@ -4,13 +4,14 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => edit_course_path(@course) }
             %i.fi-pencil
             Edit
+    %br
 
   .small-12.columns
     .panel
@@ -24,6 +25,12 @@
       %p
         %b Semester:
         = @course.semester.capitalize
+      %p
+        %b Start Date:
+        = @course.start_date
+      %p
+        %b End Date:
+        = @course.end_date
       %p
         %b Year:
         = @course.year
@@ -90,7 +97,7 @@
       %p.clear
         %b Students will be grouped into sections:
         = @course.team_setting? ? 'Yes' : 'No'
-      -if @course.team_setting?  
+      -if @course.team_setting?
         %p
           %b These sections will be called:
           = @course.team_term.pluralize
@@ -110,7 +117,7 @@
       %p
         %b Students will work in groups:
         = @course.group_setting? ? 'Yes' : 'No'
-      -if @course.group_setting?  
+      -if @course.group_setting?
         %p
           %b Groups will be called:
           = @course.group_term.pluralize

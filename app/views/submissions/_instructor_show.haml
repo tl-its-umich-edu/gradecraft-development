@@ -1,0 +1,22 @@
+%h3.pagetitle
+  - if @assignment.has_groups? && @group.present?
+    = "#{@title} for #{term_for :group} #{@group.name} (#{points @assignment.point_total} points)"
+  - else
+    = "#{@title} (#{points @assignment.point_total} points)"
+  %br
+.small-12.columns
+
+  - if @assignment.is_individual?
+    .button-bar
+      %ul.button-group.radius
+        %li
+          %a{:href => "#{edit_assignment_submission_path(@assignment, @student.submission_for_assignment(@assignment))}?student_id=#{@student.id}", :class => 'button'  }
+            Edit Submission
+            %span.sr-only #{@student.try(:first_name)}'s Submission
+        %li
+          = link_to "Delete Submission", assignment_submission_path(:assignment_id => @assignment.id, :submission_id => @student.submission_for_assignment(@assignment).id ), :class => "button" , :data => { confirm: 'Are you sure?',  method: :delete }
+
+        %li= link_to "Grade", edit_assignment_grade_path(@assignment.id, @submission.id, :student_id => @student.id), :class => 'button'
+    
+  %br
+  = render 'submissions/instructor_data'

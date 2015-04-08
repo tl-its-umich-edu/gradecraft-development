@@ -1,10 +1,10 @@
 class Team < ActiveRecord::Base
-  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :leaders, :teams_leaderboard, :in_team_leaderboard, :banner
+  attr_accessible :name, :course, :course_id, :student_ids, :score, :students, :leaders, :teams_leaderboard, :in_team_leaderboard, :banner, :leader_ids
 
   validates_presence_of :course, :name
 
-  #Saving the team score if a challenge grade has been added
-  after_validation :cache_score
+  #TODO: remove these callbacks 
+  before_save :cache_score
 
   #Teams belong to a single course
   belongs_to :course
@@ -30,6 +30,7 @@ class Team < ActiveRecord::Base
   scope :order_by_high_score, -> { order 'teams.score DESC' }
   scope :order_by_low_score, -> { order 'teams.score ASC' }
   scope :order_by_average_high_score, -> { order 'average_points DESC'}
+  scope :alpha, -> { order 'teams.name ASC'}
 
   # DEPRECATED -- Assume Teams can have more than one leader. This should be removed
   # once we verify all uses are removed and new methods for cycling through team leaders
@@ -50,17 +51,25 @@ class Team < ActiveRecord::Base
 
   #Tallying how many badges the students on the team have earned total
   def badge_count
-    earned_badges.count
+    earned_badges.where(:course_id => self.course_id).count
   end
 
   #Calculating the average points amongst all students on the team
   def average_points
     total_score = 0
     students.each do |student|
-      total_score += (student.cached_score_for_course(course) || 0 )
+      total_score += (student.assignment_scores_for_course(course) || 0 )
     end
     if member_count > 0
       average_points = total_score / member_count
+    end
+  end
+
+  def update_ranks
+    @teams = current_course.teams
+    rank_index = @teams.pluck(:scores).uniq.sort.index(team.score) 
+    @teams.each do |team|
+      team.rank = rank_index.index(team.score)
     end
   end
 
@@ -69,18 +78,19 @@ class Team < ActiveRecord::Base
     challenge_grades.sum('score') || 0
   end
 
-  private
-
   #Teams rack up points in two ways, which is used is determined by the instructor in the course settings.
   #The first way is that the team's score is the average of its students' scores, and challenge grades are
   #added directly into students' scores
   #The second way is that the teams compete in team challenges that earn the team points. At the end of the
   #semester these usually get added back into students' scores - this has not yet been built into GC.
   def cache_score
-    if course.team_score_average?
-      self.score = average_points
-    else
+    if course.team_challenges?
       self.score = challenge_grade_score
+    else
+      self.score = average_points
     end
   end
+
+  private
+
 end

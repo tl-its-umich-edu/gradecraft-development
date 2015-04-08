@@ -1,0 +1,43 @@
+.small-12
+  %h3.pagetitle= "#{@title} (#{ points @assignment.point_total } points)"
+
+.small-12.columns
+  %dl.tabs{:data => {'tab' => true}, "data-options" => "deep_linking: true; scroll_to_content: false"  }
+    %dd.active
+      %a{ "href" => "#tabt1"} Description & Downloads
+    - if @assignment.rubric and @assignment.rubric.designed? && ! current_student_data.grade_released_for_assignment?(@assignment)
+      %dd
+        %a{ "href" => "#tabt2"} Grading Rubric
+    - if @assignment.accepts_submissions? && current_student.submission_for_assignment(@assignment)
+      %dd
+        %a{ :href => "#tabt3"} My Submission
+
+    - if current_student_data.grade_released_for_assignment?(@assignment)
+      %dd
+        %a{ :href => "#tabt4"} My Results
+    - if current_student_data.grade_released_for_assignment?(@assignment)
+      %dd
+        %a{ :href => "#tabt5"} Class Analytics
+
+.small-12.columns
+  .tabs-content
+    .content#tabt1.active
+      = render 'assignments/guidelines'
+    
+    - if @assignment.rubric and @assignment.rubric.designed?
+      .content#tabt2
+        = render 'assignments/rubric_preview'
+    - if @assignment.accepts_submissions? && current_student.submission_for_assignment(@assignment)
+      .content#tabt3
+        = render "submissions/student_show"
+    - if current_student_data.grade_released_for_assignment?(@assignment)
+      .content#tabt4
+        - if @assignment.has_groups?
+          = render "grades/group_show"
+        - else
+          = render "grades/individual_show"
+      .content#tabt5
+        - if @assignment.has_groups?
+          = render "grades/group_analytics"
+        - else
+          = render "grades/individual_analytics"

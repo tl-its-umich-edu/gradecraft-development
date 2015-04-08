@@ -1,0 +1,22 @@
+// .change(function (){
+
+// var files = $('#new_submission :input[type=file]').get(0).files;
+// for (i = 0; i < files.length; i++)
+// {
+//   alert(file[i].size);
+//    //if (files[i].size > 20971520) ...
+// }
+
+$(document).ready(function() {
+  $('#new_submission input[type=file]').change(function (){
+    var files = $('#new_submission :input[type=file]').get(0).files;
+    for (i = 0; i < files.length; i++) {
+      if (files[i].size > <%= MAX_UPLOAD_FILE_SIZE %>) {
+        alert("Maximum file size for uploads is <%= MAX_UPLOAD_READABLE %>");
+        return;
+      }
+    }
+  });
+});
+
+

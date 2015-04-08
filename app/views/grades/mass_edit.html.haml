@@ -10,9 +10,9 @@
         = hidden_field_tag :assignment_id, @assignment.id
         %label.sr-only{:for => "team_id"}
           Select Team
-        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
 
-    .clearfix
+    .clear
 
   .small-12.columns
     #massGrade
@@ -22,19 +22,19 @@
 
 
         %table.responsive
-          - if @assignment.grade_checkboxes?
-            %thead
-              %tr
-                %th= "#{term_for :student}"
-                %th
-                  .button-bar
-                    %ul.button-group.radius.right
-                      %li.select-all.button.tiny= "Check All"
-                      %li.select-none.button.tiny= "Uncheck All"
+          %thead
+            %tr
+              %th{:style => "text-align: right"}= "#{term_for :student}"
+              %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true" } 
+                - if @assignment.grade_checkboxes?
+                  %span.sr-only Check/Uncheck
+                  %button.button.select-all.tiny= "Check All"
+                  %button.button.select-none.tiny= "Uncheck All"
+              %th
           - @grades.each_with_index do |grade, i|
             %tr
-              %td= link_to grade.student.name, student_path(grade.student)
-              %td.right
+              %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
+              %td.center
                 = f.simple_fields_for :grades, grade do |gf|
                   = gf.hidden_field :graded_by_id, :value => current_user.id
                   - if !grade.status
@@ -42,38 +42,31 @@
                   = gf.hidden_field :student_id
                   = label_tag do
                     // Checking to see if the grade is actually graded before setting the default value to 0
-                    - if @assignment.grade_select? && @assignment.assignment_type.has_levels?
-                      = gf.select :raw_score, options_from_collection_for_select(@score_levels, :value, :name, grade.try(:raw_score)), include_blank: true
-                    - elsif @assignment.grade_select? && @assignment.has_levels?
-                      = gf.select :raw_score, options_from_collection_for_select(@assignment_score_levels, :value, :name, grade.try(:raw_score)), include_blank: true
-                    - elsif @assignment.grade_radio? && @assignment.assignment_type.has_levels?
-                      %ul.inline-list
-                        - @score_levels.each do |score_level|
-                          %li
-                            = gf.label :raw_score, score_level.name, value: score_level.value
-                            = gf.radio_button :raw_score, score_level.value, :class => "radio_inline"
+                    - if @assignment.grade_select? && @assignment.has_levels?
+                      = gf.select :raw_score, options_from_collection_for_select(@assignment_score_levels, :value, :formatted_name, grade.try(:raw_score)), include_blank: true
                     - elsif @assignment.grade_radio? && @assignment.has_levels?
                       - @assignment_score_levels.each do |assignment_score_level|
-                        = gf.label :raw_score, assignment_score_level.name, value: assignment_score_level.value
+                        = gf.label :raw_score, "#{assignment_score_level.formatted_name}", value: assignment_score_level.value
                         = gf.radio_button :raw_score, assignment_score_level.value, :class => "radio_inline"
                     - elsif @assignment.grade_checkboxes?
                       = gf.check_box :raw_score, {}, @assignment.point_total, nil
                     - else
                       - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
-                        %td
-                          = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
+                        = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
 
                       - else
-                        %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                        %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
+                        = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
+              %td{:style => "text-align: left"}= "/ #{points @assignment.point_total}"
 
           - if @auditors.present?
             %tr
               %td.bold AUDITORS
+              %td
+              %td
             - @auditor_grades.each_with_index do |grade, i|
               %tr
-                %td= link_to grade.student.name, student_path(grade.student)
-                %td.right
+                %td{:style => "text-align: right"}= link_to grade.student.name, student_path(grade.student)
+                %td.center
                   = f.simple_fields_for :grades, grade do |gf|
                     = gf.hidden_field :graded_by_id, :value => current_user.id
                     - if !grade.status
@@ -81,16 +74,8 @@
                     = gf.hidden_field :student_id
                     = label_tag do
                       // Checking to see if the grade is actually graded before setting the default value to 0
-                      - if @assignment.grade_select? && @assignment.assignment_type.has_levels?
-                        = gf.select :raw_score, options_from_collection_for_select(@score_levels, :value, :name, grade.try(:raw_score)), include_blank: true
-                      - elsif @assignment.grade_select? && @assignment.has_levels?
-                        = gf.select :raw_score, options_from_collection_for_select(@assignment_score_levels, :value, :name, grade.try(:raw_score)), include_blank: true
-                      - elsif @assignment.grade_radio? && @assignment.assignment_type.has_levels?
-                        %ul.inline-list
-                          - @score_levels.each do |score_level|
-                            %li
-                              = gf.label :raw_score, score_level.name, value: score_level.value
-                              = gf.radio_button :raw_score, score_level.value, :class => "radio_inline"
+                      - if @assignment.grade_select? && @assignment.has_levels?
+                        = gf.select :raw_score, options_from_collection_for_select(@assignment_score_levels, :value, :formatted_name, grade.try(:raw_score)), include_blank: true
                       - elsif @assignment.grade_radio? && @assignment.has_levels?
                         - @assignment_score_levels.each do |assignment_score_level|
                           = gf.label :raw_score, assignment_score_level.name, value: assignment_score_level.value
@@ -99,13 +84,14 @@
                         = gf.check_box :raw_score, {}, @assignment.point_total, nil
                       - else
                         - if grade.persisted? && (grade.status == "Graded" || grade.status == "Released")
-                          %td
-                            = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
+                          = gf.text_field :raw_score, data: {autonumeric: true, "m-dec" => "0"}
 
                         - else
-                          %td= gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
-                          %td= gf.label :raw_score, "/ #{points @assignment.point_total}"
+                          = gf.text_field :raw_score, :value => nil, data: {autonumeric: true, "m-dec" => "0"}
+                %td{:style => "text-align: left"}= "/ #{points @assignment.point_total}"
 
-        .right
-          = f.button :submit, "Submit Grades", :class => "button radius alert"
-          = link_to 'Cancel', assignments_path, :class => "button radius transparent"
+        %br
+        .button-bar
+          %ul.button-group.radius.right
+            %li= f.button :submit, "Submit Grades"
+            %li= link_to 'Cancel', assignments_path, :class => "button"

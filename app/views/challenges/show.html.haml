@@ -2,12 +2,17 @@
   - if current_user_is_staff?
     = content_nav_for @challenge
 
-  %h3.pagetitle= @title
+  .small-12
+    %h3.pagetitle= @title
 
   - if current_user_is_staff?
-    .small-12.medium-3.right.columns.columns-no-padding
-      .button-bar.right
+    .small-12.columns
+      .button-bar
         %ul.button-group.context_menu
+          %li
+            %a{:href => new_challenge_path }
+              %i.fi-plus
+              New #{(term_for :challenge).titleize}
           %li
             %a{:href => edit_challenge_path(@challenge) }
               %i.fi-pencil
@@ -16,6 +21,7 @@
             %a{:href => mass_edit_challenge_challenge_grades_path(@challenge) }
               %i.fi-results-demographics
               Quick Grade
+      %br
 
   .small-12.columns
     - if @challenge.challenge_files.present?
@@ -44,7 +50,7 @@
                 %button.button.select-all.tiny= "Check All"
                 %button.button.select-none.tiny= "Uncheck"
         %tbody
-          - @teams.each do |team|
+          - @teams.alpha.each do |team|
             - challenge_grade = @challenge.challenge_grades.find_by team: team
             %tr
               %td
@@ -67,26 +73,25 @@
                     %ul.button-group.right.radius
                       %li
                         %a{:href => challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button'}
-                          See
+                          See Grade
                           %span.sr-only
-                            Grade for
-                          %span.sr-only= team.name
+                            = "for #{team.name}"
                       %li
                         %a{:href => edit_challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button'}
-                          Edit
+                          Edit Grade
                           %span.sr-only
-                            Grade for
-                          %span.sr-only= team.name
+                            = "for #{team.name}"
                       %li
                         %a{:href => challenge_challenge_grade_path(@challenge.id, challenge_grade.id, :team_id => team.id), :class => 'button', :data => { confirm: 'Are you sure?', method: :delete }}
-                          Delete
+                          Delete Grade 
                           %span.sr-only
-                            Grade for
-                          %span.sr-only= team.name
+                            = "for #{team.name}"
                   - else
-                    %a{:href => new_challenge_challenge_grade_path("challenge_id"=>@challenge.id, :team_id => team.id), :class => 'button'}
-                      Grade for
-                      %span.sr-only= team.name
+                    .right
+                      %a{:href => new_challenge_challenge_grade_path(:challenge_id => @challenge.id, :team_id => team.id), :class => 'button radius'}
+                        Grade
+                        %span.sr-only
+                          = "for #{team.name}"
               - if @challenge.release_necessary?
                 %td
                   - if challenge_grade

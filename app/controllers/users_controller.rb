@@ -29,13 +29,13 @@ class UsersController < ApplicationController
     @title = "Create a New User"
     @teams = current_course.teams
     @courses = Course.all
-    @user = current_course.users.new
+    @user = User.new
     respond_with @user
   end
 
   def edit
     session[:return_to] = request.referer
-    @teams = current_course.teams
+    @teams = current_course.teams.alpha
     @user = current_course.users.find(params[:id])
     if @user.is_staff?(current_course)
       @courses = Course.all
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 
   def create
     @teams = current_course.teams
-    @user = current_course.users.new(params[:user])
+    @user = User.create(params[:user])
     if @user.save && @user.is_student?(current_course)
       redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully created!"
     elsif @user.save && @user.is_staff?(current_course)
@@ -68,7 +68,9 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @course_membership = @user.course_memberships.where(course_id: current_course).first
     @teams = current_course.teams
-    @user.teams.set_for_course(current_course.id, params[:user][:course_team_ids])
+    if @user.is_student?(current_course)
+      @user.teams.set_for_course(current_course.id, params[:user][:course_team_ids])
+    end
     @user.update_attributes(params[:user])
     if @user.save && @user.is_student?(current_course)
       redirect_to students_path, :notice => "#{term_for :student} #{@user.name} was successfully updated!"
@@ -134,7 +136,7 @@ class UsersController < ApplicationController
     q = params[:user][:name]
     @users = current_course.users.where("name LIKE ?","%#{q}%")
   end
-
+  
   private
 
   def increment_predictor_views

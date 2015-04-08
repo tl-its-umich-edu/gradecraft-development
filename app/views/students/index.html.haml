@@ -4,32 +4,22 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %a{:href => gradebook_path(format: 'csv') }
-            %i.fi-page-export-csv
-            Download Grades
-
-  .clearfix
-
   .small-12.medium-4.columns.right
     / Checking to see if the current course has teams, displaying the team filter if it does
     - if current_course.has_teams?
       = form_tag students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select a #{current_course.team_term}"
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
 
     / Display the table of course students, their leaderboard display, their team affiation, their score and their grade
     = render 'students_table', :course => current_course, :students => @students
 
-  .clearfix
+  .clear
 
-  - if @auditing
+  - if @auditing_students.present?
     / Display the table of auditing students if they're present
-    .pagetitle= "Auditing Roster"
+    %h4.subtitle= "Auditing Roster"
 
-    .small-12.columns
-      = render 'students_table', :course => current_course, :students => @auditing
+    .columns{:style => "overflow: auto"}
+      = render 'students_table', :course => current_course, :students => @auditing_students

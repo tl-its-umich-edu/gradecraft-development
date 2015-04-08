@@ -1,9 +1,10 @@
 - if current_user_is_staff?
   = form_tag edit_status_grades_assignment_path(@assignment) do
     - @groups.each do |group|
+      %h4.subtitle
+        = "#{group.name} Grades"
       .small-12.columns
-        %h5.bold
-          = "#{group.name} Grades"
+        %h5.section-title
           - group.submission_for_assignment(@assignment).tap do |submission|
             - if submission
               = link_to "See Submission", assignment_grade_path(@assignment.id, :group_id => group.id), :class => 'button radius'
@@ -14,46 +15,47 @@
           - else
             = link_to "Grade", group_grade_assignment_path(@assignment, :group_id => group), :class => 'button radius'
 
-      %table.responsive.nofeatures_dynatable
-        %thead
-          %tr
-            %th= current_course.group_term
-            %th Score
-            - if @assignment.assignment_type.student_weightable?
-              %th Multiplied Scores
-            - if @assignment.has_levels?
-              %th Level
-            - if @assignment.release_necessary?
-              %th Status
-              %th
-                .button-bar
-                  %ul.button-group.right.radius
-                    %li
-                      %button.button.select-all.tiny= "Check All"
-                    %li
-                      %button.button.select-none.tiny= "Uncheck All"
-        %tbody
-          - group.students.each do |student|
-            - grade = @assignment.grades.find_by student_id: student
+      .small-12.columns
+        %table.responsive.nofeatures_dynatable.no_radius
+          %thead
             %tr
-              %td= link_to student.name, student_path(student)
-              %td
-                - if grade && (grade.is_graded? || grade.status == "Released" )
-                  = points grade.raw_score
+              %th= current_course.group_term
+              %th Score
               - if @assignment.assignment_type.student_weightable?
-                %td= points grade.score if grade
+                %th Multiplied Scores
               - if @assignment.has_levels?
-                %td
-                  - if grade
-                    = @assignment.grade_level(grade)
+                %th Level
               - if @assignment.release_necessary?
-                %td= grade.try(:status)
-                %td.right
-                  - if grade && grade.is_graded?
-                    = check_box_tag "grade_ids[]", grade.id
-    .right.columns
-      - if @assignment.release_necessary? && @assignment.grades.present?
-        = submit_tag "Update Grade Statuses", :class => "button"
+                %th Status
+                %th
+                  .button-bar
+                    %ul.button-group.right.radius
+                      %li
+                        %button.button.select-all.tiny= "Check All"
+                      %li
+                        %button.button.select-none.tiny= "Uncheck All"
+          %tbody
+            - group.students.each do |student|
+              - grade = @assignment.grades.find_by student_id: student
+              %tr
+                %td= link_to student.name, student_path(student)
+                %td
+                  - if grade && (grade.is_graded? || grade.status == "Released" )
+                    = points grade.raw_score
+                - if @assignment.assignment_type.student_weightable?
+                  %td= points grade.score if grade
+                - if @assignment.has_levels?
+                  %td
+                    - if grade
+                      = @assignment.grade_level(grade)
+                - if @assignment.release_necessary?
+                  %td= grade.try(:status)
+                  %td.right
+                    - if grade && grade.is_graded?
+                      = check_box_tag "grade_ids[]", grade.id
+      .right.columns
+        - if @assignment.release_necessary? && @assignment.grades.present?
+          = submit_tag "Update Grade Statuses", :class => "button"
 - else
   - if current_student.group_for_assignment(@assignment)
     %h3

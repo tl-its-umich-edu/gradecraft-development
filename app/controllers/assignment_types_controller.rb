@@ -11,14 +11,12 @@ class AssignmentTypesController < ApplicationController
   def show
     @assignment_type = current_course.assignment_types.find(params[:id])
     @title = "#{@assignment_type.name}"
-    @score_levels = @assignment_type.score_levels
   end
 
   #Create a new assignment type
   def new
     @title = "Create a New #{term_for :assignment_type}"
     @assignment_type = current_course.assignment_types.new
-    @assignment_type.score_levels.build
   end
 
   #Edit assignment type
@@ -30,23 +28,16 @@ class AssignmentTypesController < ApplicationController
   #Create a new assignment type
   def create
     @assignment_type = current_course.assignment_types.new(params[:assignment_type])
+    @title = "Create a New #{term_for :assignment_type}"
     @assignment_type.save
 
-    if (@assignment_type.universal_point_value?) && (@assignment_type.universal_point_value < 1)
-      flash[:error] = 'Point value must be a positive number'
-      render :action => "new", :assignment_type => @assignment_type
-    elsif (@assignment_type.max_value?) && (@assignment_type.max_value < 1)
-     flash[:error] = 'Maximum points must be a positive number'
-     render :action => "new", :assignment_type => @assignment_type
-    else
-      respond_to do |format|
-        if @assignment_type.save
-          format.html { redirect_to @assignment_type, notice: "#{(term_for :assignment_type).titleize} #{@assignment_type.name} successfully created" }
-          format.json { render json: @assignment_type, status: :created, location: @assignment_type }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @assignment_type.errors }
-        end
+    respond_to do |format|
+      if @assignment_type.save
+        format.html { redirect_to @assignment_type, notice: "#{(term_for :assignment_type).titleize} #{@assignment_type.name} successfully created" }
+        format.json { render json: @assignment_type, status: :created, location: @assignment_type }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @assignment_type.errors }
       end
     end
   end
@@ -75,6 +66,13 @@ class AssignmentTypesController < ApplicationController
         end
       end
     end
+  end
+
+  def sort
+    params[:"assignment-type"].each_with_index do |id, index|
+      current_course.assignment_types.update(id, position: index + 1)
+    end
+    render nothing: true
   end
 
   def export_scores

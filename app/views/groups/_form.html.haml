@@ -1,28 +1,31 @@
 .small-12.columns
   = simple_form_for @group do |f|
 
+    - if @group.errors.any? 
+      .alert-box.alert.radius
+        .italic= "#{pluralize(@group.errors.count, "error")} prohibited this group from being saved:"
+        %ul
+          - @group.errors.full_messages.each do |msg|
+            %li= msg
+
     .small-12.panel
-      = f.label "#{term_for :group} Name"
+      %h4.uppercase= "#{term_for :group} Name"
       = f.text_field :name
 
-    - if current_user_is_staff? && @group.persisted?
-      .small-12.medium-4
-        = f.label :approved, "Status"
-        = f.select :approved, [[], ["Approved"], ["Rejected"]]
-        .form_label If rejected, this #{term_for :group} will be unable to submit any further work for these assignments
-
     .small-12.panel
-      = f.association :assignments, :collection => @assignments, :as => :check_boxes, :label => "#{term_for :assignments}"
+      %h4.uppercase= "#{term_for :assignments}"
+      = f.association :assignments, :collection => @assignments, :as => :check_boxes, :label => false
       .form_label{:id => "txtGroupAssignment"} What #{term_for :assignments} will this #{term_for :group} work on together?
 
     .small-12.panel
+      %h4.uppercase= "#{term_for :students}"
       - if current_user_is_student? && !@group.persisted?
-        = f.association :students, :collection => @other_students, as: :select, :label => "#{term_for :students}"
+        = f.association :students, :collection => @other_students, as: :select, :label => false
         %span.italic= "You (#{current_student.name }) will be automatically included in this group."
       - elsif current_user_is_student?
-        = f.association :students, :collection => current_course.students, as: :select, :label => "#{term_for :students}"
+        = f.association :students, :collection => current_course.students, as: :select, :label => false
       - if current_user_is_staff?
-        = f.association :students, :collection => current_course.students, as: :select, :label => "#{term_for :students}"
+        = f.association :students, :collection => current_course.students, as: :select, :label => false
       %br
       .form_label{:id => "txtStudentName"} Enter a fellow student's name to add them to this #{term_for :group}. Only one student needs to create the #{term_for :group}, after which all #{term_for :group} members will be able to submit work, see submitted materials, and see instructor grades and feedback.
 
@@ -44,20 +47,20 @@
         - else
           = f.simple_fields_for :proposals, Proposal.new, class: 'form-inline', child_index: 'child_index' do |f|
             .small-12.columns.panel
-              %span.large-3.columns
-              - if current_user_is_staff?
-                %span.large-3.columns
-                  = f.label :approved, "Approved?"
-                  = f.input :approved, :label => false
+
               .small-12.columns.textarea
-                = f.label :proposal
+                %h4 
+                  %span.uppercase Proposal
+                  %span.italic (Optional)
                 = f.bootsy_area :proposal
                 = f.hidden_field :id
+                .form_label If your #{term_for :group} knows what it will be working on, you can submit that here.
         - if @group.persisted?
           = link_to 'Add a Proposal', '#', class: 'add-proposal button radius'
 
     %br
 
-    .right
-      = submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button radius alert'
-      = link_to 'Cancel', groups_path, :class => 'button radius transparent'
+    .button-bar
+      %ul.button-group.radius.right
+        %li= submit_tag "#{@group.persisted? ? 'Update' : 'Create'} #{ term_for :group } ",  :class => 'button'
+        %li= link_to 'Cancel', groups_path, :class => 'button'

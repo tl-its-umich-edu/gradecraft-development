@@ -1,6 +1,6 @@
 .row
   .small-8.columns(style="padding:0")
-    %input(type="text" ng-model="tier.name" placeholder="Level Name" required ng-blur="tier.modify(tierForm)" ng-change="tier.change()")
+    %input(type="text" ng-model="tier.name" placeholder="Level Name" required ng-blur="tier.modify(tierForm)" ng-Maxlength=30 ng-change="tier.change()" maxlength=30)
   .small-4.columns(style="padding:0")
     %input(type="number" ng-model="tier.points" placeholder="Points" min=0 ng-blur="tier.modify(tierForm)" ng-change="tier.change()" required)
 
@@ -11,7 +11,7 @@
   .row.badge-row(ng-click="tier.editBadges()" ng-show="tier.isSaved()")
     .badge-messages Badges
     .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
-      = image_tag "badge.png", width: "50px", height: "50px"
+      %img(src="{{tierBadge.badge.icon}}" width="35px" height="35px")
 
 .modal-window(ng-show="tier.editingBadges")
   .row
@@ -21,7 +21,7 @@
 
   .row
     .tier-badge(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
-      = image_tag "badge.png", width: "20px", height: "20px"
+      %img(src="{{tierBadge.badge.icon}}" width="20px" height="20px")
       {{tierBadge.name}}
       %button.delete(type="button" ng-click="tier.deleteTierBadge(tierBadge)") X
 

@@ -1,0 +1,61 @@
+.small-12.panel.mainContent#leaderboard
+
+  = content_nav_for "Leaderboard"
+
+  .small-12.medium-6
+    %h3.pagetitle#tableCaption= @title
+
+  - if current_course.has_teams?
+    .small-12.large-4.medium-6.columns.right
+      %label.sr-only{:for => "team_id"}
+        Select Team
+      = form_tag leaderboard_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
+        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, params[:team_id]), :prompt => "– Select #{current_course.team_term} –"
+
+  .columns{:style => "overflow: auto"}
+    %table.responsive
+      %thead
+        %tr
+          %th{:scope => "col", "data-dynatable-sorts" => "rank"} Rank
+          %th{:scope => "col"} First Name
+          %th{:scope => "col"} Last Name
+          %th{:scope => "col", "data-dynatable-sorts" => "score"} Score
+          - if current_course.has_teams?
+            %th{:scope => "col"} #{current_course.team_term}
+            - if current_course.in_team_leaderboard?
+              %th{:scope => "col"} Pseudonym
+          %th{:scope => "col"} Grade
+          - if current_course.has_badges?
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :style => "min-width: 200px"  } Badges Earned
+            %th{:style => "display: none"} Badge Count
+          %th{:scope => "col", "data-dynatable-no-sort" => "true", :style => "min-width: 200px" }
+            %span.sr-only Actions
+        %tbody
+          - @students.each_with_index do |student, index|
+            %tr
+              %td{"data-title" => "Rank"}= index + 1
+              %td{"data-title" => "First Name"}= link_to student.first_name, student_path(student)
+              %td{"data-title" => "Last Name"}= link_to student.last_name, student_path(student)
+              %td{"data-title" => "Score"}= points student.cached_score
+              - if current_course.has_teams?
+                - student_team = @teams_by_student_id[student.id]
+                %td#team_for_course{"data-title" => "Team"}
+                  = link_to student_team.try(:name), student_team if student_team
+                - if current_course.in_team_leaderboard?
+                  %td{"data-title" => "Pseudonym"}= student.display_name
+              %td{"data-title" => "Grade"}
+                - unless @student_grade_schemes_by_id[student.id].nil?
+                  = "#{@student_grade_schemes_by_id[student.id][:letter]}"
+                  = "#{@student_grade_schemes_by_id[student.id][:level]}"
+              - if current_course.has_badges?
+                %td#earned_badges{"data-title" => "Badges"}
+                  - if @earned_badges_by_student_id[student.id]
+                    - @earned_badges_by_student_id[student.id].each do |badge|
+                      %img{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name}
+                      //%img.has-tip{:src => badge.icon, :alt => badge.name, :width => "20", :title => badge.name, :data => {'tooltip' => 'true'}, 'aria-haspopup' => 'true' }
+              %td{"data-title" => "Options"}
+                .button-bar
+                  %ul.button-group.radius.right
+                    %li= link_to "Dashboard", student_path(student), :class => "button"
+                    %li= mail_to student.email, "Email", :class => "button"
+                    %li= link_to "Edit", edit_user_path(student), :class => "button"

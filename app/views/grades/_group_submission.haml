@@ -5,7 +5,7 @@
     - else
       Your Submission
     // link to edit the submission
-    %span= link_to "Edit", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button radius no-margin"
+    %span= link_to "Edit My Submission", edit_assignment_submission_path(@assignment, current_student.submission_for_assignment(@assignment), :student_id => current_student.id), :class => "button radius no-margin"
   // Displaying when the assignment was submitted
   %p
     Submitted:
@@ -33,7 +33,7 @@
       %ul
         - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
           %li
-            = link_to sf.filename, sf.url
+            = link_to sf.filename, sf.url, :target => "_blank"
 
   - if current_student.submission_for_assignment(@assignment).text_comment?
     %p
@@ -48,7 +48,7 @@
   - else
     Your Submission
   // link to edit the submission
-  %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment), :group_id => @group), :class => "button radius no-margin"
+  %span= link_to "Edit My Submission", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment), :group_id => @group), :class => "button radius no-margin"
   // Displaying when the assignment was submitted
   %p
     %b Submitted:

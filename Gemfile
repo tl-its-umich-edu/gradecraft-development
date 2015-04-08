@@ -2,40 +2,37 @@ source 'https://rubygems.org'
 
 ruby '2.0.0'
 
-gem 'rails', '4.0.3'
-
+gem 'rails'
+gem "resque", "1.25.2", git: "https://github.com/resque/resque.git", :branch => "1-x-stable"
 gem 'actionpack-action_caching'
+gem 'activerecord-import'
 gem 'actionpack-page_caching'
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
+gem 'acts_as_list'
 gem 'addressable'
-gem 'amoeba'
 gem 'angularjs-rails', '~> 1.2.14'
 gem 'autonumeric-rails'
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2.0'
 gem 's3_direct_upload'
 gem 'bootsy'
 gem 'canable'
 gem 'carrierwave'
+gem 'carrierwave_backgrounder'
 gem 'coffee-rails'
-gem "compass-rails", "~> 1.1.3"
+gem "compass-rails"
 gem 'dalli'
 gem 'dotenv-rails'
 gem 'fog'
 gem 'foundation-rails'
 gem 'foundation-icons-sass-rails'
-gem 'gravatar_image_tag'
 gem 'haml'
-#gem 'html5_validators'
-gem 'ims-lti'
 gem 'jbuilder'
 gem 'jquery-rails', '~> 2.0'
 gem 'json'
-gem 'kiqstand', :git => 'https://github.com/mongoid/kiqstand.git'
-gem 'markerb'
 gem 'mini_magick'
-gem 'minitest-rails'
-gem 'mongoid', :git => 'https://github.com/mongoid/mongoid.git'
+gem 'moped', '2.0.4', git: 'https://github.com/wandenberg/moped.git', branch: 'operation_timeout'
+gem 'mongoid', '~> 4.0.2'
 gem 'ng-rails-csrf'
 gem 'nokogiri', '1.6.0'
 gem 'oink'
@@ -52,39 +49,47 @@ gem 'responders'
 gem 'rollbar'
 gem 'sampler'
 gem 'sanitize'
-gem 'sass-rails', '~> 4.0.0.beta1'
+gem 'sass-rails'
 gem 'select2-rails'
-gem 'sendgrid'
 gem 'sidekiq'
-gem 'simple_form', '~> 3.0.0.rc'
+gem 'simple_form'
 gem 'sorcery'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'uglifier'
 gem 'whenever'
 gem 'newrelic_rpm'
 gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'rubyzip', '>= 1.0.0'
 
 group :development do
   gem 'haml-rails'
   gem 'valid_attribute'
   gem 'quiet_assets'
   gem 'foreman'
+  gem 'letter_opener'
+  gem 'rack-mini-profiler', require: false
   gem 'rubystats'
-  gem 'rack-mini-profiler'
   gem 'spring'
-  # gem 'guard-spring'
+end
+
+group :development, :test do
+  gem 'pry'
+  gem 'byebug'  
+  gem 'pry-remote'
+  gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do
-  gem 'faker'
+  gem 'faker', '~> 1.4.3'
   gem 'capybara', '~> 2.1.0'
   gem 'database_cleaner', "~> 1.0.1"
   gem 'launchy'
   gem 'selenium-webdriver'
-end
-
-group :test, :development do
+  gem 'factory_girl_rails', '~> 4.5.0'
   gem 'rspec-rails', '~> 2.14.0'
-  gem 'factory_girl_rails', '~> 4.2.1'
 end
 
+group :tasks do
+  gem 'rake-hooks'
+end

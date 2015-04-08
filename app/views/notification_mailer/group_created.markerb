@@ -1,5 +1,0 @@
-Hi Professor <%= @professor.last_name %>,
-
-You have a new group to review!
-
-GradeCraft

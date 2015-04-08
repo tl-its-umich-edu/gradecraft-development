@@ -23,13 +23,6 @@
       sparkOpts.medianColor = '#0D9AFF';
       $('.grades_per_assign').sparkline(data.scores, sparkOpts);
     }
-  }
-
-  var sparkResize;
-
-  $(window).resize(function(e) {
-      clearTimeout(sparkResize);
-      sparkResize = setTimeout(sparkOpts, 500);
-  });
+  };
 
   $('#numberComplete').circliful();

@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Successful Submission Email Template</title>
+<style type="text/css">
+* {
+margin: 0;
+padding: 0;
+font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+font-size: 100%;
+line-height: 1.6;
+}
+
+img {
+max-width: 100%;
+}
+
+body {
+width: 100%!important;
+height: 100%;
+}
+
+a {
+color: #348eda;
+}
+
+.last {
+margin-bottom: 0;
+}
+
+.first {
+margin-top: 0;
+}
+
+.padding {
+padding: 10px 0;
+}
+
+table.body-wrap {
+width: 100%;
+padding: 20px;
+}
+
+table.body-wrap .container {
+border: 1px solid #f0f0f0;
+}
+
+table.footer-wrap {
+width: 100%;  
+clear: both!important;
+}
+
+.footer-wrap .container p {
+font-size: 12px;
+color: #666;
+
+}
+
+table.footer-wrap a {
+color: #999;
+}
+
+h1, h2, h3 {
+font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+line-height: 1.1;
+margin-bottom: 5px;
+color: #000;
+margin: 10px 0 10px 10px;
+line-height: 1.2;
+font-weight: 200;
+}
+
+h1 {
+font-size: 36px;
+}
+h2 {
+font-size: 28px;
+}
+h3 {
+font-size: 22px;
+}
+
+hr {
+margin: 20px;
+border: 1px solid #eee;
+}
+
+p, ul, ol {
+margin-bottom: 10px;
+font-weight: normal;
+font-size: 14px;
+}
+img {
+margin: 10px;
+}
+
+p, div {
+margin-left: 10px;
+margin-right: 10px;
+}
+
+ul li, ol li {
+margin-left: 5px;
+list-style-position: inside;
+}
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+display: block!important;
+max-width: 600px!important;
+margin: 0 auto!important; /* makes it centered */
+clear: both!important;
+}
+
+/* Set the padding on the td rather than the div for Outlook compatibility */
+.body-wrap .container {
+padding: 20px;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+max-width: 600px;
+margin: 0 10px;
+display: block;
+}
+
+/* Let's make sure tables in the content area are 100% wide */
+.content table {
+width: 100%;
+}
+</style>
+</head>
+
+<body bgcolor="#f6f6f6">
+
+<!-- body -->
+<table class="body-wrap">
+<tr>
+<td></td>
+<td class="container" bgcolor="#FFFFFF">
+
+<!-- content -->
+<div class="content">
+<table>
+<tr>
+<td>
+<p align="center">
+<a href= "http://gradecraft.com" target="_blank"><img src="https://www.gradecraft.com/images/gradecraft_logo.png" width="207" border="0" alt="" /></a>
+</p>
+<h2 align="center"><strong>Congratulations #{ @user.first_name }!</strong></h2>
+
+<h3 align="center">You successfully updated your submission for #{ @assignment.name } on #{ @submission.created_at }. </h3>
+<p>
+<hr />
+</p>
+<p align="center"> Check out what other #{ @course.assignment_term.pluralize.downcase } you can complete in #{ @course.name } <a href="https://www.gradecraft.com/predictor">here</a>.</p>
+
+<hr />
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">
+<a href="http://facebook.com/gradecraft" alt="GradeCraft on Facebook"><img src="http://localhost:5000/images/facebook500.png" width="40"/></a>
+
+<a href="http://twitter.com/gradecraft" alt="GradeCraft on Twitter"><img src="http://localhost:5000/images/twitter.png" width="40"/></a>
+
+<a href="http://www.youtube.com/playlist?list=PL8pE6w-B6iSUjSjK5cR0yaC1xxvQmLe5m" alt="GradeCraft on YouTube"><img src="http://localhost:5000/images/youtube.png" width="40"/></a>
+</p>
+
+<p style="text-transform:uppercase; font-size: 10px; text-align: center;">
+&copy;2012-15 Regents of The University of Michigan
+</p>
+<p align="center">
+<strong><a href= "mailto:help@gradecraft.com" style="color:#00BD39; text-decoration:none">help@gradecraft.com</a></strong>
+</p>
+</td></tr>
+</table>
+</div>
+<!-- /content -->
+
+</td>
+<td></td>
+</tr>
+</table>
+<!-- /body -->
+
+<!-- footer -->
+<table class="footer-wrap">
+<tr>
+<td></td>
+<td class="container">
+
+<!-- content -->
+<div class="content">
+<table>
+<tr align="center">
+<td align="center">
+</td>
+</tr>
+</table>
+</div>
+<!-- /content -->
+
+</td>
+<td></td>
+</tr>
+</table>
+<!-- /footer -->
+
+</body>
+</html>

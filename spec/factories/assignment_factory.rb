@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :assignment do
-    name 'Essay 1'
+    name { Faker::Lorem.word }
     association :assignment_type
-    description 'Essay Description'
-    point_total '100000'
-    visible true 
+    description { Faker::Lorem.sentence }
+    point_total { Faker::Number.number(5) }
+    visible true
     points_predictor_display 'Fixed'
   end
 end

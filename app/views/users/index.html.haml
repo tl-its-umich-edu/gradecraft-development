@@ -8,29 +8,29 @@
       = form_tag users_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
-  .small-12.columns
-    %table.responsive.nopage_dynatable
+  .columns{:style => "overflow: auto"}
+    %table.responsive.nofeatures_default_last_name_dynatable
       %thead
         %tr
           %th First Name
           %th Last Name
-          %th Email
           %th Role
           %th Courses
           %th #{term_for :team}
           %th Score
-          %th
+          %th{:style => "min-width: 200px"}
       %tbody
         - @users.each do |user|
           %tr
             %td
+              - if user.avatar_file_name.present?
+                %img.img-rounded{:src => user.avatar_file_name, :width => 30} 
               = link_to user.first_name, student_path(user) if user.is_student?(current_course)
               = link_to user.first_name, staff_path(user) if user.is_staff?(current_course)
             %td
               = link_to user.last_name, student_path(user) if user.is_student?(current_course)
               = link_to user.last_name, staff_path(user) if user.is_staff?(current_course)
-            %td= user.email
-            %td= user.role(current_course).capitalize
+            %td= user.course_memberships.where(:course_id => current_course.id).first.role.capitalize
             %td
               - user.courses.each do |course|
                 %li= link_to course.name
@@ -47,4 +47,4 @@
                     = link_to "Dashboard", student_path(user), :class => 'button' if user.is_student?(current_course)
                     = link_to "Dashboard", staff_path(user), :class => 'button' if user.is_staff?(current_course)
                   %li= link_to 'Edit', edit_user_path(user), :class => 'button'
-                  %li= link_to 'Delete', users_path, :class => 'button', :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' }, :method => :delete
+                  %li= link_to 'Delete', user.course_memberships.where(:course_id => current_course.id).first, :class => 'button', :data => { confirm: 'This will delete the student from your course - Are you sure?' }, :method => :delete

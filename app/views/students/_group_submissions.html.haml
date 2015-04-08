@@ -1,5 +1,5 @@
 - if group && group.submission_for_assignment(assignment)
-  = link_to "See Submission", assignment_grade_path(assignment, group.submission_for_assignment(assignment), :group_id => group), :class => 'button radius'
+  %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
 - else
   - if group && group.approved?
-    = link_to "Submit", new_assignment_submission_path(assignment, :group_id => group), :class => 'button radius'
+    %li= link_to "Submit", new_assignment_submission_path(assignment, :group_id => group), :class => 'button'

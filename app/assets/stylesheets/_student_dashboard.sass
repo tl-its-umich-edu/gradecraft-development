@@ -1,0 +1,106 @@
+/** Student Dashboard Styles **/
+
+/* Adding the grey enclosure for the prediction */ 
+.gradePredictor
+  background-color: #eee
+  border: 1px solid #eee
+  border-radius: 15px
+  padding: 15px
+  box-shadow: 0px 3px 3px #888888
+  z-index: 100
+
+  /* Setting the chart height */
+  #prediction
+    height: 120px
+
+.assignment
+  display: block
+  padding: 0.5rem 0rem
+  margin-bottom: 1rem
+  border: 1px solid #eee
+  border-radius: $global-radius
+
+  select
+    margin: 0
+
+/* Styling the space where students actually predict their grades */ 
+#predictorPage ul.slides, #predictorPage ul.slides li
+  list-style-type: none
+  margin: 0
+  padding: 0
+
+/* Styling the slider widgets */ 
+.slider.ui-widget-content
+  background: #eeeeee
+  border: none
+
+.ui-widget-header
+  background: $secondary-color-2
+
+.ui-slider .ui-slider-handle
+  width: 20px
+  height: 20px
+  position: absolute
+  top: -5px
+  margin-left: -12px
+  background: darken($secondary-color-2, 15%)
+
+/* Styling the bar charts on the syllabus page */
+#userBarTotal
+  min-height: 200px
+  width: 100%
+  clear: both
+  margin-left: -20px
+
+/* Adjusting the margin between panels */
+.sideBar .panel
+  background-color: #FFF
+  margin-bottom: 1rem
+  border: none
+
+/* Crossing out upcoming assignments in the to do list if the student has already submitted them */
+.strikethrough
+  text-decoration: line-through
+
+/* Styling badge images depending on whether or not the student has earned them */
+img.unearned
+  opacity: .2 !important
+
+img.earned
+  opacity: 1
+
+/* Adjusting the margins on the small headers in the avatar panel */ 
+.avatar.panel
+  h3
+    margin: 0
+
+.bar_magic
+  height: 2rem
+  background-color: #eee
+
+.success.bar_magic
+  color: #FFF
+
+  .has-tip
+    color: #FFF
+
+/*striping on course progress display*/
+.striped
+  height: 100%
+  width: 100%
+  border-radius: 25px
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, $primary-color-4 35px, $primary-color-4 70px)
+
+#levels_per_assignment
+  min-height: 250px
+  width: 100%
+  clear: both
+  .chart
+    height: 100px
+
+#numberComplete
+  #numberComplete_canvas
+    width: 100% !important
+
+.right.radius.label 
+  margin-left: 1rem

@@ -37,12 +37,14 @@
           .order-label {{$index + 1}}
           .metric.small-3.columns(name="metricForm" ng-form ng-submit="metric.create()" ng-class="{saved: metric.isSaved()}" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}")
             = render "rubrics/new_metric"
-          .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved(), nocredit: tier.noCredit}")
-            = render "rubrics/new_tier"
+          .tier-container
+            .tier-wrapper
+              .tier.small-3.columns(name="tierForm" ng-repeat="tier in metric.tiers" ng-form ng-submit="tier.create()" ng-class="{saved: tier.isSaved(), nocredit: tier.noCredit}")
+                = render "rubrics/new_tier"
           %button.add-tier(name="newTier" ng-click="metric.addTier()" ng-show="metric.isSaved()")
             + Level
           .clear
 
       %button.radius#new-rubric-metric(type="button" ng-click="newMetric()" ng-hide) + Criterion
 
-  .clearfix
+  .clear

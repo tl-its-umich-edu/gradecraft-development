@@ -1,6 +1,11 @@
-- if current_student.submission_for_assignment(assignment).present?
-  = link_to "See Submission", assignment_grade_path(assignment, :student_id => current_student), :class => 'button radius'
-- elsif assignment.future? || assignment.still_accepted?
-  = link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button radius'
-  - if assignment.past?
-    .label.alert.radius= "Late!"
+- if current_user_is_student?
+  - if current_student.submission_for_assignment(assignment).present?
+    %li= link_to "See Submission", assignment_path(assignment, :anchor => "fndtn-tabt3"), :class => 'button'
+  - elsif assignment.open?
+    %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'
+
+- else
+  - if current_student.submission_for_assignment(assignment).present?
+    %li= link_to "See Submission", assignment_submission_path(assignment, current_student.submission_for_assignment(assignment).id), :class => 'button'
+  - else assignment.open?
+    %li= link_to "Submit", new_assignment_submission_path(assignment, :student_id => current_student), :class => 'button'

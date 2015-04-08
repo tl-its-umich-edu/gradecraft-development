@@ -4,13 +4,18 @@ class User < ActiveRecord::Base
   include Canable::Cans
 
   before_validation :set_default_course
-  after_save :cache_scores
+
+  default_scope { order('last_name ASC') }
 
   ROLES = %w(student professor gsi admin)
 
   class << self
     def with_role_in_course(role, course)
-      user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
+      if role == "staff"
+        user_ids = CourseMembership.where('course_id=? AND (role=? OR role=?)', course, 'professor', 'gsi').pluck(:user_id)
+      else
+        user_ids = CourseMembership.where(course: course, role: role).pluck(:user_id)
+      end
       User.where(id: user_ids)
     end
 
@@ -37,7 +42,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :remember_me, :password, :password_confirmation, :cached_last_login_at, :course_team_ids, :score
   attr_accessible :username, :email, :password, :password_confirmation,
-    :avatar_file_name, :role, :first_name, :last_name, :rank, :user_id,
+    :avatar_file_name, :first_name, :last_name, :rank, :user_id,
     :display_name, :private_display, :default_course_id, :last_activity_at,
     :last_login_at, :last_logout_at, :team_ids, :courses, :course_ids,
     :shared_badges, :earned_badges, :earned_badges_attributes,
@@ -48,6 +53,8 @@ class User < ActiveRecord::Base
 
   scope :order_by_high_score, -> { includes(:course_memberships).order 'course_memberships.score DESC' }
   scope :order_by_low_score, -> { includes(:course_memberships).order 'course_memberships.score ASC' }
+
+  mount_uploader :avatar_file_name, AvatarUploader
 
   has_many :course_memberships, :dependent => :destroy
   has_one :student_academic_history, :foreign_key => :student_id, :dependent => :destroy, :class_name => 'StudentAcademicHistory'
@@ -112,8 +119,8 @@ class User < ActiveRecord::Base
       end
       auth_hash['extra']['raw_info'].tap do |extra|
         if extra['tool_consumer_info_product_family_code'] == "sakai"
-          u.username = extra['ext_sakai_eid']
-          u.kerberos_uid = extra['ext_sakai_eid']
+          u.username = extra['lis_person_sourcedid']
+          u.kerberos_uid = extra['lis_person_sourcedid']
 
         elsif extra['tool_consumer_info_product_family_code'] == "canvas"
           u.username = extra['custom_canvas_user_login_id']
@@ -156,6 +163,42 @@ class User < ActiveRecord::Base
     course_memberships.count > 1
   end
 
+  def self.auditing_students_in_course(course_id)
+    User
+      .select("users.id, users.first_name, users.last_name, users.email, users.display_name, course_memberships.score as cached_score")
+      .joins("INNER JOIN course_memberships ON course_memberships.user_id = users.id")
+      .where("course_memberships.course_id = ?", course_id)
+      .where("course_memberships.auditing = ?", true)
+      .where("course_memberships.role = ?", "student")
+      .includes(:course_memberships)
+      .group("users.id, course_memberships.score")
+  end
+
+  def self.graded_students_in_course(course_id)
+    User
+      .select("users.id, users.first_name, users.last_name, users.email, users.display_name, course_memberships.score as cached_score")
+      .joins("INNER JOIN course_memberships ON course_memberships.user_id = users.id")
+      .where("course_memberships.course_id = ?", course_id)
+      .where("course_memberships.auditing = ?", false)
+      .where("course_memberships.role = ?", "student")
+      .includes(:course_memberships)
+      .group("users.id, course_memberships.score")
+  end
+
+  def self.graded_students_in_course_include_and_join_team(course_id)
+    self.graded_students_in_course(course_id)
+      .joins("INNER JOIN team_memberships ON team_memberships.student_id = users.id")
+      .where("course_memberships.user_id = team_memberships.student_id")
+      .includes(:team_memberships)
+  end
+
+  def self.auditing_students_in_course_include_and_join_team(course_id)
+    self.auditing_students_in_course(course_id)
+      .joins("INNER JOIN team_memberships ON team_memberships.student_id = users.id")
+      .where("course_memberships.user_id = team_memberships.student_id")
+      .includes(:team_memberships)
+  end
+
   # DEPRECATED - Teams can now have more than one leader. This should be removed
   # once we have a strategy for cycling through team leaders.
   def team_leader
@@ -172,19 +215,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  # During the migration where roles are transferred from the user to the
-  # course membership, we need to account for role being a column on users (before)
-  # and a method (after). Once this migration is complete, course should not be an
-  # optional parameter, and we should remove the if...else check and always go with else
-  def role(course=nil)
-    if self.attributes.include? "role"
-      self.attributes["role"]
-    else
-      return nil if self.course_memberships.where(course_id: course).empty?
-      self.course_memberships.where(course: course).first.role
-    end
+  def role(course)
+    return nil if self.course_memberships.where(course_id: course).empty?
+    self.course_memberships.where(course: course).first.role
   end
 
+  # TODO redefine staff as professors and gsi only.
+  # We want to create admin with comprehensive access.
   def is_staff?(course)
     is_professor?(course) || is_gsi?(course) || is_admin?(course)
   end
@@ -219,11 +256,7 @@ class User < ActiveRecord::Base
   end
 
   def earned_badges_for_course(course)
-    @earned_badges ||= {}.tap do |earned_badges|
-      self.earned_badges.where(course: course).each do |earned_badge|
-        earned_badges[earned_badge.badge_id] = earned_badge
-      end
-    end
+    earned_badges.where(course: course)
   end
 
   def earned_badge_count_for_course(course)
@@ -242,66 +275,61 @@ class User < ActiveRecord::Base
   #I think this may be a little bit faster - ch
   def scores_for_course(course)
      user_score = course_memberships.where(:course_id => course, :auditing => FALSE).pluck('score')
-     scores = CourseMembership.where(course: course).pluck(:score)
+     scores = CourseMembership.where(course: course, role: "student", auditing: false).pluck(:score)
      return {
       :scores => scores,
       :user_score => user_score
      }
   end
 
+  # this should be all earned badges that either:
+  # 1) have no associated grade and have been awarded to the student, or...
+  # 2) have an associated grade that has been marked graded_or_released? (indicated through the student_visible boolean)
+  def student_visible_earned_badges(course)
+    @student_visible_earned_badges ||= EarnedBadge
+      .includes(:badge)
+      .where(course: course)
+      .where(student_id: self[:id])
+      .where(student_visible: true)
+  end
+
+  # Unique badges associated with all of the earned badges for a given student/course combo
+  def unique_student_earned_badges(course)
+    @unique_student_earned_badges ||= Badge
+      .includes(:earned_badges)
+      .where("earned_badges.course_id = ?", course[:id])
+      .where("earned_badges.student_id = ?", self[:id])
+      .where("earned_badges.student_visible = ?", true)
+      .references(:earned_badges)
+  end
+
+  def student_visible_earned_badge_ids(course)
+    student_visible_earned_badges(course).collect(&:id)
+  end
+
+  # this should be all badges that:
+  # 1) exist in the current course, in which the student is enrolled
+  # 2) the student has either not earned at all, but is visible and available, or...
+  # 3) the student has earned_badge for, but that earned_badge is set to student_visible 'false'
+  def student_visible_unearned_badges(course)
+    Badge
+      .where(course_id: course[:id])
+      .where(visible: true)
+      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ? and earned_badges.student_visible = ?)", self[:id], course[:id], true)
+  end
+
+  # badges that have not been marked 'visible' by the instructor, and for which
+  # the student has earned a badge, but the badge has yet to be marked 'student_visible'
+  def student_invisible_badges(course)
+    Badge
+      .where(visible: false)
+      .where(course_id: course[:id])
+      .where("id not in (select distinct(badge_id) from earned_badges where earned_badges.student_id = ? and earned_badges.course_id = ? and earned_badges.student_visible = ?)", self[:id], course[:id], true)
+  end
 
   #recalculating the student's score for the course
   def score_for_course(course)
     @score_for_course ||= grades.released.where(course: course).score + earned_badge_score_for_course(course) + (team_for_course(course).try(:challenge_grade_score) || 0)
-  end
-
-  def predictions(course)
-    scores = []
-    course.assignment_types.each do |assignment_type|
-      scores << { data: [grades.released.where(assignment_type: assignment_type).score], name: assignment_type.name }
-    end
-
-
-    _assignments = assignments.where(course: course)
-    in_progress = _assignments.graded_for_student(self)
-
-    if course.valuable_badges? && course.has_team_challenges?
-      earned_badge_score = earned_badges.where(course: course).score
-      team_score = self.team_for_course(course).score
-      scores << { :data => [team_score], :name => "#{course.challenge_term.pluralize}" }
-      scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
-      return {
-        :student_name => name,
-        :scores => scores,
-        :course_total => course.total_points + earned_badge_score + team_score,
-        :in_progress => in_progress.point_total + earned_badge_score + team_score
-        }
-    elsif course.valuable_badges?
-      earned_badge_score = earned_badges.where(course: course).score
-      scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
-      return {
-        :student_name => name,
-        :scores => scores,
-        :course_total => course.total_points + earned_badge_score,
-        :in_progress => in_progress.point_total + earned_badge_score
-        }
-    elsif course.has_team_challenges?
-      team_score = self.team_for_course(course).score
-      scores << { :data => [team_score], :name => "#{course.challenge_term.pluralize}" }
-      return {
-        :student_name => name,
-        :scores => scores,
-        :in_progress => in_progress.point_total + team_score,
-        :course_total => course.total_points + team_score
-        }
-    else
-      return {
-        :student_name => name,
-        :scores => scores,
-        :in_progress => in_progress.point_total,
-        :course_total => course.total_points
-        }
-    end
   end
 
   #student setting as to whether or not they wish to share their earned badges for this course
@@ -310,7 +338,7 @@ class User < ActiveRecord::Base
   end
 
   def grade_level_for_course(course)
-    course.grade_level_for_score(cached_score_for_course(course))
+    Course.find(course.id).grade_level_for_score(cached_score_for_course(course))
   end
 
   def grade_letter_for_course(course)
@@ -318,23 +346,35 @@ class User < ActiveRecord::Base
   end
 
   def next_element_level(course)
-    n = 1
-    stop = 0
-    level = ''
-    course.grade_scheme_elements.order_by_low_range.each do |element|
-      n += 1
-      if n == stop
-        level = element.level
+    next_element = nil
+    course.grade_scheme_elements.order_by_low_range.each_with_index do |element, index|
+      if (element.high_range >= cached_score_for_course(course)) && (cached_score_for_course(course) >= element.low_range)
+        next_element = course.grade_scheme_elements[index + 1]
       end
-      if element.high_range >= cached_score_for_course(course) && cached_score_for_course(course) >= element.low_range
-        stop = n + 1
+      if next_element.nil?
+        if element.low_range > cached_score_for_course(course)
+          next_element = course.grade_scheme_elements.order_by_low_range.first
+        end
       end
     end
-    if level == ''
-      return false
-    else
-      return level
+    return next_element
+  end
+
+  def points_to_next_level(course)
+    next_element_level(course).low_range - cached_score_for_course(course)
+  end
+
+  def won(course)
+    Course.find(course.id).grade_scheme_elements.order_by_high_range.first.high_range < cached_score_for_course(course)
+  end
+
+  def earn_badges(badges)
+    badges.each do |badge|
+      earned_badges.create badge: badge, course: badge.course
     end
+  end
+
+  def badges_earned
   end
 
   def point_total_for_course(course)
@@ -406,9 +446,9 @@ class User < ActiveRecord::Base
   #Export Users and Final Scores for Course
   def self.csv_for_course(course, options = {})
     CSV.generate(options) do |csv|
-      csv << ["GradeCraft ID", "First Name", "Last Name", "Email", "Score", "Grade" ]
+      csv << ["Email", "First Name", "Last Name", "Score", "Grade", "Earned Badge #", "GradeCraft ID"  ]
       course.students.each do |student|
-        csv << [student.id, student.first_name, student.last_name, student.email, student.score_for_course(course)]
+        csv << [ student.email, student.first_name, student.last_name, student.score_for_course(course), student.grade_level_for_course(course), student.earned_badges.count, student.id  ]
       end
     end
   end
@@ -439,28 +479,37 @@ class User < ActiveRecord::Base
 
     _assignments = assignments.where(course: course)
     in_progress = _assignments.graded_for_student(self)
-
-    if course.valuable_badges?
-      earned_badge_score = earned_badges.where(course: course).score
+    earned_badge_score = earned_badges.where(course: course).score
+    if earned_badge_score > 0
       scores << { :data => [earned_badge_score], :name => "#{course.badge_term.pluralize}" }
-      return {
-        :student_name => name,
-        :scores => scores,
-        :course_total => course.total_points + earned_badge_score,
-        :in_progress => in_progress.point_total + earned_badge_score
-        }
-    else
-      return {
-        :student_name => name,
-        :scores => scores,
-        :in_progress => in_progress.point_total,
-        :course_total => course.total_points
-        }
     end
+
+    return {
+      :student_name => name,
+      :scores => scores,
+      :course_total => course.total_points + earned_badge_score,
+      :in_progress => in_progress.point_total + earned_badge_score,
+      # :grade_levels => grade_levels
+      }
+  end
+
+  def assignment_scores_for_course(course)
+    grades.released.where(course: course).score
   end
 
   def archived_courses
     courses.where(:status => false)
+  end
+  #TODO: grade worker
+  def cache_course_score(course_id)
+    membership = course_memberships.where(course_id: course_id).first
+    unless membership.nil?
+      if membership.course.add_team_score_to_student?
+        membership.update_attribute :score, (grades.released.where(course_id: course_id).score || 0) + (earned_badge_score_for_course(course_id) || 0 ) + ( self.team_for_course(course_id).try(:score) || 0 )
+      else
+        membership.update_attribute :score, (grades.released.where(course_id: course_id).score || 0) + (earned_badge_score_for_course(course_id) || 0 )
+      end
+    end
   end
 
   private
@@ -469,19 +518,8 @@ class User < ActiveRecord::Base
     self.default_course ||= courses.first
   end
 
-  def cache_scores
-    course_memberships.each do |membership|
-      if membership.course.add_team_score_to_student?
-        membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id) + (team_for_course(membership.course_id).try(:challenge_grade_score) || 0)
-        team.save! if self.team_for_course(membership.course_id).present?
-      else
-        membership.update_attribute :score, grades.released.where(course_id: membership.course_id).score + earned_badge_score_for_course(membership.course_id)
-        team_for_course(membership.course_id).save! if team_for_course(membership.course_id).present?
-      end
-    end
-  end
-
   def cache_last_login
     self.cached_last_login_at = self.last_login_at
   end
+
 end
