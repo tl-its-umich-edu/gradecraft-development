@@ -1,6 +1,9 @@
 .small-12.panel.mainContent
 
-  = content_nav_for Group, "New #{term_for :group}"
+  - if current_user_is_staff?
+    = content_nav_for Group, "New #{term_for :group}"
+  - else
+    = content_nav_for Assignment, "New #{term_for :group}"
 
   %h3.pagetitle= @title
 

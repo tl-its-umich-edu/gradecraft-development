@@ -1,40 +1,41 @@
-%table.responsive.nofeatures_dynatable
+%table.responsive.nofeatures_default_score_dynatable.no_radius
   %thead
     %tr
       %th Rank
       %th Name
-      %th Mean Score
-      - if current_course.team_score_average?
-        %th Challenge Score
-      - else
+      %th Mean Student Score
+      - if current_course.team_challenges?
         %th Challenge Score
       %th{ "data-dynatable-column" => "students"} #{term_for :students}
-      - if current_user_is_staff?
+      %th #{term_for :team_leader}
+      - if current_user_is_staff? && current_course.has_badges?
         %th{ "data-dynatable-column" => "badges"} #{term_for :badges} Earned
-        %th.button-column
+      %th{:style => "min-width: 200px"}
   %tbody
     - @teams.order_by_high_score.each_with_index do |team, index|
       %tr
         %td= index + 1
         %td= link_to team.name, team
-        %td= points team.try(:average_points)
-        %td= points team.try(:score)
+        %td= team.average_points
+        - if current_course.team_challenges?
+          %td= team.challenge_grade_score
         %td= team.member_count
-        - if current_user_is_staff?
+        %td 
+          = team.team_leader.try(:name)
+        - if current_user_is_staff? && current_course.has_badges?
           %td= points team.badge_count
-          %td
-            .button-bar
-              %ul.button-group.radius.right
-                %li
-                  = link_to team, :class => 'button' do
-                    See
-                    %span.sr-only= team.name
-                %li
-                  = link_to edit_team_path(team), :class => 'button' do
-                    Edit
-                    %span.sr-only= team.name
-                %li
-                  = link_to edit_team_path(team), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete do
-                    Delete
-                    %span.sr-only= team.name
-      - i += 1
+        %td
+          .button-bar
+            %ul.button-group.radius.right
+              %li
+                = link_to team, :class => 'button' do
+                  See
+                  %span.sr-only= team.name
+              %li
+                = link_to edit_team_path(team), :class => 'button' do
+                  Edit
+                  %span.sr-only= team.name
+              %li
+                = link_to team_path(team), :class => 'button', :data => { confirm: 'Are you sure?' }, :method => :delete do
+                  Delete
+                  %span.sr-only= team.name

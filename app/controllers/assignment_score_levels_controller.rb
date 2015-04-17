@@ -18,7 +18,6 @@ class AssignmentScoreLevelsController < ApplicationController
   def destroy
     @assignment_score_level = current_course.assignment_score_levels.find(params[:id])
     @assignment_score_level.destroy
-    respond_with @assignment_score_level
   end
   
 end

@@ -1,0 +1,114 @@
+%li.has-form{:role => "search"}
+  .row.collapse
+    .large-8.small-9.columns
+      %label.sr-only{:for => "search-input"}
+        Search #{term_for :students}
+      %input.search-query#search-input{ 'data-autocompleteUrl' => autocomplete_student_name_students_path, :type => "text", :placeholder => "Search #{term_for :students}", :label => false }
+    .large-4.small-3.columns
+      %a.alert.button{ :href => "#" } Go
+
+%h5 Overview
+- if current_course.use_timeline?
+  %li
+    = link_to raw('<i class="fi-home"></i> Timeline'), dashboard_path
+
+%li
+  = link_to raw('<i class="fi-list-thumbnails"></i> Leaderboard'), leaderboard_path
+%li
+  = link_to raw('<i class="fi-flag"></i> Grading Status'), grading_status_path
+
+%li
+  %a{:href => resubmissions_path}
+    %i.fi-loop
+    = "Resubmissions"
+
+- if current_course.student_weighted?
+  %li
+    = link_to raw("<i class='fi-die-three'></i> #{term_for :weight} Choices"), multiplier_choices_path
+- if current_course.has_badges?
+  %li
+    = link_to raw("<i class='fi-star'></i> Awarded #{current_course.badge_term.pluralize}"), earned_badges_path
+
+%hr
+
+%h5 Coursework
+%li
+  = link_to raw("<i class='fi-map'></i> #{term_for :assignments}"), assignments_path
+- if current_course.has_badges?
+  %li
+    = link_to raw("<i class='fi-shield'></i> #{term_for :badges}"), badges_path
+- if current_course.team_challenges?
+  %li
+    = link_to raw("<i class='fi-trophy'></i> #{term_for :challenges}"), challenges_path
+
+%hr
+
+%h5 Analytics
+%li
+  = link_to raw('<i class="fi-graph-horizontal"></i> Top 10/Bottom 10'), analytics_top_10_path
+%li
+  = link_to raw('<i class="fi-graph-trend"></i> System Analytics'), analytics_students_path
+%li
+  = link_to raw("<i class='fi-results-demographics'></i> #{term_for :assignment} Analytics"), analytics_per_assign_path
+
+- if current_user_is_professor? || current_user_is_admin?
+  %hr
+
+  %h5 Downloads
+  %li
+    = link_to raw('<i class="fi-book-bookmark"></i> Final Grades'), final_grades_path(format: 'csv')
+  %li
+    %a{:href => gradebook_path(format: 'csv')} <i class="fi-book"></i> Full Gradebook
+  - if current_course.has_badges?
+    %li
+      %a{:href => export_earned_badges_path(format: 'csv')} <i class="fi-book"></i> Awarded  #{current_course.badge_term.pluralize}
+
+
+%hr
+
+%h5 Users
+%li
+  = link_to raw("<i class='fi-torsos-female-male'></i> #{term_for :students}"), students_path
+- if current_course.has_teams?
+  %li
+    = link_to raw("<i class='fi-die-three'></i> #{term_for :teams}"), teams_path
+%li
+  = link_to raw("<i class='fi-elevator'></i> #{term_for :groups}"), groups_path
+%li
+  = link_to raw('<i class="fi-torso-business"></i> Staff'), staff_index_path
+
+%hr
+
+%h5 Course Setup
+%li
+  = link_to raw('<i class="fi-wrench"></i> Options'), edit_course_path(current_course)
+%li
+  = link_to raw("<i class='fi-database'></i> #{term_for :assignment_types}"), assignment_types_path
+%li
+  = link_to raw('<i class="fi-checkbox"></i> Predictor Preview'), predictor_preview_course_path(current_course)
+%li
+  = link_to raw('<i class="fi-list"></i> Grading Scheme'), grade_scheme_elements_path
+%li
+  = link_to raw('<i class="fi-calendar"></i> Calendar Events'), events_path
+
+- if LTIProvider.present?
+  %hr
+
+  %h5 Tools
+  - LTIProvider.all.each do |tool|
+    %li
+      = link_to raw("<i class='fi-puzzle'></i> #{tool.name}"), launch_lti_provider_path(tool)
+
+
+- if current_user_is_admin?
+  %hr
+
+  %h5 Admin
+  %li
+    = link_to raw('<i class="fi-torsos-all"></i> All Users'), users_path
+  %li
+    = link_to raw('<i class="fi-key"></i> Course Index'), courses_path
+  %li
+    = link_to "Predictor Settings", predictor_settings_course_path(current_course)
+  %li
+    = link_to "Timeline Settings", timeline_settings_course_path(current_course)

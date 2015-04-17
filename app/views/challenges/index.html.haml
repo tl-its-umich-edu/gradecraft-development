@@ -3,19 +3,20 @@
   - if current_user_is_staff?
     = content_nav_for Challenge
 
-  .small-12.medium-9
+  .small-12
     %h3.pagetitle= @title
 
   - if current_user_is_staff?
-    .small-12.medium-3.right.columns.columns-no-padding
-      .button-bar.right
+    .small-12.columns
+      .button-bar
         %ul.button-group.context_menu
           %li
             %a{:href => new_challenge_path }
               %i.fi-plus
-              New #{term_for :challenge}
+              New #{(term_for :challenge).titleize}
+      %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
   
     %table.responsive.nofeatures_default_due_date_dynatable
       %thead
@@ -28,7 +29,7 @@
           %th Visible
           %th Submissions?
           %th Release necessary
-          %th.button-column
+          %th{ :style => "min-width: 200px" }
 
       %tbody
         - @challenges.each do |challenge|
@@ -46,9 +47,9 @@
               .button-bar
                 %ul.button-group.radius.right
                   %li
-                    = link_to challenge, :class => 'button' do
-                      See
-                      %span.sr-only=  challenge.name
+                    %a.button{:href => mass_edit_challenge_challenge_grades_path(challenge) }
+                      Quick Grade 
+                      %span.sr-only= challenge.name
                   %li
                     = link_to edit_challenge_path(challenge), :class => 'button' do
                       Edit

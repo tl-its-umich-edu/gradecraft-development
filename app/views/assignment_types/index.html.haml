@@ -2,50 +2,51 @@
 
   = content_nav_for AssignmentType
 
-  .small-12.medium-8
+  .small-12
     %h3.pagetitle#tableCaption= @title
 
-  .small-12.medium-4.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_assignment_type_path }
             %i.fi-plus
-            New #{term_for :assignment_type}
+            New #{(term_for :assignment_type).titleize}
+    %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
     %table.responsive.nofeatures_dynatable{"aria-describedby" => "tableCaption"}
       %thead
         %tr
           %th{:scope => "col"} Name
           %th{:scope => "col"} Predictor Display
           %th{:scope => "col"} Max value
-          %th.button-column
+          %th{:style => "min-width: 300px"}
             %span.sr-only Actions
-        %tbody
-          - current_course.assignment_types.each do |assignment_type|
-            %tr
-              %td= link_to assignment_type.name, assignment_type
-              %td= assignment_type.points_predictor_display
-              %td= points assignment_type.max_value
-              %td
-                .button-bar
-                  %ul.button-group.right.radius
-                    %li
-                      %a{:href => assignment_type_path(assignment_type), :class => 'button'}
-                        See
-                        %span.sr-only= assignment_type.name
+      %tbody
+        - current_course.assignment_types.sorted.each do |assignment_type|
+          %tr
+            %td= link_to assignment_type.name, assignment_type
+            %td= assignment_type.points_predictor_display
+            %td= points assignment_type.max_value
+            %td
+              .button-bar
+                %ul.button-group.right.radius
+                  %li
+                    %a{:href => assignment_type_path(assignment_type), :class => 'button'}
+                      See
+                      %span.sr-only= assignment_type.name
 
-                    %li
-                      %a{:href => edit_assignment_type_path(assignment_type), :class => 'button'}
-                        Edit
-                        %span.sr-only= assignment_type.name
-                    %li
-                      %a{:href => export_scores_assignment_type_path(assignment_type.id, format: 'csv'), :class => "button"}
-                        Download Scores
-                    %li
-                      %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
-                        Delete
+                  %li
+                    %a{:href => edit_assignment_type_path(assignment_type), :class => 'button'}
+                      Edit
+                      %span.sr-only= assignment_type.name
+                  %li
+                    %a{:href => export_scores_assignment_type_path(assignment_type.id, format: 'csv'), :class => "button"}
+                      Download Scores
+                  %li
+                    %a{:href => assignment_type_path(assignment_type), :data => { confirm: 'Are you sure?', method: :delete }, :class => "button" }
+                      Delete
 
   %h4.subtitle= "#{term_for :student} Scores"
 
@@ -56,16 +57,40 @@
           %th First Name
           %th Last Name
           - current_course.assignment_types.each do |at|
-            %th
-              = at.name
+            %th= "#{at.name} Score"
+            - if at.student_weightable?
+              %th= "#{at.name} Weighted Value"
+
+            
       %tbody
         - current_course.students.each do |student|
           %tr
-            %td= student.first_name
-            %td= student.last_name
+            %td= link_to student.first_name, student_path(student)
+            %td= link_to student.last_name, student_path(student)
             - current_course.assignment_types.each do |at|
-              %td
-                = points at.score_for_student(student)
-                - if at.student_weightable?
-                  = "[#{ at.raw_score_for_student(student)}]"
-                  %span.sr-only= at.name
+              %td= at.score_for_student(student)
+              - if at.student_weightable?
+                %td= "[#{ at.raw_score_for_student(student)}]"
+                %span.sr-only= at.name
+
+  %h4.subtitle= "#{term_for :student} Grade Counts"
+
+  .small-12.columns
+    %table.responsive.nofeatures_default_name_dynatable
+      %thead
+        %tr
+          %th First Name
+          %th Last Name
+          - current_course.assignment_types.each do |at|
+            %th= "#{at.name} Grade Count"
+            %th= "#{at.name} Grades > 0 Count"
+
+            
+      %tbody
+        - current_course.students.each do |student|
+          %tr
+            %td= link_to student.first_name, student_path(student)
+            %td= link_to student.last_name, student_path(student)
+            - current_course.assignment_types.each do |at|
+              %td= at.grades.where(:student_id => student.id).graded_or_released.count
+              %td= "#{at.grades.where(:student_id => student.id).graded_or_released.positive.count }"

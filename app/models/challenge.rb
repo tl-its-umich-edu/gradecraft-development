@@ -17,6 +17,7 @@ class Challenge < ActiveRecord::Base
   accepts_nested_attributes_for :challenge_grades
 
   validates_presence_of :course, :name
+  validate :positive_points, :open_before_close
 
   scope :chronological, -> { order('due_at ASC') }
   scope :alphabetical, -> { order('name ASC') }
@@ -51,6 +52,20 @@ class Challenge < ActiveRecord::Base
 
   def graded?
     challenge_grades.present?
+  end
+
+  private
+
+  def open_before_close
+    if (due_at? && open_at?) && (due_at < open_at)
+      errors.add :base, 'Due date must be after open date.'
+    end
+  end
+
+  def positive_points
+    if point_total? && point_total < 1
+      errors.add :base, 'Point total must be a positive number'
+    end
   end
 
 end

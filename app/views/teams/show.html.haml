@@ -3,13 +3,17 @@
 
   %h3.pagetitle= @team.name
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
+        %li
+          %a{:href => new_team_path }
+            %i.fi-plus
+            New #{(term_for :team).titleize}
         %li
           %a{:href => edit_team_path(@team) }
             %i.fi-pencil
-            Edit #{term_for :team}
+            Edit #{(term_for :team).titleize}
 
   %h4.subtitle= "#{term_for :student} Roster"
   .small-12.columns
@@ -24,9 +28,9 @@
           %th Score
           %th Level
           - if current_course.has_badges?
-            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount" }= "#{term_for :badges} Earned"
+            %th{:scope => "col", "data-dynatable-sorts" => "badgeCount", :width => "20%" }= "#{term_for :badges} Earned"
             %th{:style => "display: none"} Badge Count
-          %th.button-column
+          %th{:width => "20%"}
       %tbody
         - @team.students.each do |student|
           - if student.is_student?(current_course)
@@ -43,16 +47,13 @@
               - if current_course.has_badges?
                 %td
                   - student.earned_badges_for_course(current_course).each do |badge|
-                    %img.has-tip{:src => badge[1].icon, :alt => badge[1].name, :width => "20", :title => badge[1].name, :data => {'tooltip' => true}}
+                    %img.has-tip{:src => badge.try(:icon), :alt => badge.try(:name), :width => "20", :title => badge.name, :data => {'tooltip' => true}}
                 %th{:style => "display: none"}= student.earned_badges.count
               %td
                 .button-bar
                   %ul.button-group.radius.right
                     %li= link_to 'Dashboard', student_path(student), :class => 'button'
                     %li= link_to 'Edit', edit_user_path(student), :class => 'button'
-
-
-  %hr
 
   %h4.subtitle Challenge Grades
 
@@ -73,7 +74,7 @@
                 = link_to challenge.name, challenge
               - else
                 = challenge.name
-            %td= challenge.challenge_grade_for_team(@team).try(:score)
+            %td= points challenge.challenge_grade_for_team(@team).try(:score)
             %td
               - if challenge.challenge_grade_for_team(@team).present?
                 = link_to 'Edit Grade', edit_challenge_challenge_grade_path(:challenge_id => challenge, :id => challenge.challenge_grade_for_team(@team).id), :class => 'button radius'

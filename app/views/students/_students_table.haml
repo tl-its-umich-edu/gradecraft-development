@@ -1,7 +1,6 @@
-%table.responsive.nofeatures_default_last_name_dynatable
+%table.responsive.paginate_default_last_name_dynatable
   %thead
     %tr
-      %th
       %th First Name
       %th Last Name
       - if current_course.in_team_leaderboard?
@@ -12,16 +11,18 @@
         %th Role
       %th Score
       %th Grade
-      %th
+      %th{ :style => "min-width: 200px" }
   %tbody
     - students.each do |student|
-      %tr
+      %tr          
         %td
-          = gravatar_for student, :size => 30
-        %td= link_to student.first_name, student_path(student)
+          - if student.avatar_file_name.present?
+            %img.img-rounded{:src => student.avatar_file_name, :width => 30} 
+          = link_to student.first_name, student_path(student)
         %td= link_to student.last_name, student_path(student)
         - if current_course.in_team_leaderboard?
-          %td= student.display_name
+          %td
+            = student.display_name
         - if current_course.has_teams?
           %td
             - if student.team_for_course(current_course)
@@ -29,7 +30,7 @@
         - if current_course.team_roles?
           %td= student.try(:team_role)
         - if student.respond_to?(:grades)
-          %td{:data => { :"sort-value" => "#{current_course.score_for_student(student)}"} }= points current_course.score_for_student(student)
+          %td= current_course.score_for_student(student)
           %td
             = student.grade_letter_for_course(current_course)
             = "-" if student.grade_letter_for_course(current_course).present? && student.grade_level_for_course(current_course).present?
@@ -39,4 +40,4 @@
             %ul.button-group.right.radius
               %li= link_to "Dashboard", student_path(student), :class => "button"
               %li= link_to "Edit", edit_user_path(student), :class => "button"
-              %li= link_to "Delete", user_path(student), :class => "button", :data => { confirm: 'This will delete the student from GradeCraft - Are you sure?' }, :method => :delete
+              %li= link_to 'Delete', student.course_memberships.where(:course_id => current_course.id).first, :class => 'button', :data => { confirm: 'This will delete the student from your course - Are you sure?' }, :method => :delete

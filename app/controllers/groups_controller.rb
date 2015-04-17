@@ -1,8 +1,10 @@
 class GroupsController < ApplicationController
-  before_filter :ensure_staff?, :only => :index
+  before_filter :ensure_staff?, only: [:index, :review]
 
   def index
-    @groups = current_course.groups
+    @pending_groups = current_course.groups.pending
+    @approved_groups = current_course.groups.approved
+    @rejected_groups = current_course.groups.rejected
     @assignments = current_course.assignments.group_assignments
     @title = current_course.group_term.pluralize
   end
@@ -41,15 +43,15 @@ class GroupsController < ApplicationController
     end
     respond_to do |format|
       if @group.save
-        NotificationMailer.group_created(@group.id).deliver
-        NotificationMailer.group_notify(@group.id).deliver
+        #NotificationMailer.group_created(@group.id).deliver
+        #NotificationMailer.group_notify(@group.id).deliver
         format.html { respond_with @group }
       else
         @title = "Start a #{term_for :group}"
         if current_user_is_student?
           @other_students = current_course.students.where.not(id: current_user.id)
         end
-        format.html { render action: "new" }
+        format.html {render :action => "new", :group => @group }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
     end
@@ -65,11 +67,18 @@ class GroupsController < ApplicationController
     @group = current_course.groups.includes(:proposals).find(params[:id])
     @title = "Editing #{@group.name} Details"
     @assignments = current_course.assignments.group_assignments
-    @group.update_attributes(params[:group])
-    if @group.approved.present?
-      NotificationMailer.group_status_updated(@group.id).deliver
+
+    respond_to do |format|
+      if @group.update_attributes(params[:group])
+        #NotificationMailer.group_status_updated(@group.id).deliver
+        format.html { respond_with @group }
+      else
+        if current_user_is_student?
+          @other_students = current_course.students.where.not(id: current_user.id)
+        end
+        format.html {render :action => "edit", :group => @group }
+      end
     end
-    redirect_to groups_path
   end
 
   def destroy

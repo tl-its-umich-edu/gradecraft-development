@@ -13,7 +13,7 @@
           = link_to 'Grade', assignment, :class => "button radius"
 
   = form_tag edit_status_grades_assignment_path assignment do
-    .columns
+    .columns{:style => "overflow: auto"}
       %table.responsive.no_radius.nofeatures_default_last_name_dynatable{"aria-describedby" => "unreleasedTableCaption"}
         %thead
           %tr
@@ -26,12 +26,16 @@
               %th{:scope => "col", :width => "15%"}= "#{term_for :team}"
             %th{:scope => "col", "data-dynatable-column" => "score", :width => "8%"} Score
             %th{:scope => "col"} Feedback
-            %th{:scope => "col", "data-dynatable-no-sort" => "true", :width => "20%" }
+            %th{:scope => "col", "data-dynatable-no-sort" => "true", :style => "min-width: 200px"}
               %span.sr-only Actions
-            %th.center{:align => "center", :scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" }
+            %th.center{:scope => "col", "data-dynatable-no-sort" => "true", :width => "15%" }
               %span.sr-only Check/Uncheck
-              %button.button.select-all.tiny= "Check All"
-              %button.button.select-none.tiny= "Uncheck All"
+              .button-bar
+                %ul.button-group.right.radius
+                  %li
+                    %button.button.select-all.tiny= "Check All"
+                  %li
+                    %button.button.select-none.tiny= "Uncheck All"
         %tbody
           - grades.each do |g|
             %tr
@@ -54,14 +58,18 @@
                         See Grade
                         %span.sr-only for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
                     %li
-                      %a{:href => "#{edit_assignment_grade_path("assignment_id"=>assignment.id)}?student_id=#{g.student_id}", :class => "button"}
+                      %a{:href => "#{edit_assignment_grade_path(:assignment_id => assignment.id)}?student_id=#{g.student_id}", :class => "button"}
                         Edit
                         %span.sr-only record for #{g.student.try(:first_name)} #{g.student.try(:last_name)}
-              %td
+              %td.center
                 %label
-                  .center= check_box_tag "grade_ids[]", g.id
+                  = check_box_tag "grade_ids[]", g.id
                   .sr-only
                     Check/Uncheck #{g.student.try(:first_name)} #{g.student.try(:last_name)}
 
-      .right
+      .right.form_buttons
         = submit_tag "Update Selected Grade Statuses", :class => "button radius"
+        %br
+        %br
+        %br
+    %hr

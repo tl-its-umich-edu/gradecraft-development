@@ -7,7 +7,6 @@ class ScoreLevelsController < ApplicationController
   def create
     @score_level = current_course.score_levels.new(params[:score_level])
     @score_level.save
-    respond_with @score_level
   end
 
   def update
@@ -19,6 +18,5 @@ class ScoreLevelsController < ApplicationController
   def destroy
     @score_level = current_course.score_levels.find(params[:id])
     @score_level.destroy
-    respond_with @score_level
   end
 end

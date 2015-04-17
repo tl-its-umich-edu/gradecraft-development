@@ -1,10 +1,15 @@
 .small-12
-  .small-12.columns.panel
-    = render 's3_uploader'
+  - if @challenge.errors.any?
+    .alert-box.alert.radius
+      .italic= "#{pluralize(@challenge.errors.count, "error")} prohibited this #{term_for :challenge} from being saved:"
+      %ul
+        - @challenge.errors.full_messages.each do |msg|
+          %li= msg
 
   = simple_form_for(@challenge) do |f|
     .small-12.large-4.columns.columns-no-padding_right.right
       .panel
+        %h4.uppercase SETTINGS
         .small-12
           %label.checkbox{ :for => "visible" }
             = f.label :visible, "Visible to students?"
@@ -23,7 +28,7 @@
             .form_label Do you want to release all grades at once? This is particularly useful for situations where extensive feedback is important.
 
     .small-12.medium-8.columns.panel
-      %h4.bold Basic Settings
+      %h4.uppercase Basic Info
 
       .small-12.large-6.columns
         = f.label :name
@@ -33,22 +38,22 @@
         = f.label :point_total
         = f.text_field :point_total, data: {autonumeric: true, "m-dec" => "0"}
 
-      .clearfix
-      
+      .clear
+
       .small-12.large-6.columns
         = f.input :open_at, as: :string, :input_html => { :class => 'datetimepicker', :value => @challenge.try(:open_at) }
-        
+
       .small-12.large-6.columns
         = f.input :due_at, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @challenge.try(:due_at) }
 
     .small-12.medium-8.columns.textarea.panel
-      %h4.bold Description
+      %h4.uppercase Description
 
       = f.bootsy_area :description
       .form_label What do the #{term_for :teams} need to do to succeed?
 
     .small-12.medium-8.panel
-      %h4.bold Grade Levels
+      %h4.uppercase Grade Levels
       .small-12.columns
         .challenge-score-levels
           %p.hint Example: You could create three levels to produce a quick grading scheme for just this #{term_for :challenge} - Complete (5000 points), Finalist (7000 points), and Winner (10,000 points). These levels will then show in the quick grade, and when students are setting goals in the grade predictor.
@@ -62,10 +67,27 @@
                 = render 'challenge_score_level_fields', f: slf
         = link_to 'Add a Level', '#', class: 'add-challenge-score-level button radius'
 
-    = f.simple_fields_for :challenge_files, @challenge.challenge_files.new do |cff|
-      = cff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
+    .small-12.medium-8.panel
+      %h4.uppercase Attachments
+      = f.simple_fields_for :challenge_files, @challenge.challenge_files.new do |cf|
+        = cf.file_field :file, :multiple => true
+      - if @challenge.challenge_files.exists?
+        %h5.bold Uploaded files
+        %ul.uploaded-files
+          - @challenge.challenge_files.each do |cf|
+            - next if cf.new_record?
+            %li
+              - if cf.file_processing
+                = "#{cf.filename}"
+                %span.has-tip{:title => "Refresh page to confirm upload has completed", :data => {'tooltip' => true}}
+                  = "(upload in progress)"
+              - else
+                = link_to cf.filename, cf.url, :target => "_blank"
+                = link_to "(Remove)", remove_uploads_path({ :model => "ChallengeFile", :challenge_id => @challenge.id, :upload_id => cf.id } )
+      .clear
 
 
-    .right
-      = f.button :submit, "#{@challenge.persisted? ? 'Update' : 'Create'} #{term_for :challenge }", :class => "button radius alert"
-      = link_to 'Cancel', challenges_path, :class => 'button radius transparent'
+    .button-bar
+      %ul.button-group.radius.right
+        %li= f.button :submit, "#{@challenge.persisted? ? 'Update' : 'Create'} #{term_for :challenge }"
+        %li= link_to 'Cancel', challenges_path, :class => 'button'

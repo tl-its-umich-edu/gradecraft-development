@@ -1,6 +1,6 @@
 .row.first_row
   .small-8.columns(style="padding:0")
-    %input(type="text" ng-model="metric.name" name="name" placeholder="Criterion Name" value="{{metric.name}}" required ng-blur="metric.modify(metricForm)" ng-change="metric.change()")
+    %input(type="text" ng-model="metric.name" name="name" placeholder="Criterion Name" value="{{metric.name}}" required ng-blur="metric.modify(metricForm)" ng-Maxlength=30 ng-change="metric.change()" maxlength=30)
   .small-4.columns(style="padding:0")
     %input.points(type="number" ng-model="metric.max_points" name="maxPoints" placeholder="Max Points" value="{{metric.max_points}}" required integer min=0 ng-blur="metric.modify(metricForm)" ng-change="metric.change()")
 

@@ -6,7 +6,6 @@ class NotificationMailer < ActionMailer::Base
     @course = course_info
     mail(:to => 'cholma@umich.edu', :subject => 'Unknown LTI user/course') do |format|
       format.text
-      format.html
     end
   end
 
@@ -14,16 +13,47 @@ class NotificationMailer < ActionMailer::Base
     @user = user_info
     mail(:to => 'cholma@umich.edu', :subject => 'Unknown Kerberos user') do |format|
       format.text
-      format.html
     end
   end
+  
+  def grade_export(course,user,csv_data)
+    @user = user
+    @course = course
+    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
+    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
+      format.text
+    end
+  end
+
+  def gradebook_export(course,user,csv_data)
+    @user = user
+    @course = course
+    attachments["#{course.id}.csv"] = {:mime_type => 'text/csv',:content => csv_data }
+    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
+      format.text
+    end
+  end
+
 
   def successful_submission(submission_id)
     @submission = Submission.find submission_id
     @user = @submission.student
     @course = @submission.course
     @assignment = @submission.assignment
-    mail(:to => "#{@user[:email]}", :subject => "#{@course[:courseno]} - #{@assignment.name} Submitted") do |format|
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Submitted") do |format|
+      format.text
+      format.html
+    end
+  end
+
+  def updated_submission(submission_id)
+    @submission = Submission.find submission_id
+    @user = @submission.student
+    @course = @submission.course
+    @assignment = @submission.assignment
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Submission Updated") do |format|
       format.text
       format.html
     end
@@ -58,7 +88,8 @@ class NotificationMailer < ActionMailer::Base
     @user = @grade.student
     @course = @grade.course
     @assignment = @grade.assignment
-    mail(:to => @user.email, :subject => "#{@course.courseno} - #{@assignment.name} Graded") do |format|
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - #{@assignment.name} Graded") do |format|
       format.text
       format.html
     end
@@ -104,21 +135,10 @@ class NotificationMailer < ActionMailer::Base
     @earned_badge = EarnedBadge.find earned_badge_id
     @user = @earned_badge.student
     @course = @earned_badge.course
-    mail(:to => @user.email, :subject => "#{@course.courseno} - You've earned a new #{@course.badge_term}!") do |format|
+    mail(:to => @user.email, 
+      :subject => "#{@course.courseno} - You've earned a new #{@course.badge_term}!") do |format|
       format.text
       format.html
     end
   end
-
-  def grade_export(course,user,csv_data)
-    @user = user
-    @course = course
-    attachments["#{course.id}.csv"] = {:mime_type => 'tex/csv',:content => csv_data }
-    mail(:to =>  @user.email, :bcc=>"admin@gradecraft.com", :subject => "#{course.name} grade export is attached") do |format|
-      format.text
-      format.html
-    end
-
-  end
-
 end

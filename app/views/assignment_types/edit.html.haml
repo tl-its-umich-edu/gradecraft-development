@@ -2,11 +2,11 @@
 
   = content_nav_for @assignment_type, "Edit #{term_for :assignment_type}"
 
-  .small-12.medium-6
+  .small-12
     %h3.pagetitle= @title
 
-  .small-12.medium-6.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_assignment_type_path }
@@ -20,6 +20,7 @@
           %a{:href => all_grades_assignment_type_path(@assignment_type) }
             %i.fi-graph-bar
             #{@assignment_type.name} Performance
+    %br
 
   / Display Assignment Type form
   .small-12.columns

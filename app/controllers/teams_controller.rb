@@ -51,7 +51,10 @@ class TeamsController < ApplicationController
     @team = current_course.teams.find(params[:id])
     @name = "#{@team.name}"
     @team.destroy
-    respond_with @team, :notice => "Team #{@name} successfully deleted"
+    respond_to do |format|
+      format.html { redirect_to teams_url, :notice => "#{(term_for :team).titleize} #{@name} successfully deleted" }
+      format.json { head :ok }
+    end
   end
 
   private

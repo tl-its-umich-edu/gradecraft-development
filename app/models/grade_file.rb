@@ -1,10 +1,20 @@
 class GradeFile < ActiveRecord::Base
   include S3File
 
-  attr_accessible :filename, :filepath, :grade_id
+  attr_accessible :file, :filename, :filepath, :grade_id
 
   belongs_to :grade
 
-  before_save :strip_path
+  validates :filename, presence: true, length: { maximum: 50 }
 
+  mount_uploader :file, AttachmentUploader
+  process_in_background :file
+
+  def course
+    grade.course
+  end
+
+  def assignment
+    grade.assignment
+  end
 end

@@ -1,0 +1,17 @@
+//= require earned_badges
+//= require highcharts
+//= require datetimepicker
+//= require select2
+//= require grade_distribution
+//= require jquery.ui.widget
+//= require jquery.circliful.min
+//= require jquery.sticky
+//= require jquery.highchartTable-min
+//= require jquery.collapse
+//= require jquery.collapse_storage
+//= require jquery.collapse_cookie_storage
+//= require utilities
+//= require assignment-results-vis
+//= require top_ten
+//= require uploads
+//= require course_switch

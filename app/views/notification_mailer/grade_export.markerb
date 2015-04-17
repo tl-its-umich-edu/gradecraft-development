@@ -1,7 +1,0 @@
-Dear <%= @user.first_name %>,
-
-Grade export you have requested for <%= @course.name %> is attached.
-
-Thanks,
-
-GradeCraft

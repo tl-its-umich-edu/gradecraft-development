@@ -1,5 +1,6 @@
 GradeCraft::Application.routes.draw do
 
+
   require 'sidekiq/web'
   require 'admin_constraint'
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
@@ -18,10 +19,11 @@ GradeCraft::Application.routes.draw do
   #12. Users
   #13. User Auth
   #14. Uploads
+  #15. Events
 
   #1. Analytics & Charts
   namespace :analytics do
-    root :to => :index
+    root action: :index
     get :staff
     get :students
     get :top_10
@@ -43,6 +45,7 @@ GradeCraft::Application.routes.draw do
     get :user_pageview_events
     get :prediction_averages
     get :assignment_prediction_averages
+    get :export
   end
 
   post 'analytics_events/predictor_event'
@@ -51,6 +54,7 @@ GradeCraft::Application.routes.draw do
   #2. Assignments, Submissions, Tasks, Grades
   resources :assignments do
     collection do
+      post :sort
       get :feed
       get :settings
       post 'copy' => 'assignments#copy'
@@ -62,10 +66,13 @@ GradeCraft::Application.routes.draw do
       get 'group_grade' => 'grades#group_edit', as: :group_grade
       put 'group_grade' => 'grades#group_update'
       get 'export_grades'
+      get 'export_submissions'
       get 'email_based_grade_import' => 'assignments#email_based_grade_import'
       get 'username_based_grade_import' => 'assignments#username_based_grade_import'
       get 'name_based_grade_import' => 'assignments#name_based_grade_import'
       get 'detailed_grades' => 'assignments#show', detailed: true
+      get 'rubric_grades_review'
+      put :update_rubrics
       scope 'grades', as: :grades, controller: :grades do
         post :edit_status
         put :update_status
@@ -73,8 +80,9 @@ GradeCraft::Application.routes.draw do
         post :predict_score
         get :import
         post :email_import
-        post :username_import 
+        post :username_import
         post :name_import
+        post :remove
       end
     end
     resources :submissions do
@@ -82,7 +90,6 @@ GradeCraft::Application.routes.draw do
     end
     resources :tasks
     resource :grade, only: [:show, :edit, :update, :destroy] do
-
       put :submit_rubric, on: :collection
       resources :earned_badges
     end
@@ -110,8 +117,10 @@ GradeCraft::Application.routes.draw do
       get 'all_grades'
       get 'export_scores'
     end
+    collection do
+      post :sort
+    end
   end
-
 
   #4. Assignment Type Weights
   get 'assignment_type_weights' => 'assignment_type_weights#mass_edit', as: :assignment_type_weights
@@ -131,6 +140,9 @@ GradeCraft::Application.routes.draw do
     member do
       get 'mass_award' => 'earned_badges#mass_edit', as: :mass_award
       put 'mass_award' => 'earned_badges#mass_update'
+    end
+    collection do
+      post :sort
     end
   end
 
@@ -158,9 +170,12 @@ GradeCraft::Application.routes.draw do
     collection do
       post 'copy' => 'courses#copy'
     end
-    member do 
+    member do
       get 'timeline_settings' => 'courses#timeline_settings'
-      get 'predictor_settings' => "courses#predictor_settings"
+      put 'timeline_settings' => 'courses#timeline_settings_update'
+      get 'predictor_settings' => 'courses#predictor_settings', as: :predictor_settings
+      put 'predictor_settings' => 'courses#predictor_settings_update'
+      get 'predictor_preview' => 'courses#predictor_preview'
     end
   end
   resources :course_memberships
@@ -169,20 +184,21 @@ GradeCraft::Application.routes.draw do
   get 'current_course' => 'current_courses#show'
   get  'class_badges' => 'students#class_badges'
 
-  get 'leaderboard' => 'info#leaderboard'
+  get 'leaderboard' => 'students#leaderboard'
   get 'multiplier_choices' => 'info#choices'
   get 'earned_badges' => 'info#class_badges'
   get 'grading_status' => 'info#grading_status'
+  get 'resubmissions' => 'info#resubmissions'
   get 'gradebook' => 'info#gradebook'
-  get 'raw_points_gradebook' => 'info#raw_points_gradebook'
   get 'final_grades' => 'info#final_grades'
   get 'research_gradebook' => 'info#research_gradebook'
+  get 'export_earned_badges' => 'courses#export_earned_badges'
 
   #8. Groups
-  resources :groups do 
+  resources :groups do
     collection do
       get :review
-    end  
+    end
     resources :proposals
   end
   resources :group_memberships
@@ -194,7 +210,8 @@ GradeCraft::Application.routes.draw do
     get :class_badges
     get :dashboard
     get :grading_status
-    get :leaderboard
+    get :timeline_events
+    get :resubmissions
   end
 
   resources :home
@@ -253,9 +270,11 @@ GradeCraft::Application.routes.draw do
     get :predictor
     get :course_progress
     get :teams
+    get :recalculate
     collection do
       get :leaderboard
       get :choices
+      get :autocomplete_student_name
       get :scores_for_current_course
       get :scores_by_assignment
       get :scores_by_team
@@ -296,5 +315,9 @@ GradeCraft::Application.routes.draw do
   #14. Uploads
   resource :uploads do
     get :remove
+    get :remove_submission_file
   end
+
+  #15. Events
+  resources :events
 end

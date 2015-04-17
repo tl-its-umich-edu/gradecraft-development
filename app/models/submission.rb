@@ -1,8 +1,8 @@
 class Submission < ActiveRecord::Base
   attr_accessible :task, :task_id, :assignment, :assignment_id, :assignment_type_id, :comment,
     :feedback, :group, :group_id, :attachment, :link, :student, :student_id,
-    :creator, :creator_id, :text_feedback, :text_comment, :graded, :submission_file, :submission_files_attributes,
-    :course_id, :submission_file_ids
+    :creator, :creator_id, :text_feedback, :text_comment, :graded, :submission_file, :submission_files_attributes, :submission_files,
+    :course_id, :submission_file_ids, :updated_at
 
   include Canable::Ables
 
@@ -20,18 +20,19 @@ class Submission < ActiveRecord::Base
   has_many :rubric_grades, dependent: :destroy
 
   accepts_nested_attributes_for :grade
-  has_many :submission_files, :dependent => :destroy
+  has_many :submission_files, :dependent => :destroy, autosave: true
   accepts_nested_attributes_for :submission_files
 
   scope :ungraded, -> { where('NOT EXISTS(SELECT 1 FROM grades WHERE submission_id = submissions.id OR (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (status = ? OR status = ?))', "Graded", "Released") }
   scope :graded, -> { where(:grade) }
+  scope :resubmitted, -> { where('EXISTS(SELECT 1 FROM grades WHERE (assignment_id = submissions.assignment_id AND student_id = submissions.student_id) AND (updated_at < submissions.updated_at) AND (status = ? OR status = ?))', "Graded", "Released") }
+
 
   before_validation :cache_associations
 
-  #validates_presence_of :student, if: 'assignment.is_individual?'
-  #validates_presence_of :group, if: 'assignment.has_groups?'
   validates_uniqueness_of :task, :scope => :student, :allow_nil => true
   validates_uniqueness_of :assignment_id, { :scope => :student_id }
+  validates :link, :format => URI::regexp(%w(http https)) , :allow_blank => true
 
   #Canable permissions#
   def updatable_by?(user)
@@ -55,6 +56,11 @@ class Submission < ActiveRecord::Base
   def ungraded?
     ! grade || grade.status == nil
   end
+
+  def resubmitted?
+    student.grade_for_assignment(assignment).present? && student.grade_for_assignment(assignment).updated_at < self.updated_at
+  end
+
 
   #Permissions regarding who can see a grade
   def viewable_by?(user)
@@ -82,6 +88,11 @@ class Submission < ActiveRecord::Base
   # Checking to see if a submission was turned in late
   def late?
     created_at > self.assignment.due_at if self.assignment.due_at.present?
+  end
+
+  def has_multiple_components?
+    return true if (submission_files.count > 1) || (submission_files.present? && (link.present? || text_comment.present?))
+    false
   end
 
   private

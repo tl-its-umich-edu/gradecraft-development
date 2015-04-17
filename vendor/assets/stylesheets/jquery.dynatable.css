@@ -17,8 +17,13 @@ th a:hover {
 }
 
 .dynatable-search {
-  float: right;
+  float: left;
   margin-bottom: 10px;
+}
+
+.dynatable-search input[type="search"] {
+  width: 180px;
+  display: inline !important;
 }
 
 .dynatable-pagination-links {
@@ -28,6 +33,14 @@ th a:hover {
 .dynatable-record-count {
   display: block;
   padding: 5px 0;
+}
+
+.dynatable-per-page {
+  margin-left: 1rem;
+}
+
+select.dynatable-per-page-select {
+  width: 200px;
 }
 
 .dynatable-pagination-links span,

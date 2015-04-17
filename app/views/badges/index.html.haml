@@ -4,47 +4,42 @@
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_badge_path }
             %i.fi-plus
-            New #{term_for :badge} 
+            New #{(term_for :badge).titleize} 
+    %br
 
-  .small-12.columns
+  .columns{:style => "overflow: auto"}
     
     //instructor badge index table
-    %table.responsive.nofeatures_default_name_dynatable
+    %table.responsive
       %thead
         %tr
-          %th.center{"data-dynatable-no-sort" => "true" } Icon
-          %th Name
-          - if current_course.valuable_badges?
-            %th{"data-sort" => "int"} Value
+          %th.center{:width => "15%" } Icon
+          %th{:width => "25%" } Name
           %th Awarded
-          %th Visible to Students
-          %th.button-column
-      %tbody
-        - current_course.badges.each do |badge|
-          %tr
-            %td.center
-              %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
+          %th{ :style => "min-width: 300px" }
+      %tbody.sort-badges
+        - current_course.badges.sorted.each do |badge|
+          %tr{:id => "badge-#{badge.id}"}
+            %td.center 
+              = image_tag "draggable_transparent.png", :width => "10%", :style => "margin-top: -6px", :class => "draggable"
+              %img.badge-icon{ :src => badge.icon, :alt => badge.name }
+              - if badge.point_total.present? && badge.point_total > 0 
+                .italic= "#{points badge.point_total} points"
             %td
               .subtitle= link_to badge.name, badge_path(badge)
               = raw badge.description
-            - if current_course.valuable_badges?
-              %td= points badge.point_total
             %td= badge.awarded_count
-            %td
-              - if badge.visible?
-                Yes
-              - else
-                No
             %td
               .button-bar
                 %ul.button-group.right.radius
                   %li= link_to "Quick Award", mass_award_badge_path(badge), :class => "button"
+                  %li= link_to "Award", new_badge_earned_badge_path(badge), :class => "button"
                   %li
                     %a{:href => edit_badge_path(badge), :class => 'button'}
                       Edit

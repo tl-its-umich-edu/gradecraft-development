@@ -1,12 +1,19 @@
+- if @course.errors.any?
+  .alert-box.alert.radius
+    .italic= "#{pluralize(@course.errors.count, "error")} prohibited this course from being saved:"
+    %ul
+      - @course.errors.full_messages.each do |msg|
+        %li= msg
+
 = simple_form_for(@course, :validate => false)  do |f|
- 
+
   .small-12.large-4.columns.right.columns-no-padding_right
     .panel.callout.radius
-      %h4 SETTINGS
+      %h4.uppercase SETTINGS
       .small-12
         %label.checkbox{ :for => "use_timeline" }
           = f.label :use_timeline, "Timeline"
-          = f.check_box :use_timelinee, {"aria-describedby" => "txtUseTimeline"}
+          = f.check_box :use_timeline, {"aria-describedby" => "txtUseTimeline"}
           .form_label{:id => "txtUseTimeline"} Would you like to use the interactive timeline to display your syllabus?
 
       .small-12
@@ -16,28 +23,22 @@
           .form_label{:id => "txtAcceptSubmission"} Will you be using GradeCraft to accept assignment submissions?
 
       .small-12
-        %label.checkbox{ :for => "predictor_setting" }
-          = f.label :predictor_setting, "Grade Predictor"
-          = f.check_box :predictor_setting
-          .form_label The grade predictor is a tab on the student dashboard where students can plan out their course work and estimate their grade.
-
-      .small-12
         %label.checkbox{ :for => "team_setting" }
           = f.label :team_setting, "Sections"
           = f.check_box :team_setting, {"aria-describedby" => "txtSections"}
           .form_label{:id => "txtSections"}  Will you have semester-long sections in your course?
-      
+
+      .small-12
+        %label.checkbox{ :for => "team_challenges" }
+          = f.label :team_challenges, "Section Assignments"
+          = f.check_box :team_challenges, {"aria-describedby" => "txtSections"}
+          .form_label{:id => "txtSections"}  Will you have section assignments in your course?
+
       .small-12
         %label.checkbox{ :for => "badge_setting" }
           = f.label :badge_setting, "Badges"
           = f.check_box :badge_setting
           .form_label Do you want to use badges in your course?
-
-      .small-12
-        %label.checkbox{ :for => "shared_badges"}
-          = f.input :shared_badges, :label => "Social Badges"
-          .form_label Can students can share badges with the class?
-
 
       .small-12
         %label.checkbox{ :for => "teams_visible" }
@@ -79,7 +80,7 @@
 
 
     .panel.callout.radius
-      %h4 CLASS INFO
+      %h4.uppercase CLASS INFO
       .small-12
         = f.label :office, "Professor's Office"
         = f.text_field :office
@@ -113,13 +114,19 @@
         = f.label :meeting_times, "Class Meeting Times"
         = f.text_field :meeting_times
 
+    .panel.callout.radius
+      %h4.uppercase COURSE SETTINGS 
+      = f.file_field :media_file
+      = f.input :media_credit
+      = f.input :media_caption
+
   .small-12.large-8.columns.panel
     %h4 THE BASICS
     .row
       .small-12.large-5.columns
         = f.label :name, "Course Title"
         = f.text_field :name
-      
+
       .small-12.large-2.columns
         = f.label :courseno, "Course Number"
         = f.text_field :courseno, {"aria-describedby" => "txtCourseNo"}
@@ -137,35 +144,43 @@
       .small-12.large-2.columns
         = f.label :year
         = f.select :year, (Date.today.year - 3)..(Date.today.year + 2)
-    
+
       .small-12.large-5.columns
         = f.label :point_total, "Maximum Number of Points"
         = f.number_field :point_total, {"aria-describedby" => "txtMaxPoints"}
         .form_label{:id => "txtMaxPoints"} If you leave this blank, GradeCraft will calculate the total number of points based on the assignments you create.
 
+    .row
+      .small-12.large-6.columns
+        = f.input :start_date, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @course.try(:start_date) }
+
+      .small-12.large-6.columns
+        = f.input :end_date, as: :string, :include_blank => true, :input_html => { :class => 'datetimepicker', :value => @course.try(:end_date) }
+
+
     .small-12.large-2.columns
       = f.label :min_group_size, "Min Group Size"
       = f.number_field :min_group_size
-    
+
     .small-12.large-2.columns
       = f.label :max_group_size, "Max Group Size"
       = f.number_field :max_group_size
 
 
-    .clearfix
+    .clear
 
   .panel
-    %h4 Grading Philosophy
+    %h4 GRADING PHILOSOPHY
     .small-12.textarea
       = f.bootsy_area :grading_philosophy
       .form_label What would you like to tell students about how they should expected to be graded?
 
   .panel
     %h4 MULTIPLIERS
-    %span.has-tip{:title => "Multipliers allow students to 'boost' their grades on specific assignment types. You decide how many multipliers students can allocate, then the students select which assignment types will get a boost (through their dashboard) and those assignment type's points are multiplied by the number of multipliers that the student allocates.", :data => {'tooltip' => true} } 
+    %span.has-tip{:title => "Multipliers allow students to 'boost' their grades on specific assignment types. You decide how many multipliers students can allocate, then the students select which assignment types will get a boost (through their dashboard) and those assignment type's points are multiplied by the number of multipliers that the student allocates.", :data => {'tooltip' => true} }
 
     %hr
-    .row-100
+    .row
       .small-12.large-4.columns
         = f.label :total_assignment_weight, "Multiplier Count"
         = f.number_field :total_assignment_weight, {"aria-describedby" => "txtMultiplierCount"}
@@ -200,12 +215,12 @@
     %h4 TERMINOLOGY
     %hr
 
-    .row-100
+    .row
       .small-12.large-4.columns
         = f.label :user_term, "User Term"
         = f.text_field :user_term, {"aria-describedby" => "txtUserTerm"}
         .form_label{:id => "txtUserTerm"} What will you call your user? Student, Learner, Player..."
-      
+
       .small-12.large-4.columns
         = f.label :assignment_term, "Assignment Term"
         = f.text_field :assignment_term, {"aria-describedby" => "txtAssignmentTerm"}
@@ -216,7 +231,7 @@
         = f.text_field :group_term, {"aria-describedby" => "txtGroupTerm"}
         .form_label{:id => "txtGroupTerm"} What will these groups be called?
 
-    .row-100
+    .row
       .small-12.large-4.columns
         = f.label :team_leader_term, "Section Leader Term"
         = f.text_field :team_leader_term, {"aria-describedby" => "txtTeamLeader"}
@@ -238,8 +253,9 @@
         = f.label :badge_term, "Badge Term"
         = f.text_field :badge_term, {"aria-describedby" => "txtBadgeTerm"}
         .form_label{:id => "txtBadgeTerm"} Would you like to call badges something else?
-  
 
-  .right
-    = f.button :submit, "#{@course.persisted? ? 'Update' : 'Create'} Course", :class => "button radius alert"
-    = link_to 'Cancel', courses_path, :class => 'button radius transparent'
+
+  .button-bar
+    %ul.button-group.radius.right
+      %li= f.button :submit, "#{@course.persisted? ? 'Update' : 'Create'} Course", :class => "button"
+      %li= link_to 'Cancel', courses_path, :class => 'button'

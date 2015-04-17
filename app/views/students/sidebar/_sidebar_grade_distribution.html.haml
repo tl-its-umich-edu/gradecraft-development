@@ -1,8 +1,13 @@
 .small-12.text-center
   %h3 Points Distribution
   %hr
+  %h4.bold= "You've earned #{points current_student.cached_score_for_course(current_course)} points"
+  %br
   #student_grade_distro{'data-scores' => @scores_for_current_course.to_json}
-  #gradeDistro.collapse
-  %p
-  %h3
-    %small= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"
+  #gradeDistro
+  %br
+  %h5= "Class Average: #{points current_course.average_course_score} points"
+  %h5
+    = "Low Score: #{points current_course.minimum_course_score} points – "
+    = "High Score: #{points current_course.maximum_course_score} points"
+  .italic= link_to "How do I read this chart?", "http://www.youtube.com/watch?v=7UK2DK7rblw&feature=youtu.be", :target => "_blank"

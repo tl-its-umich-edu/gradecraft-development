@@ -4,4 +4,21 @@ $(document).ready(function() {
     $destroy = $input.parent().children('input.destroy');
     $destroy.val(!$input.is(':checked'));
   });
+
+  $('.sort-badges').sortable({
+  	start: function(event, ui){
+  		$(ui.item).addClass('dragBadge');
+  	},
+	update: function (){
+	  $.ajax({
+        url: '/badges/sort',
+	    type: 'post',
+	    data: $('.sort-badges').sortable('serialize'),
+	    dataType: 'script',
+	    complete: function(){}
+	  });
+	}  	
+  });
 });
+	
+

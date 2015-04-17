@@ -3,16 +3,12 @@
     
     = content_nav_for @assignment_type, "Grade Patterns"
 
-    .small-12.medium-7
+    .small-12
       %h3.pagetitle= @title
 
-    .small-12.medium-7.right.columns.columns-no-padding
-      .button-bar.right
+    .small-12.columns
+      .button-bar
         %ul.button-group.context_menu
-          %li
-            %a{:href => new_assignment_type_path }
-              %i.fi-plus
-              New #{term_for :assignment_type}
           %li
             %a{:href => assignment_type_path(@assignment_type) }
               %i.fi-list-thumbnails
@@ -22,14 +18,18 @@
               %i.fi-pencil
               Edit #{@assignment_type.name}
 
+      %br
+
     .small-12.columns
 
       - if current_course.has_teams?
         .small-12.right.medium-6.large-4.columns
           = form_tag all_grades_assignment_type_path(@assignment_type), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-            = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+            %label 
+              .sr-only Select #{term_for :team}
+              = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
-      .small-12.medium-5
+      .small-12.medium-6
         %table
           %tr
             %th
@@ -45,9 +45,8 @@
             %th
               %i.fi-skull.missing_grade
               No Grade
-      .small-12
-        %p.italic
-          Numbers reflect streaks - how many times in a row a #{(term_for :student).downcase} has earned full points
+        .italic
+          Numbers reflect streaks - how many times in a row a #{(term_for :student).downcase} has earned the maximum number of points on an #{term_for :assignment}
 
     / Gradebook Pattern Table
     .columns

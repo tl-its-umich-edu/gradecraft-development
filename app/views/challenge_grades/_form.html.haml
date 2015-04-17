@@ -1,5 +1,5 @@
-.panel
-  = simple_form_for([@challenge, @challenge_grade]) do |f|
+= simple_form_for([@challenge, @challenge_grade]) do |f|
+  .small-12.panel
     .small-12.large-4.columns
       = f.association :team, :collection => @teams
 
@@ -14,9 +14,15 @@
         = f.select :status, Grade::STATUSES
         .form_label= "Can the #{term_for :team} see this grade?"
 
-    .small-12.columns.panel.callout
+    .clear
+
+  .small-12.columns.panel
+    %h4.uppercase Feedback
+    .textarea
       = f.bootsy_area :text_feedback
 
-    .right
-      = f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade for' : 'Grade'} #{ term_for :challenge }",  :class => "button radius alert"
-      = link_to 'Cancel', challenges_path, :class => 'button radius transparent'
+
+  .button-bar
+    %ul.button-group.radius.right
+      %li= f.button :submit, "#{ @challenge_grade.persisted? ? 'Update Grade' : 'Submit Grade'}"
+      %li= link_to 'Cancel', challenges_path, :class => 'button'

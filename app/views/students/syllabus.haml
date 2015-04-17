@@ -1,17 +1,9 @@
 .small-12.panel.mainContent
 
-  %h3.pagetitle
-    Your current score is
-    %span.bold #{points current_student.cached_score_for_course(current_course)}
-    %span /#{points current_course.total_points} points
-    - if current_student.grade_level_for_course(current_course).present?
-      / Display current level if it is present
-      Current Level:
-      %span.bold= current_student.grade_level_for_course(current_course)
-
+  = render 'students/earned_points_and_level'
     
   .small-12.columns#syllabus
 
-    = render "students/syllabus"
+    = render "students/assignments"
 
     = render 'students/scoreboard'

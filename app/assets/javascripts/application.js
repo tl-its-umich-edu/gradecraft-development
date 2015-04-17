@@ -8,19 +8,17 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require foundation
-//= require_self 
+//= require_self
 //= require jquery.omniselect
 //= require autonumeric
 //= require bootsy
 //= require jquery.sparkline.min
 //= require s3_direct_upload
-//= require responsive-tables
 //= require underscore.min
 //= require backbone.min
 //= require bootstrap
 //= require jquery.dynatable
 //= require dynatable
-
 //= require angular
 //= require angular-resource
 //= require angular-animate
@@ -29,9 +27,7 @@
 //= require ./angular/ui/sortable
 //= require ./angular/vendor/restangular.min
 //= require_tree ./angular
-
 //= require bootstrap-datetimepicker
-//= require jquery.dynatable
 //= require gradecraft
 //= require preload_store
 //= require users
@@ -50,6 +46,7 @@
 //= require timelineJS/embed
 //= require timeline_settings
 //= require earned_badges
+//= require file_upload
 //= require highcharts
 //= require datetimepicker
 //= require select2
@@ -66,6 +63,5 @@
 //= require top_ten
 //= require uploads
 //= require course_switch
-
 
 $(function(){ $(document).foundation(); });

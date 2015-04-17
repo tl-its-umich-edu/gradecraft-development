@@ -4,66 +4,48 @@
 
 .small-12.panel.mainContent
 
-  %h3.pagetitle= @title    
+  = render 'students/earned_points_and_level'
+
+  %h3.pagetitle= @title
 
   .small-12.columns
-    %dl.tabs{:data => {'tab' => true}}
-      %dd.active
-        %a{ "href" => "#tabb1"} #{term_for :badges}
-
-      - if current_course.shared_badges?
-        %dd
-          %a{ "href" => "#tabb2"} Shared #{term_for :badges}
-
     //student badges table
-    .tabs-content
-      .content#tabb1.active.small-12
-        %table.responsive.no_radius
-          %thead
-            %tr
-              %th.center
-                .sr-only Icon
-              %th Earned
-              %th{ :width => 300} Description
-              - if current_course.shared_badges?
-                %th Share this with the class?
-          %tbody
-            - current_course.badges.each do |badge|
-              %tr
-                %td.center
-                  %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
-                  .bold= badge.name
-                  = "#{points badge.point_total} points" if badge.point_total?
-                %td
-                  - if badge.can_earn_multiple_times
-                    - badge.earned_badges_for_student(current_student.id).each do
-                      %img{ :src => badge.icon, :alt => badge.name, :width => "30" }
-                      = current_student_data.earned_badge(badge).created_at
-                      %p= raw current_student_data.earned_badge(badge).try(:feedback)
+    %table.responsive
+      %thead
+        %tr
+          %th.center
+            .sr-only Icon
+          %th Earned
+          %th{ :width => 300} Description
+      %tbody
+        - @badges.each do |badge|
+          %tr
+            %td.center
+              %img{ :src => badge.icon, :alt => badge.name, :width => "100" }
+              .bold= badge.name
+              = "#{points badge.point_total} points" if badge.point_total?
+            %td
+              -# logic for badges that have actually been earned
+              - if @earned_badges_by_badge_id[badge.id]
+                -# logic for badges that can be earned multiple times
+                - if badge.can_earn_multiple_times
+                  - @earned_badges_by_badge_id[badge.id].each do |earned_badge|
+                    %img{ :src => badge.icon, :alt => badge.name, :width => "30" }
+                    = earned_badge.created_at
+                    %p= raw earned_badge.try(:feedback)
 
-                    - if badge.earned_badges_for_student(current_student.id).count >1
-                      = "#{points badge.earned_badge_total_value(current_student)} points earned" if badge.point_total?
-                  - elsif current_student_data.earned_badge?(badge)
-                    .fi-check
-                    = current_student_data.earned_badge(badge).created_at
-                    %p= raw current_student_data.earned_badge(badge).try(:feedback) 
-                %td= raw badge.description
-                - if current_course.shared_badges?
-                  %td
-                    - earned_badge = current_student_data.earned_badge(badge)
-                    - if current_user_is_student? && earned_badge.present?
-                      %div{:class=>"share_badge", :data => { badge_id: badge.id.to_s, earned_badge_id: earned_badge.id.to_s, name: badge.name, icon: badge.icon }}
-                        - if earned_badge.shared?
-                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button radius"} Stop Sharing
-                        - else
-                          %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button radius"} Share
-                    - elsif earned_badge.present?
-                      - if earned_badge.shared?
-                        = "Shared"
-                        %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"remove_badge button radius"} Stop Sharing
-                      - else
-                        = "Not Shared"
-                        %a.btn{:id => 'shared_' + badge.id.to_s, :class=>"add_badge button radius"} Share
-
-      .content#tabb2.small-12
-        = render "students/public_class_badges"
+                  - if @earned_badges_by_badge_id[badge.id].size > 1
+                    = "#{@earned_badges_by_badge_id[badge.id].collect(&:score).reduce(:+)} points earned" if badge.point_total?
+                - elsif @earned_badges_by_badge_id[badge.id].any?
+                  -# logic for badges that can be earned only once
+                  .fi-check
+                  = @earned_badges_by_badge_id[badge.id].first.created_at
+                  %p= raw @earned_badges_by_badge_id[badge.id].first.try(:feedback)
+              %td
+                - if badge.badge_files.present?
+                  %b Attachments:
+                  %ul
+                    - badge.badge_files.each do |bf|
+                      %li
+                        = link_to bf.filename, bf.url
+                = raw badge.description

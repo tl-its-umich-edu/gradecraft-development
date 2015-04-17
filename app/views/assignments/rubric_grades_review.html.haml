@@ -1,0 +1,61 @@
+.small-12.panel.mainContent
+
+  = content_nav_for @assignment, "Review Rubric Grades"
+
+  %h3.pagetitle= "#{@title} Detailed Grades (#{ points @assignment.point_total } points)"
+
+  .small-12.columns
+
+    - if @assignment.open_at?
+      .small-12.large-4.columns.panel
+        .bold Open date:
+        = @assignment.open_at
+
+    - if @assignment.due_at?
+      .small-12.large-4.columns.panel
+        .bold Due date:
+        = @assignment.due_at
+
+    - if @assignment.accepts_submissions_until?
+      .small-12.large-4.columns.panel
+        .bold Accept submissions until:
+        = @assignment.accepts_submissions_until
+
+    .clear
+
+    - if @assignment.description?
+      %p= raw @assignment.description
+
+
+    - if @assignment.assignment_files.present?
+      %p
+        %b Attachments:
+        %ul
+          - @assignment.assignment_files.each do |af|
+            %li
+              = link_to af.filename, af.url
+              = link_to " (Remove)", remove_uploads_path({ :model => "AssignmentFile", :upload_id => af.id, :redirect => { :controller => "assignments", :id => @assignment.id} } )
+
+  - if current_course.has_teams? && @assignment.is_individual?
+    .small-12.right.medium-5.columns
+      = form_tag rubric_grades_review_assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
+        = hidden_field_tag :assignment_id, @assignment.id
+        %label.sr-only{:for => "team_id"}
+          Select Team
+        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+
+  .small-12.columns
+    - if @assignment.rubric and @assignment.rubric.designed?
+      - @students.sort_by { |student| [ student.last_name, student.first_name ] }.each do |student|
+        .small-12.columns
+          - if student.grade_for_assignment(@assignment).present? && student.grade_for_assignment(@assignment).instructor_modified?
+            %h4.uppercase= student.name
+            - grade = student.grade_for_assignment(@assignment)
+            .left
+              %h5.bold= "#{grade.score} / #{@assignment.point_total} points "
+            .right= link_to "Edit Grade", edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'tiny radius button'
+            %br
+            %br
+            = render 'grades/rubric_grade_list', student: student
+
+            %hr

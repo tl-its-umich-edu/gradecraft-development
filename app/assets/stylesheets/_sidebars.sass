@@ -1,0 +1,104 @@
+/** Staff Sidebar **/
+.staff_subnav
+  background-color: #FFF
+  padding: 1rem 0rem 1rem 0
+  display: table-cell
+  border-radius: $global-radius
+  
+  /* Subheadings */
+  h5
+    font-size: 1rem
+    margin-left: 1rem
+    font-weight: bold
+    text-transform: uppercase
+
+  /* Spacing out the list items*/ 
+  li
+    text-transform: capitalize
+    margin: .25rem 0 .25rem .25rem
+    white-space: nowrap
+
+  /* Spacing the list divider */
+  hr
+    margin: 1rem auto
+    width: 85%
+
+  li.has-form  
+    margin-top: -.5rem
+    margin-left: 0.75rem
+
+ul.off-canvas-list
+  li a
+    text-transform: capitalize
+    padding: .5rem 0.25rem
+
+  hr
+    display: none
+
+.left-off-canvas-menu
+  border-right: 1px solid #CCC
+  li
+    text-transform: capitalize
+    &.active
+      background-color: $secondary-color-4
+      color: #FFF
+      padding: .5rem .75rem
+
+.left-off-canvas-menu li a
+  padding: .5rem .75rem !important
+
+.right-off-canvas-menu
+  border-left: 1px solid #CCC
+
+.left-off-canvas-menu h5, .right-off-canvas-menu h5
+  background-color: #333
+  color: #fff
+  padding: 0.5rem
+  text-align: center
+  text-transform: uppercase
+  margin-top: 0
+  margin-bottom: 0
+
+.has-form input
+  border-top-left-radius: $global-radius
+  border-bottom-left-radius: $global-radius
+
+.has-form .alert.button
+  border-top-right-radius: $global-radius
+  border-bottom-right-radius: $global-radius
+  padding: .67rem .5rem
+
+.has-form ul.dropdown-menu
+  top: 2rem
+
+/* Styling the mobile active link dropdown */ 
+.has-form ul.dropdown-menu li
+  color: #333
+  padding: 0 0.5rem
+  min-width: 10rem
+
+.has-form ul.dropdown-menu li.active a, .has-form ul.dropdown-menu li.active
+  background-color: $primary-color-2 !important
+
+/* Forcing buttons and icons to display inline */ 
+.side-nav li a:not(.button)
+  display: inline !important
+
+ul.off-canvas-list li a
+  color: black
+
+/* Styles the hover state on the box plot on the student dashboard */
+.jqstooltip
+  box-sizing: content-box
+  height: auto !important
+  width: auto !important
+
+/* Makes the box plot responsive */ 
+#student_grade_distro canvas, .grades_per_assign canvas, .circliful
+  width: 100% !important
+
+.sideBar .todo li
+  list-style-type: none
+
+  .button 
+    border-radius: $global-radius

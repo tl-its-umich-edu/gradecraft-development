@@ -1,0 +1,46 @@
+.small-12.panel.mainContent
+  = content_nav_for @event
+
+  .small-12
+    %h3.pagetitle= @title
+
+  .small-12.columns
+    .button-bar
+      %ul.button-group.context_menu
+        %li
+          %a{:href => new_event_path }
+            %i.fi-plus
+            New Calendar Event
+        %li
+          %a{:href => edit_event_path(@event) }
+            %i.fi-pencil
+            Edit
+    %br
+    %br
+
+  .small-12.columns
+
+    %p
+      %b Name:
+      = @event.name
+    %p
+      %b Descripton:
+      = raw @event.description
+    %p
+      %b Open date:
+      = @event.open_at
+    %p
+      %b Close date:
+      = @event.due_at
+    %p
+      %b Media:
+      %img{:src => @event.media }
+    %p
+      %b Thumbnail:
+      %img{:src =>  @event.thumbnail }
+    %p
+      %b Media credit:
+      = @event.media_credit
+    %p
+      %b Media caption:
+      = @event.media_caption

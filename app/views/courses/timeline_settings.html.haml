@@ -6,6 +6,13 @@
 
   .small-12.columns
     #massGrade
+      - if @course.errors.any? 
+        .alert-box.alert.radius
+          .italic= "#{pluralize(@course.errors.count, "error")} prohibited these settings from being saved:"
+          %ul
+            - @course.errors.full_messages.each do |msg|
+              %li= msg
+              
       = simple_form_for @course, method: :put, :url => timeline_settings_course_path(@course) do |f|
 
         %table.responsive
@@ -28,6 +35,6 @@
                   %td= af.text_field :media_caption
 
 
-        .right
-          = f.button :submit, "Update Settings", :class => "button radius alert"
+        .right.form_buttons
+          = f.button :submit, "Update Settings", :class => "button radius"
           = link_to 'Cancel', dashboard_path, :class => "button radius transparent"

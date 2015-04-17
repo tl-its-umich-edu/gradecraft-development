@@ -21,7 +21,7 @@
         .bold Accept submissions until:
         = @assignment.accepts_submissions_until
 
-    .clearfix
+    .clear
 
     - if @assignment.description?
       %p= raw @assignment.description
@@ -38,9 +38,11 @@
 
   - if current_course.has_teams? && @assignment.is_individual?
     .small-12.right.medium-5.columns
-      = form_tag assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
+      = form_tag detailed_grades_assignment_path(@assignment), :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
         = hidden_field_tag :assignment_id, @assignment.id
-        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
+        %label.sr-only{:for => "team_id"}
+          Select Team
+        = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
 
   .small-12.columns
     - if @assignment.has_groups?

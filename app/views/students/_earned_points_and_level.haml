@@ -1,0 +1,8 @@
+%h4.subtitle
+  You have earned
+  %span.bold #{points current_student.cached_score_for_course(current_course)} points
+  //%span /#{points current_course.total_points} points
+  - if current_student.grade_level_for_course(current_course).present?
+    / Display current level if it is present
+    – Current Level:
+    %span.bold= current_student.grade_level_for_course(current_course)

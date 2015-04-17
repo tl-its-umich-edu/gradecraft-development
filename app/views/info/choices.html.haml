@@ -7,9 +7,11 @@
 
   - if current_course.has_teams?
     .small-12.large-4.medium-6.columns.right
-      = form_tag choices_students_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
-        = select_tag :team_id, options_for_select(current_course.teams.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "Select #{current_course.team_term}"
-
+      = form_tag multiplier_choices_path, :name => "see_team", :onchange => ("javascript: document.see_team.submit();"), :method => :get do
+        %label 
+          .sr-only Select #{term_for :team}
+          = select_tag :team_id, options_for_select(current_course.teams.alpha.map { |t| [t.name, t.id] }, @team.try(:id)), :prompt => "– Select #{current_course.team_term} –"
+        
   .columns
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
@@ -38,13 +40,13 @@
                   %li= link_to "Edit #{term_for :weights}", assignment_type_weights_path(:student_id => student.id), :class => "button"
 
   - if @auditing.present?
-    .clearfix
+    .clear
 
     .small-12
-      .pagetitle Auditing
+      %h4.subtitle Auditing
 
     .columns
-      %table.responsive.nopage_dynatable
+      %table.responsive.nofeatures_dynatable
         %thead
           %tr
             %th First Name

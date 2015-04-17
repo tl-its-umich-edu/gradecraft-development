@@ -1,0 +1,32 @@
+.small-12.panel.mainContent
+
+  .italic.not_bold= "#{points @assignment.point_total} points possible"
+  %br
+  .italic.not_bold= "Opens: #{@assignment.open_at}" if @assignment.open_at?
+  .italic.not_bold= "Due: #{@assignment.due_at}" if @assignment.due_at?
+
+  - if @assignment.student_logged? && @assignment.open? && current_user_is_student?
+
+    = simple_form_for current_student_data.grade_for_assignment(@assignment), :url => self_log_grades_assignment_path(@assignment), :method => :post do |f|
+      - present = current_student.self_reported_done?(@assignment)
+      = hidden_field_tag :present, !present
+      - if ! current_student.self_reported_done?(@assignment)
+        = f.submit (@assignment_type.student_logged_button_text), :class => "button #{present ? 'alert' : 'success'} tiny radius"
+
+  - if @assignment.assignment_files.present?
+    %hr
+    %h4.uppercase Downloads
+    %ul
+      - @assignment.assignment_files.each do |af|
+        %li= link_to af.filename, af.url
+
+  - if @assignment.description.present?
+    %hr
+    %h4.uppercase Guidelines:
+    %p= raw @assignment.description
+
+  - if @assignment.assignment_type.predictor_description.present?
+    %hr
+    %h4.uppercase #{ @assignment.assignment_type.name} Guidelines:
+
+    %p= raw @assignment.assignment_type.predictor_description

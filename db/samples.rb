@@ -2,6 +2,10 @@ user_names = ['Ron Weasley','Fred Weasley','Harry Potter','Hermione Granger','Co
 
 educ_team_names = ['Harm & Hammer', 'Abusement Park','Silver Woogidy Woogidy Woogidy Snakes','Carpe Ludus','Eduception','Operation Unthinkable','Team Wang','The Carpal Tunnel Crusaders','Pwn Depot']
 
+polsci_team_names = ['Section 1', 'Section 2', 'Section 3', 'Section 4', 'Section 5', 'Section 6', 'Section 7', 'Section 8', 'Section 9', 'Section 10', 'Section 11', 'Section 12', 'Section 13', 'Section 14', 'Section 15', 'Section 16']
+
+info_team_names = ['Late Night Information Nation', 'Heisenberg', 'Big Red Dogs', 'Liu Man Group', 'The House that Cliff Built', 'TMI']
+
 educ_badge_names = ['Creative', 'Inner Eye', 'Patronus Producer','Cheerful Charmer','Invisiblity Cloak','Marauders Map','Lumos','Rune Reader','Tea Leaf Guru','Wizard Chess Grand Master','Green Thumb','Gamekeeper','Seeker','Alchemist','Healer','Parseltongue','House Cup']
 
 polsci_badge_names = ['MINOR: Learning from Mistakes', 'MINOR: Learning from Mistakes', 'MINOR: Halloween Special', 'MINOR: Thanksgiving Special', 'MINOR: Now It is Personal', 'MAJOR: Makeup Much', 'MAJOR: Practice Makes Perfect', 'MAJOR: Combo Platter', 'MINOR: Makeup Some', 'MINOR: Participatory Democrat', 'MINOR: Number One', 'MINOR: Rockstar', 'MINOR: Over-achiever', 'MINOR: Avid Reader', 'MINOR: Nice Save!', 'MINOR: The Nightstalker', 'MINOR: Paragon of Virtue', 'MAJOR: Bad Investment', 'MINOR: Leader of the pack', 'MINOR: Thoughtful Contribution']
@@ -68,6 +72,7 @@ courses << polsci_course = Course.create! do |c|
   c.max_group_size = 5
   c.min_group_size = 3
   c.team_setting = true
+  c.team_term = "Section"
   c.teams_visible = false
   c.group_setting = true
   c.badge_setting = true
@@ -88,6 +93,7 @@ courses << polsci_course = Course.create! do |c|
   c.meeting_times = "MW 11:30-1"
   c.badge_term = "Power Up"
   c.team_challenges = false
+  c.team_score_average = true
   c.total_assignment_weight = 6
   c.default_assignment_weight = 0.5
   c.grading_philosophy = "Think of how video games work. This course works along the same logic. There are some things everyone will have to do to make progress. In this course, the readings, reading-related homework, lectures and discussion sections are those things.
@@ -124,6 +130,8 @@ courses << information_course = Course.create! do |c|
   c.office_hours = "email me"
   c.meeting_times = "TTh 12:00-1:30"
   c.team_challenges = true
+  c.team_score_average = true
+  c.add_team_score_to_student = true
   c.grading_philosophy = "In this course, we accrue 'XP' which are points that you gain to get to different grade levels. If you can gather 950,000 XP, you will receive an A, not to mention the admiration of those around you. Because you’re in charge of figuring out how many XP you need to get the grade you want, there’s not really such a thing as a required assignment in this course. There are opportunities to gain XP, some of which are scheduled. Of course, you’ll need to do several Quests in order to get higher grade levels, and some Quests count for a ton of XP. Each of these quests is managed in GradeCraft, where you can see your progress, as well as check the forecasting tool to see what you need to do on future assignments to get your desired grade level. A quick note on our assessment philosophy. Most Quests will have rubrics attached, which will spell out our expectations. However, just meeting the details of the assignment is by definition average work, which would receive something around the B category. If your goal is to get an A, you will have to go above and beyond on some of these Quests."
   c.media_file = "http://upload.wikimedia.org/wikipedia/commons/3/36/Michigan_Wolverines_Block_M.png"
 end
@@ -162,12 +170,26 @@ end
 puts "Installed the Polsci grading scheme. Debate that!"
 
 
-teams = educ_team_names.map do |team_name|
+educ_teams = educ_team_names.map do |team_name|
   educ_course.teams.create! do |t|
     t.name = team_name
   end
 end
 puts "The Team Competition has begun!"
+
+polsci_teams = polsci_team_names.map do |team_name|
+  polsci_course.teams.create! do |t|
+    t.name = team_name
+  end
+end
+puts "PolSci Teams come to life"
+
+info_teams = info_team_names.map do |team_name|
+  information_course.teams.create! do |t|
+    t.name = team_name
+  end
+end
+puts "LARP Day is going to happen. Watch out for the Dungeon Master's sword!"
 
 # Generate sample students
 students = user_names.map do |name|
@@ -180,7 +202,7 @@ students = user_names.map do |name|
     u.email = "#{username}@hogwarts.edu"
     u.password = 'uptonogood'
     u.courses << [ educ_course, polsci_course, information_course ]
-    u.teams << teams.sample
+    u.teams << [ educ_teams.sample, polsci_teams.sample, info_teams.sample ]
   end
 end
 puts "Generated #{students.count} unruly students"
@@ -448,13 +470,13 @@ You can blog as much as you want, but only one post/week can earn points."
   at.order_placement = 3
   at.mass_grade = true
   at.mass_grade_type = "Radio Buttons"
-  at.student_weightable = true
+  at.student_weightable = false
 end
 puts "Blogging is great for filling in missed points in other areas"
 
 assignment_types[:lfpg] = AssignmentType.create! do |at|
   at.course = educ_course
-  at.name = "20% Time"
+  at.name = "Learning From Playing a Game"
   at.point_setting = "By Assignment"
   at.points_predictor_display = "Slider"
   at.predictor_description = "At Google, all employs were (historically) given 20% of their work time to devote to any project they choose. Often, these projects fold the personal interest or ambitions of the employee into the larger opportunities represented by the context of Google (e.g., high-tech resources and lots of smart folks). In this course, I am requiring that you devote 20% of your time to pursuing a project of interest to you, that benefits you, and that will help you maximize the value of this course for you. You will determine the scope of the project, the requirements of the project, and the final grade for the project. You may work alone or with others. Whether or not there is a “product” is up to you, as is the form of that product. There is only one requirement for this project: You must share or present the project (in some way of your choosing) with your classmates and with me at the final class meeting.
@@ -468,7 +490,7 @@ I look forward to being surprised, elated, and informed by your interests and se
   at.due_date_present = true
   at.order_placement = 4
   at.mass_grade = false
-  at.student_weightable = true
+  at.student_weightable = false
 end
 puts "This is the good stuff :)"
 
@@ -480,7 +502,7 @@ assignment_types[:boss_battle] = AssignmentType.create! do |at|
   at.resubmission = true
   at.due_date_present = true
   at.order_placement = 5
-  at.mass_grade = false
+  at.student_weightable = false
 end
 puts "Challenges!"
 
@@ -610,31 +632,15 @@ end
   end
 end
 
-grinding_assignments.each do |a|
-  a.tasks.create! do |t|
-    t.assignment = a
-    t.name = "Task 1"
-    t.due_at = a.due_at
-    t.accepts_submissions = true
-  end
-end
-
 puts "Attendance and Reading Reaction classes have been posted!"
 
 grinding_assignments.each do |assignment|
   next unless assignment.due_at.past?
   students.each do |student|
-    assignment.tasks.each do |task|
-      submission = student.submissions.create! do |s|
-        s.task = task
-        s.text_comment = "Wingardium Leviosa"
-        s.link = "http://www.twitter.com"
-      end
-      student.grades.create! do |g|
-        g.submission = submission
-        g.raw_score = assignment.point_total * [0, 1].sample
-        g.status = "Graded"
-      end
+    student.grades.create! do |g|
+      g.assignment = assignment
+      g.raw_score = assignment.point_total * [0, 1].sample
+      g.status = "Graded"
     end
   end
 end
@@ -686,25 +692,6 @@ end
 
 puts "Blogging assignments have been posted!"
 
-blog_assignments.each_with_index do |assignment, i|
-  next if i % 2 == 0
-  students.each do |student|
-    assignment.tasks.each do |task|
-      submission = student.submissions.create! do |s|
-        s.task = task
-        s.text_comment = "Wingardium Leviosa"
-        s.link = "http://www.twitter.com"
-      end
-      student.grades.create! do |g|
-        g.submission = submission
-        g.raw_score = assignment.point_total * [0, 1].sample
-        g.status = "Graded"
-      end
-    end
-  end
-end
-puts "Blogging scores have been posted!"
-
 assignments = []
 
 assignments << Assignment.create! do |a|
@@ -715,14 +702,9 @@ assignments << Assignment.create! do |a|
   a.due_at = 3.weeks.ago
   a.accepts_submissions = true
   a.release_necessary = true
-  a.open_at = 3.weeks.ago
+  a.open_at = 4.weeks.ago
   a.grade_scope = "Individual"
   a.save
-  a.tasks.create! do |t|
-    t.name = "Task 1"
-    t.due_at = rand.weeks.from_now
-    t.accepts_submissions = true
-  end
   students.each do |student|
     a.tasks.each do |task|
       submission = student.submissions.create! do |s|
@@ -748,7 +730,7 @@ assignments << Assignment.create! do |a|
   a.due_at = 1.week.ago
   a.accepts_submissions = true
   a.release_necessary = false
-  a.open_at = 1.week.ago
+  a.open_at = 2.week.ago
   a.grade_scope = "Individual"
 end
 puts "Game Play Update Paper 1 has been posted!"
@@ -758,7 +740,7 @@ assignments << Assignment.create! do |a|
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Update Paper 2"
   a.point_total = 120000
-  a.due_at = 2.weeks.from_now
+  a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
   a.open_at = 2.weeks.from_now
@@ -771,7 +753,7 @@ assignments << Assignment.create! do |a|
   a.assignment_type = assignment_types[:lfpg]
   a.name = "Game Play Reflection Paper"
   a.point_total = 160000
-  a.due_at = 4.weeks.from_now
+  a.due_at = 5.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = true
   a.open_at = 4.weeks.from_now
@@ -784,7 +766,7 @@ ip1_assignment = Assignment.create! do |a|
   a.assignment_type = assignment_types[:boss_battle]
   a.name = "Individual Paper/Project 1"
   a.point_total = 200000
-  a.due_at = 4.weeks.from_now
+  a.due_at = 5.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
   a.open_at = 4.weeks.from_now
@@ -807,7 +789,7 @@ ip2_assignment = Assignment.create! do |a|
   a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
-  a.open_at = 4.weeks.from_now
+  a.open_at = 3.weeks.from_now
   a.grade_scope = "Individual"
 end
 puts "Individual Project 2 has been posted!"
@@ -829,7 +811,7 @@ ggd_assignment = Assignment.create! do |a|
   a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = false
-  a.open_at = 4.weeks.from_now
+  a.open_at = 3.weeks.from_now
   a.grade_scope = "Group"
 end
 puts "Group Game Design has been posted!"
@@ -859,7 +841,7 @@ polsci_essay_assignments << Assignment.create! do |a|
   a.due_at = 3.weeks.ago
   a.accepts_submissions = true
   a.release_necessary = true
-  a.open_at = 3.weeks.ago
+  a.open_at = 4.weeks.ago
   a.grade_scope = "Individual"
   a.save
   a.tasks.create! do |t|
@@ -889,7 +871,7 @@ polsci_essay_assignments << Assignment.create! do |a|
   a.assignment_type = assignment_types[:polsci_essays]
   a.name = "Second Essay"
   a.point_total = 3000
-  a.due_at = 3.weeks.from_now
+  a.due_at = 4.weeks.from_now
   a.accepts_submissions = true
   a.release_necessary = true
   a.open_at = 3.weeks.from_now
@@ -917,7 +899,7 @@ assignments << Assignment.create! do |a|
   a.due_at = 7.weeks.ago
   a.accepts_submissions = false
   a.release_necessary = true
-  a.open_at = 3.weeks.from_now
+  a.open_at = 8.weeks.ago
   a.grade_scope = "Individual"
 end
 puts "First Boss Battle has been posted!"
@@ -1078,13 +1060,13 @@ challenges << Challenge.create! do |c|
   c.course = educ_course
   c.name = "House Cup"
   c.point_total = 1000000
-  c.due_at = 3.week.ago
+  c.due_at = 3.weeks.from_now
   c.accepts_submissions = true
   c.release_necessary = false
-  c.open_at = rand(6).weeks.from_now
+  c.open_at = rand(6).weeks.ago
   c.visible = true
   c.save
-  teams.each do |team|
+  educ_teams.each do |team|
     c.challenge_grades.create! do |cg|
       cg.team = team
       cg.score = 1000000 * [0,1].sample
@@ -1098,10 +1080,10 @@ challenges << Challenge.create! do |c|
   c.course = educ_course
   c.name = "Tri-Wizard Tournament"
   c.point_total = 10000000
-  c.due_at = 2.weeks.ago
+  c.due_at = 2.weeks.from_now
   c.accepts_submissions = true
   c.release_necessary = false
-  c.open_at = rand(8).weeks.from_now
+  c.open_at = rand(8).weeks.ago
   c.visible = true
 end
 puts "Are you willing to brave the Tri-Wizard Tournament?"
@@ -1113,5 +1095,3 @@ LTIProvider.create! do |p|
   p.consumer_key = 'piazza.sandbox'
   p.consumer_secret = 'test_only_secret'
 end
-
-

@@ -1,6 +1,6 @@
 .small-12.medium-3.large-2.columns.staff_subnav.show-for-medium-up
   / Staff-only sidebar navigation
-  = render 'layouts/staff_subnav'
+  = render 'layouts/navigation/staff_subnav'
 
 .small-12.medium-9.large-10.columns.outerContainer{:role => "main"}
   / Display errors and notifications
@@ -8,3 +8,5 @@
 
   / Page content
   = render 'layouts/content'
+
+= render 'layouts/help/staff_freshdesk'

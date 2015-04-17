@@ -1,0 +1,37 @@
+= simple_form_for(@event) do |f|
+  = f.error_notification
+
+  .form-inputs
+    .small-12.medium-8.columns
+      .panel
+        %h4.uppercase Basic Settings
+        .small-12.medium-6.columns
+          = f.input :name
+        .small-12.medium-6.columns
+          .small-12.medium-6.columns
+            = f.input :open_at, as: :string, :input_html => { :class => 'datetimepicker', :value => @event.try(:open_at) }, :label => "Start Date"
+          .small-12.medium-6.columns
+            = f.input :due_at, as: :string, :input_html => { :class => 'datetimepicker', :value => @event.try(:due_at) }, :label => "End Date"
+      .panel
+        %h4.uppercase Description
+        = f.bootsy_area :description
+    .small-12.medium-4.columns
+      .panel
+        %h4.uppercase Timeline Settings
+        = f.file_field :media
+        - if @event.media.present?
+          %img{:src => @event.media, :width => 40, :alt => "Primary Event Image" }
+          = f.check_box :remove_media
+          Remove Image
+        = f.file_field :thumbnail
+        - if @event.thumbnail.present?
+          %img{:src => @event.thumbnail, :width => 40, :alt => "Event Thumbnail Image" }
+          = f.check_box :remove_thumbnail
+          Remove Thumbnail
+        = f.input :media_credit
+        = f.input :media_caption
+    %hr
+
+  .button-bar
+    %ul.button-group.radius.right
+      %li= f.button :submit, :class => "button"

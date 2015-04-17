@@ -1,0 +1,122 @@
+
+/* Background image for site, this is declared because otherwise it overrides the text editor's bkg */
+body.logged-in, body.logged-out
+  background: image-url("cloud_bg.gif")
+
+/* Primary page content */ 
+.mainContent, body.logged-in .info_pages
+  background-color: #FFF
+  position: relative
+  height: auto !important
+  margin-right: 0
+  margin-bottom: 1rem
+  padding: 1rem 0
+  border-radius: $global-radius
+  border: none
+  overflow: hidden
+
+.pageContainer
+  margin-top: 1rem
+
+.tabs-content > .content
+  padding: 0
+
+  table
+    border-top-right-radius: $global-radius !important
+
+.panel.callout
+  background-color: lighten(#666, 50%)
+  border-color: #CCC
+
+/* Allow other things to appear above the timeline */
+.vco-storyjs
+  z-index: 0
+
+.columns-no-padding
+  padding: 0
+
+.columns-no-padding_right
+  padding-right: 0
+
+.columns-no-padding_left
+  padding-left: 0
+
+.panel
+  border-radius: $global-radius
+  overflow: hidden
+
+.hidden
+  display: none
+
+.clear, .clearfix
+  clear: both 
+
+form .tabs-content .content
+  min-height: 400px
+  border: 1px solid #eee
+  padding: 1rem
+
+.alert-box
+  background-color: $primary-color
+  font-size: 120%
+
+.alert-box.success
+  background-color: darken($secondary-color-5, 2%)
+  font-size: 120%
+
+.alert-box.alert
+  background-color: darken($alert-color, 2%)
+  font-size: 120%
+
+  ul
+    margin-bottom: 0
+
+.badge-icon
+  width: 80%
+
+.draggable
+  display: inline
+
+@media (min-width: 1072px)
+  .panel .row
+    margin-bottom: 1rem
+
+@media (max-width: 1072px)
+  .box
+    border-bottom: 1px solid $light-grey
+    padding: 1rem
+
+  .assignment_weights .panel.callout.columns
+    margin-right: 1rem
+    width: 23%
+
+@media (min-width: 400px)
+  
+  .mainContent
+    min-height: 750px
+
+/* Responsive outer container */ 
+@media (min-width: 1000px)
+
+  .outerContainer
+    padding-right: 0
+
+@media (max-width: 400px)
+  .columns.pageContainer, .columns.outerContainer, .columns.sideBarContainer
+    padding-left: 0
+    padding-right: 0
+
+  .pageContainer, .row.panel.publicContent
+    margin-top: 0 !important
+
+@media (max-width: 1000px)
+  .row.panel.publicContent
+    margin-top: 0 !important
+
+@media (max-width:787px) 
+  .badge-icon
+    height: 25px
+    width: 25px
+
+  .draggable
+    display: none

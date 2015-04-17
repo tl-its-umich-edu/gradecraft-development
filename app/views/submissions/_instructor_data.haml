@@ -1,0 +1,73 @@
+- if @assignment.is_individual?
+
+  %p
+    %span.smallcaps Submitted:
+    = @student.submission_for_assignment(@assignment).created_at
+
+    // Late alert if submitted after due date
+    - if @student.submission_for_assignment(@assignment).late?
+      %span.label.alert.radius Late!
+      
+    // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
+  - if @student.submission_for_assignment(@assignment).updated_at != @student.submission_for_assignment(@assignment).created_at
+    %p
+      %span.smallcaps Updated:
+      %span= @student.submission_for_assignment(@assignment).updated_at
+
+  // Displaying the link to the submission if there is one
+  - if @student.submission_for_assignment(@assignment).link?
+    %p
+      %span.smallcaps Link:
+      = link_to @student.submission_for_assignment(@assignment).link, @student.submission_for_assignment(@assignment).link
+
+  - if @student.submission_for_assignment(@assignment).submission_files.present?
+    %p
+      %span.smallcaps Attachments:
+      %ul
+        - @student.submission_for_assignment(@assignment).submission_files.each do |sf|
+          %li
+            = link_to sf.filename, sf.url, :target => "_blank"
+
+  - if @student.submission_for_assignment(@assignment).text_comment?
+    %p
+      %span.smallcaps Statement:
+      = raw @student.submission_for_assignment(@assignment).text_comment
+
+
+- else
+  %b= "#{@group.name}'s Submission"
+  // link to edit the submission
+  %span= link_to "Edit", edit_assignment_submission_path(@assignment, @group.submission_for_assignment(@assignment)), :class => "button tiny radius secondary no-margin"
+  // Displaying when the assignment was submitted
+  %p
+    %span.smallcaps Submitted:
+    = @group.submission_for_assignment(@assignment).created_at
+
+    // Late alert if submitted after due date
+    - if @group.submission_for_assignment(@assignment).late?
+      %span.label.alert.radius Late!
+    // Checking to see if the submission was updated - if the update date is different from the creation date, displaying it
+  - if @group.submission_for_assignment(@assignment).updated_at != @group.submission_for_assignment(@assignment).created_at
+    %p
+      %span.smallcaps Updated:
+      %span= @group.submission_for_assignment(@assignment).updated_at
+
+  // Displaying the link to the submission if there is one
+  - if @group.submission_for_assignment(@assignment).link?
+    %p
+      %span.smallcaps Link:
+      = link_to @group.submission_for_assignment(@assignment).link, @group.submission_for_assignment(@assignment).link
+
+  - if @group.submission_for_assignment(@assignment).submission_files.present?
+    %p
+      %span.smallcaps Attachments:
+      %ul
+        - @group.submission_for_assignment(@assignment).submission_files.each do |sf|
+          %li
+            = link_to sf.filename, sf.url
+            = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
+
+  - if @group.submission_for_assignment(@assignment).text_comment?
+    %p
+      %span.smallcaps Statement:
+      = raw @group.submission_for_assignment(@assignment).text_comment

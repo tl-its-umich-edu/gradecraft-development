@@ -65,9 +65,9 @@
   %p
 
 
-  - if @auditing.present?
+  - if @auditors.present?
 
-    %h3 Auditing #{term_for :students}
+    %h4.subtitle Auditing #{term_for :students}
 
     %table.responsive.nofeatures_default_last_name_dynatable
       %thead
@@ -89,7 +89,7 @@
               %button.button.select-all.tiny= "Check All"
               %button.button.select-none.tiny= "Uncheck All"
       %tbody
-        - @auditing.each do |student|
+        - @auditors.each do |student|
           - grade = current_course_data.grade_for_student_and_assignment(student, @assignment)
           %tr
             %td= link_to student.first_name, student_path(student)

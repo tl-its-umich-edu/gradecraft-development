@@ -1,22 +1,18 @@
 %h3.text-center Due This Week
 %hr
-- current_course_data.visible_by_assignment_type.each do |assignment_type, assignments|
-  
-  - if assignments.any?(&:soon?) && assignment_type.include_in_to_do?
-    - assignments.each do |assignment|
-      - if assignment.soon?
-        - if assignment.accepts_submissions?
-          - if assignment.is_individual?
-            .right= render "students/submissions", assignment: assignment
-          - else
-            .right= render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
-        - if current_student.submission_for_assignment(assignment).present?
-          %p.strikethrough= link_to "#{assignment.try(:name)}", assignment
-          %span.small_uppercase= "#{assignment.assignment_type.name}"
-        - else
-          %p
-            %span.bold= link_to assignment.name, assignment_grade_path(assignment, :student_id => current_student)
-            %span.small_uppercase= "#{assignment.assignment_type.name}"
-            .form_label= "Due: #{assignment.try(:due_at).strftime("%A, %B %d, %Y, at %H:%M%p")}"
-        %hr
-        .clearfix
+- current_course.assignments.visible.chronological.each do |assignment|
+  - if assignment.soon? && assignment.include_in_to_do?
+    - if assignment.accepts_submissions?
+      - if assignment.is_individual?
+        .right= render "students/submissions", assignment: assignment
+      - else
+        .right= render "students/group_submissions", assignment: assignment, group: current_student.group_for_assignment(assignment)
+    - if current_student.submission_for_assignment(assignment).present?
+      .bold.strikethrough= link_to "#{assignment.try(:name)}", assignment
+      .small_uppercase= "#{assignment.assignment_type.name}"
+    - else
+      .bold= link_to assignment.name, assignment_grade_path(assignment, :student_id => current_student)
+      .small_uppercase= "#{assignment.assignment_type.name}"
+      .form_label= "Due: #{assignment.try(:due_at).strftime("%A, %B %d, %Y, at %l:%M%p")}"
+    %hr
+    .clear

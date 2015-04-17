@@ -1,32 +1,53 @@
 .small-12.panel.mainContent
 
-  = content_nav_for current_course, "Timeline Settings"
+  = content_nav_for "Predictor Settings"
 
   %h3.pagetitle= @title
 
-  .small-12.columns
+  .small-12
     #massGrade
+      - if @course.errors.any? 
+        .columns
+          .alert-box.alert.radius
+            .italic= "#{pluralize(@course.errors.count, "error")} prohibited these settings from being saved:"
+            %ul
+              - @course.errors.full_messages.each do |msg|
+                %li= msg
+
       = simple_form_for @course, method: :put, :url => predictor_settings_course_path(@course) do |f|
 
-        %table.responsive
-          %thead
-            %tr
-              %th= "#{term_for :assignment}"
-              %th Display Type
-              %th Include in Predictor
-              %th Preview
+        - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
+          %h4.subtitle= assignment_type.name
+          .columns
+            %table.responsive
+              %thead
+                %tr
+                  %th= "#{term_for :assignment}"
+                  %th Include in Predictor
+                  %th Display Type
+                  %th Preview
 
-          - @assignments.each_with_index do |assignment, i|
-            %tr
-              %td
-                = assignment.name
-              = f.simple_fields_for :assignments, assignment do |af|
-                %td= af.check_box :include_in_predictor
-                %td= af.select :points_predictor_display, [[], ["Checkbox", "Fixed"], ["Select List"], ["Slider"], ]
-                %td
+              %tbody
+                - assignments.each do |assignment|
+                  %tr
+                    %td
+                      = link_to assignment.name, assignment
+                    = f.simple_fields_for :assignments, assignment do |af|
+                      %td{:width => "10%"}= af.check_box :include_in_predictor
+                      %td= af.select :points_predictor_display, [[], ["Checkbox", "Fixed"], ["Select List"], ["Slider"], ]
+                      %td{:width => "25%"}
+                        - if assignment.include_in_predictor?
+                          - if assignment.select?
+                            = select_tag assignment.name, options_from_collection_for_select(assignment.score_levels,'value','name'), :class => 'point-value right', :id => "total-#{assignment.id}", :include_blank => true
+                          - elsif assignment.slider?
+                            - if assignment.score_levels.present?
+                              .slider{:max => assignment.point_total, :'data-scorelevelvals' => "#{assignment.score_levels.map(&:value)}", :'data-scorelevelnames' => "#{assignment.score_levels.map(&:name)}", :'data-highlight' => "true"}
+                            - else
+                              .slider{:max => assignment.point_total, :'data-highlight' => "true"}
+                          - else
+                            %input{:type => "checkbox" }
+          %br
 
-
-
-        .right
-          = f.button :submit, "Update Settings", :class => "button radius alert"
+        .right.form_buttons
+          = f.button :submit, "Update Settings", :class => "button radius"
           = link_to 'Cancel', dashboard_path, :class => "button radius transparent"

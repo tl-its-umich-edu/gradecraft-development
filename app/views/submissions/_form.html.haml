@@ -1,25 +1,7 @@
-.clearfix
+= render 'assignment_guidelines'
 
-#attachments.panel
-  %h5.bold Attachments
-  .s3_uploader
-    = s3_uploader_form key: upload_url('submission_files', @assignment), acl: "private", max_file_size: 40.megabytes do
-      .small-12.medium-6.columns
-        = file_field_tag :file, :multiple => true
-      .small-12.medium-6.columns
-        .upload.s3_progress
-          Progress:
-          .progress
-            .bar
-        .clearfix
-      %ul#uploaded_files
-        - if @submission.submission_files.present?
-          %hr
-          - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
-            %li
-              = link_to sf.filename, sf.url
-              = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
-
+%hr
+.clear
 
 = simple_form_for([@assignment, @submission]) do |f|
   - if @assignment.has_groups? && current_user_is_student?
@@ -28,16 +10,31 @@
     = f.input :group_id, :input_html => { :value => @group.id }, :as => :hidden
   - elsif @assignment.is_individual? && current_user_is_staff?
     = f.input :student_id, :input_html => { :value => @student.id }, :as => :hidden
-  = f.simple_fields_for :submission_files, @submission.submission_files.new do |sff|
-    = sff.input :filepath, :input_html => { :class => 's3_files' }, :as => :hidden
 
-  .small-12.panel
-    = f.input :link
+  - if @assignment.accepts_attachments
+    .small-12.panel
+      %h4.uppercase Attachments
+      = f.simple_fields_for :submission_files, @submission.submission_files.new do |sf|
+        = sf.file_field :file, :multiple => true
+      - if @submission.submission_files.exists?
+        %h5.bold Uploaded files
+        %ul.uploaded-files
+          - current_student.submission_for_assignment(@assignment).submission_files.each do |sf|
+            %li
+              = link_to sf.filename, sf.url, :target => "_blank"
+              = link_to "(Remove)", remove_uploads_path({ :model => "SubmissionFile", :assignment_id => @assignment.id, :upload_id => sf.id } )
 
-  .small-12.panel
-    %h5.bold Content/Description
-    = f.bootsy_area :text_comment
+  - if @assignment.accepts_links
+    .small-12.panel
+      %h4.uppercase Link
+      = f.input :link, :label => false
 
-  .right
-    = f.button :submit, "#{@submission.persisted? ? 'Update Submission' : "Submit #{term_for :assignment}"} ", :class => "button radius alert"
-    = link_to 'Cancel', assignment_path(@assignment), :class => 'button radius transparent'
+  - if @assignment.accepts_text
+    .small-12.panel
+      %h4.uppercase Content/Statement
+      = f.bootsy_area :text_comment
+
+  .button-bar
+    %ul.button-group.radius.right
+      %li= f.button :submit, "#{@submission.persisted? ? 'Update Submission' : "Submit #{term_for :assignment}"}"
+      %li= link_to 'Cancel', assignment_path(@assignment), :class => 'button'

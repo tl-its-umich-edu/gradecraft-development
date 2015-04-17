@@ -1,24 +1,39 @@
 .small-12.panel.mainContent
 
-  = content_nav_for @group
+  - if current_user_is_staff?
+    = content_nav_for @group
+  - else
+    = content_nav_for Assignment, "My #{term_for :group}"
 
   %h3.pagetitle= @title
 
-  .small-12.medium-3.right.columns.columns-no-padding
-    .button-bar.right
-      %ul.button-group.context_menu
-        %li
-          %a{:href => edit_group_path(@group) }
-            %i.fi-pencil
-            Edit #{term_for :group} 
+  - if current_user_is_staff?
+    .small-12.columns
+      .button-bar.right
+        %ul.button-group.context_menu
+          %li
+            %a{:href => new_group_path }
+              %i.fi-plus
+              New #{(term_for :group).titleize}
+          %li
+            %a{:href => review_groups_path(:id => @group) }
+              %i.fi-pencil
+              Review #{term_for :group}
+      %br 
 
   .small-12.columns
-    .label.right.radius
-      Status:
-      - if @group.approved.present?
-        = @group.approved
+    %h4
+      - if @group.approved?
+        .label.right.radius.success
+          = "Status: #{@group.approved}"
+      - elsif @group.rejected?
+        .label.right.radius.alert
+          = "Status: #{@group.approved}"
       - else
-        Pending
+        .label.right.radius
+          %span.has-tip{:title => "This #{term_for :group} must be approved by your instructor before you can proceed", :data => {'tooltip' => true}}
+            %i.fi-flag
+            Status: Pending 
 
     .small-12.medium-3.columns
       %h4 #{term_for :assignments}: 

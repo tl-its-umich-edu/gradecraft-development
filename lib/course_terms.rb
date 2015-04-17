@@ -7,6 +7,7 @@ module CourseTerms
     case key.to_sym
     when :student then current_course.user_term.to_s.singularize
     when :weight, :assignment, :badge, :team, :team_leader, :group
+      # TODO: for titles, this should not be downcased, but in forms it should
       current_course.send("#{key}_term").to_s.singularize.downcase
     when :challenge then "#{term_for(:team)} #{current_course.challenge_term}"
     when :assignment_type then "#{term_for(:assignment)} Type"

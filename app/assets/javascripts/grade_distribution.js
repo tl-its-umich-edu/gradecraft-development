@@ -24,10 +24,3 @@
     }
   }
 
-  var sparkResize;
-
-  $(window).resize(function(e) {
-      clearTimeout(sparkResize);
-      sparkResize = setTimeout(sparkOpts, 500);
-  });
-

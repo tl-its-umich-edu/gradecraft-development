@@ -15,7 +15,7 @@ class CourseMembershipsController < ApplicationController
     @course_membership.destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'Student was successfully removed from course.' }
+      format.html { redirect_to students_path, notice: 'Student was successfully removed from course.' }
       format.json { head :ok }
     end
   end

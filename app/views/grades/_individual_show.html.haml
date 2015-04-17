@@ -1,15 +1,36 @@
-.small-12.medium-6.columns
+.small-12.columns
+  %br
   - if current_student_data.grade_released_for_assignment?(@assignment).present? || current_user_is_staff?
-    .panel= render "grades/results"
+    - if current_user_is_staff?
+      %h4.sr-only #{current_student.try(:first_name)}'s Grade
+      %p.bold
+        #{current_student.try(:first_name)}'s Grade
+        %span
+          %a{:href => "#{edit_assignment_grade_path(@assignment)}?student_id=#{current_student.id}", :class => 'button radius'  }
+            Edit
+            %span.sr-only #{current_student.try(:first_name)}'s Grade
 
-  - if @assignment.accepts_submissions?
-    - if current_student.submission_for_assignment(@assignment)
-      .panel= render "grades/submission"
-    - elsif @assignment.future? || @assignment.still_accepted?
-      .panel
-        = link_to "Submit", new_assignment_submission_path(@assignment, :student_id => current_student), :class => 'button radius'
-        - if @assignment.past?
-          .label.alert.radius= "Past due"
+    - grade = current_student.grade_for_assignment(@assignment)
+    - if grade
+      %p
+        %span You earned
+        %span.bold= "#{points grade.try(:raw_score) }"
+        %span=" out of #{points @assignment.point_total } possible points."
+      - if @assignment.release_necessary? && current_user_is_staff?
+        %p
+          %span.small_uppercase Status:
+          %span.bold= current_student.grade_for_assignment(@assignment).status
+      - if grade.feedback.present?
+        %span.small_uppercase Your Feedback:
+        %p= raw current_student.grade_for_assignment(@assignment).feedback
+      - if grade.grade_files.present?
+        %hr
+        %h4.uppercase Attachments from Grader
+        %ul#uploaded_files
+          - grade.grade_files.each do |gf|
+            %li
+              = link_to gf.try(:filename), gf.try(:url), :target => "_blank"
 
-.small-12.medium-6.columns
-  .panel= render "grades/analytics"
+    - if @assignment.rubric and @assignment.rubric.designed?
+      .rubric-container{:style => "overflow-x:auto"}
+        = render 'grades/rubric_grade_results'

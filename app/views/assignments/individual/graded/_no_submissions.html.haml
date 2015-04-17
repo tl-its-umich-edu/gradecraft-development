@@ -1,0 +1,19 @@
+- if grade &&  ( grade.status? || grade.instructor_modified)
+  .button-bar
+    %ul.button-group.radius.right
+      %li
+        %a{:href => assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+          See Grade
+          %span.sr-only for #{student.first_name} #{student.last_name}
+      %li
+        %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+          Edit Grade
+          %span.sr-only for #{student.first_name} #{student.last_name}
+      %li= link_to "Delete", remove_grades_assignment_path(:grade_id => grade.id, :assignment_id => @assignment.id), :class => 'button', :method => :post
+- else
+  .button-bar
+    %ul.button-group.radius.right
+      %li
+        %a{:href => edit_assignment_grade_path(@assignment, :student_id => student.id), :class => 'button'}
+          Grade
+          %span.sr-only #{student.first_name} #{student.last_name}

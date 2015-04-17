@@ -1,2 +1,5 @@
 :pidfile: tmp/sidekiq.pid
 :logfile: log/sidekiq.log
+:queues:
+  - [carrierwave, 1]
+  - [default, 1]

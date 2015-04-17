@@ -4,6 +4,8 @@
 
 .small-12.panel.mainContent
 
+  = render 'students/earned_points_and_level'
+
   %h3.pagetitle= "Plan Your Coursework"
 
   .small-12.columns
@@ -24,15 +26,13 @@
           .chart-inner
             #prediction
 
-      .clearfix
-
-    %hr
+      .clear
 
     #predictorPage{ 'data-student-name' => current_student.name, 'data-course-total' => current_course.total_points }
       %ul.slides.small-12.columns
         - if current_user_is_staff?
-          = render partial: 'students/predictor/instructor_assignments', collection: current_course_data.by_assignment_type.to_a, as: :assignment_type_and_assignments
+          = render partial: 'students/predictor/instructor_assignments'
         - elsif current_user_is_student?
-          = render partial: 'students/predictor/assignments', collection: current_course_data.predictable_by_assignment_type.to_a, as: :assignment_type_and_assignments
+          = render partial: 'students/predictor/assignments'
         = render 'students/predictor/badges'
         //= render 'students/predictor/challenges'

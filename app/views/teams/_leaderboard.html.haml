@@ -11,15 +11,7 @@
       - current_course.teams.order_by_high_score.each do |team|
         %tr
           %td= team.name
-          %td.right.points= team.try(:score)
-
-#leaderboard
-  - current_course.teams.order_by_high_score.each_with_index do |team, index|
-    .small-12.columns.team{:id => "place-#{index + 1}", class: ("complete" if current_student.present? && team == current_student.team_for_course(current_course)) }
-      .small-1.columns.rank= index + 1
-      .small-9.columns.name
-        - if current_user_is_student?
-          = team.name
-        - else 
-          = link_to team.name, team_path(team)
-      .small-2.columns.score= points team.try(:score)
+          - if current_course.team_challenges?
+            %td.points= team.challenge_grade_score
+          - else
+            %td.points= team.average_points

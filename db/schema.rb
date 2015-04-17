@@ -11,15 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008174828) do
+ActiveRecord::Schema.define(version: 20150219225846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assignment_files", force: true do |t|
-    t.string  "filename"
-    t.integer "assignment_id"
-    t.string  "filepath"
+    t.string   "filename"
+    t.integer  "assignment_id"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "assignment_groups", force: true do |t|
@@ -83,6 +87,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.boolean  "is_attendance"
     t.boolean  "has_winners"
     t.integer  "num_winner_levels"
+    t.integer  "position"
   end
 
   create_table "assignment_weights", force: true do |t|
@@ -113,17 +118,17 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.integer  "course_id"
     t.integer  "assignment_type_id"
     t.integer  "grade_scheme_id"
-    t.string   "grade_scope",                 default: "Individual", null: false
+    t.string   "grade_scope",                       default: "Individual", null: false
     t.datetime "close_time"
     t.datetime "open_time"
     t.boolean  "required"
     t.boolean  "accepts_submissions"
     t.boolean  "student_logged"
-    t.boolean  "release_necessary",           default: false,        null: false
+    t.boolean  "release_necessary",                 default: false,        null: false
     t.datetime "open_at"
     t.string   "icon"
     t.boolean  "can_earn_multiple_times"
-    t.boolean  "visible",                     default: true
+    t.boolean  "visible",                           default: true
     t.integer  "category_id"
     t.boolean  "resubmissions_allowed"
     t.integer  "max_submissions"
@@ -136,18 +141,30 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.string   "media_credit"
     t.string   "media_caption"
     t.string   "points_predictor_display"
-    t.boolean  "notify_released",             default: true
+    t.boolean  "notify_released",                   default: true
     t.string   "mass_grade_type"
-    t.boolean  "include_in_timeline",         default: true
-    t.boolean  "include_in_predictor",        default: true
+    t.boolean  "include_in_timeline",               default: true
+    t.boolean  "include_in_predictor",              default: true
+    t.integer  "position"
+    t.boolean  "include_in_to_do",                  default: true
+    t.string   "student_logged_button_text"
+    t.string   "student_logged_revert_button_text"
+    t.boolean  "use_rubric",                        default: true
+    t.boolean  "accepts_attachments",               default: true
+    t.boolean  "accepts_text",                      default: true
+    t.boolean  "accepts_links",                     default: true
   end
 
   add_index "assignments", ["course_id"], name: "index_assignments_on_course_id", using: :btree
 
   create_table "badge_files", force: true do |t|
-    t.string  "filename"
-    t.integer "badge_id"
-    t.string  "filepath"
+    t.string   "filename"
+    t.integer  "badge_id"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "badge_sets", force: true do |t|
@@ -175,6 +192,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.datetime "updated_at"
     t.boolean  "visible",                 default: true
     t.boolean  "can_earn_multiple_times", default: true
+    t.integer  "position"
   end
 
   create_table "bootsy_image_galleries", force: true do |t|
@@ -202,9 +220,13 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   add_index "categories", ["course_id"], name: "index_categories_on_course_id", using: :btree
 
   create_table "challenge_files", force: true do |t|
-    t.string  "filename"
-    t.integer "challenge_id"
-    t.string  "filepath"
+    t.string   "filename"
+    t.integer  "challenge_id"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "challenge_grades", force: true do |t|
@@ -352,6 +374,8 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.integer  "point_total"
     t.boolean  "in_team_leaderboard"
     t.boolean  "add_team_score_to_student",                             default: false
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "courses", ["lti_uid"], name: "index_courses_on_lti_uid", using: :btree
@@ -359,6 +383,13 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   create_table "dashboards", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "duplicated_users", id: false, force: true do |t|
+    t.integer "id"
+    t.string  "last_name"
+    t.string  "role"
+    t.integer "submissions", limit: 8
   end
 
   create_table "earned_badges", force: true do |t|
@@ -375,6 +406,12 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "shared"
+    t.integer  "assignment_id"
+    t.integer  "rubric_grade_id"
+    t.integer  "metric_id"
+    t.integer  "tier_id"
+    t.integer  "tier_badge_id"
+    t.boolean  "student_visible", default: true
   end
 
   create_table "elements", force: true do |t|
@@ -383,6 +420,20 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.integer  "badge_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "events", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "open_at"
+    t.datetime "due_at"
+    t.text     "media"
+    t.text     "thumbnail"
+    t.text     "media_credit"
+    t.string   "media_caption"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "course_id"
   end
 
   create_table "faqs", force: true do |t|
@@ -396,9 +447,13 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   end
 
   create_table "grade_files", force: true do |t|
-    t.integer "grade_id"
-    t.string  "filename"
-    t.string  "filepath"
+    t.integer  "grade_id"
+    t.string   "filename"
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "grade_scheme_elements", force: true do |t|
@@ -410,7 +465,6 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.integer  "grade_scheme_id"
     t.string   "description"
     t.integer  "high_range"
-    t.integer  "team_id"
     t.integer  "course_id"
   end
 
@@ -424,7 +478,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "raw_score",          default: 0
+    t.integer  "raw_score",           default: 0,     null: false
     t.integer  "assignment_id"
     t.text     "feedback"
     t.datetime "created_at"
@@ -450,10 +504,12 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.text     "admin_notes"
     t.integer  "graded_by_id"
     t.integer  "team_id"
-    t.boolean  "released"
-    t.integer  "predicted_score",    default: 0, null: false
+    t.integer  "predicted_score",     default: 0,     null: false
+    t.boolean  "instructor_modified", default: false
   end
 
+  add_index "grades", ["assignment_id", "student_id"], name: "index_grades_on_assignment_id_and_student_id", unique: true, using: :btree
+  add_index "grades", ["assignment_id", "task_id", "submission_id"], name: "index_grades_on_assignment_id_and_task_id_and_submission_id", unique: true, using: :btree
   add_index "grades", ["assignment_id"], name: "index_grades_on_assignment_id", using: :btree
   add_index "grades", ["assignment_type_id"], name: "index_grades_on_assignment_type_id", using: :btree
   add_index "grades", ["course_id"], name: "index_grades_on_course_id", using: :btree
@@ -531,17 +587,20 @@ ActiveRecord::Schema.define(version: 20141008174828) do
 
   create_table "rubric_grades", force: true do |t|
     t.string   "metric_name"
-    t.string   "metric_description"
+    t.text     "metric_description"
     t.integer  "max_points"
     t.integer  "order"
     t.string   "tier_name"
-    t.string   "tier_description"
+    t.text     "tier_description"
     t.integer  "points"
     t.integer  "submission_id"
     t.integer  "metric_id"
     t.integer  "tier_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "assignment_id"
+    t.integer  "student_id"
+    t.text     "comments"
   end
 
   create_table "rubrics", force: true do |t|
@@ -569,17 +628,6 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
-  create_table "shared_earned_badges", force: true do |t|
-    t.integer  "course_id"
-    t.text     "student_name"
-    t.integer  "user_id"
-    t.string   "icon"
-    t.string   "name"
-    t.integer  "badge_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "student_academic_histories", force: true do |t|
     t.integer "student_id"
     t.string  "major"
@@ -603,9 +651,34 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   end
 
   create_table "submission_files", force: true do |t|
+    t.string   "filename",                        null: false
+    t.integer  "submission_id",                   null: false
+    t.string   "filepath"
+    t.string   "file"
+    t.boolean  "file_processing", default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "submission_files_duplicate", id: false, force: true do |t|
+    t.string  "key",        limit: nil
+    t.string  "format",     limit: nil
+    t.integer "upload_id"
+    t.string  "full_name",  limit: nil
+    t.string  "last_name",  limit: nil
+    t.string  "first_name", limit: nil
     t.string  "filename",      null: false
     t.integer "submission_id", null: false
-    t.string  "filepath"
+    t.text    "filepath"
+  end
+
+  create_table "submission_files_duplicate", id: false, force: true do |t|
+    t.string  "key",        limit: nil
+    t.string  "format",     limit: nil
+    t.integer "upload_id"
+    t.string  "full_name",  limit: nil
+    t.string  "last_name",  limit: nil
+    t.string  "first_name", limit: nil
   end
 
   create_table "submissions", force: true do |t|
@@ -696,7 +769,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
 
   create_table "tiers", force: true do |t|
     t.string   "name"
-    t.string   "description"
+    t.text     "description"
     t.integer  "points"
     t.integer  "metric_id"
     t.datetime "created_at"
@@ -708,7 +781,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "username",                                        null: false
+    t.string   "username",                                            null: false
     t.string   "email"
     t.string   "crypted_password"
     t.string   "salt"
@@ -723,6 +796,7 @@ ActiveRecord::Schema.define(version: 20141008174828) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string   "role",                            default: "student", null: false
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "rank"

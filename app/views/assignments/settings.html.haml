@@ -1,123 +1,169 @@
 .small-12.panel.mainContent
   = content_nav_for Assignment, "#{term_for :assignment} Settings"
 
-  .small-12.medium-6
+  .small-12
     %h3.pagetitle= @title
   
-  .small-12.medium-6.right.columns.columns-no-padding
-    .button-bar.right
+  .small-12.columns
+    .button-bar
       %ul.button-group.context_menu
         %li
           %a{:href => new_assignment_path }
             %i.fi-plus
-            New #{term_for :assignment}
+            New #{(term_for :assignment).titleize}
 
   .small-12.columns
-    
+    %br
     .assignments
       - @assignments.group_by(&:assignment_type).each do |assignment_type, assignments|
-        .assignment_type{:id => "assignment-type-#{assignment_type.id}" }
-          %h3.collapse= "#{assignment_type.name} – #{points assignment_type.max_value} points"
-          %div
-            .small-3.right
-              .button-bar
-                %ul.button-group.round.right
-                  %li= link_to "See Overview", all_grades_assignment_type_path(assignment_type), :class => "button tiny aindex"
-                  %li= link_to "Edit", edit_assignment_type_path(assignment_type), :class => "button tiny aindex"
-            %table.responsive{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
-              %thead
-                %tr
-                  %th{:scope => "col"} Name
-                  %th{:scope => "col"} Description
-                  %th{:scope => "col"}
+        %h3.small-12.columns= "#{assignment_type.name} – #{points assignment_type.max_value} points"
+        %table.responsive{"aria-describedby" => "assignment-type-#{assignment_type.id}"}
+          %thead
+            %tr
+              %th{:scope => "col"} Name
+              %th{:scope => "col"} Description
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Visible to Students", :data => {'tooltip' => true}}
+                  %i.fi-eye
+                    %span.sr-only
+                      Visible to Students
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Required", :data => {'tooltip' => true}}
+                  !
+                  %span.sr-only
+                    Required
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Accepts Submissions", :data => {'tooltip' => true}}
+                  %i.fi-paperclip
+                    %span.sr-only
+                      Accepts Submissions
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Shown in Timeline", :data => {'tooltip' => true}}
+                  %i.fi-layout
+                    %span.sr-only
+                      Shown in Timeline
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Shown in Predictor", :data => {'tooltip' => true}}
+                  %i.fi-checkbox
+                    %span.sr-only
+                      Shown in Predictor
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Shown in Due This Week", :data => {'tooltip' => true}}
+                  %i.fi-calendar
+                    %span.sr-only
+                      Shown in Due This Week
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Logged By Students", :data => {'tooltip' => true}}
+                  %i.fi-pencil
+                    %span.sr-only
+                      Logged By Students
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Release Required", :data => {'tooltip' => true}}
+                  %i.fi-unlock
+                    %span.sr-only
+                      Release Required
+              %th{:scope => "col"}
+                %span.has-tip.tip-top{:title => "Notify Students on Release", :data => {'tooltip' => true}}
+                  %i.fi-mail
+                    %span.sr-only
+                      Notify Students on Release
+              %th{:scope => "col"} Grade Form Preview
+              %th{:scope => "col"} Points
+
+              %th{:scope => "col"} Dates
+              %th{:scope => "col"}
+                %span.sr-only Actions
+          %tbody
+            - assignments.each do |assignment|
+              %tr
+                %td= link_to assignment.name, assignment
+                %td= raw assignment.description
+                %td
+                  - if assignment.visible?
                     %span.has-tip.tip-top{:title => "Visible to Students", :data => {'tooltip' => true}}
                       %i.fi-eye
                         %span.sr-only
                           Visible to Students
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.required?
                     %span.has-tip.tip-top{:title => "Required", :data => {'tooltip' => true}}
-                      %i.fi-star
-                        %span.sr-only
-                          Required
-                  %th{:scope => "col"}
+                      !
+                      %span.sr-only
+                        Required
+                %td
+                  - if assignment.accepts_submissions?
                     %span.has-tip.tip-top{:title => "Accepts Submissions", :data => {'tooltip' => true}}
                       %i.fi-paperclip
                         %span.sr-only
                           Accepts Submissions
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.include_in_timeline?
                     %span.has-tip.tip-top{:title => "Shown in Timeline", :data => {'tooltip' => true}}
                       %i.fi-layout
                         %span.sr-only
                           Shown in Timeline
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.include_in_predictor?
                     %span.has-tip.tip-top{:title => "Shown in Predictor", :data => {'tooltip' => true}}
                       %i.fi-checkbox
                         %span.sr-only
                           Shown in Predictor
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.assignment_type.include_in_to_do?
                     %span.has-tip.tip-top{:title => "Shown in Due This Week", :data => {'tooltip' => true}}
                       %i.fi-calendar
                         %span.sr-only
                           Shown in Due This Week
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.student_logged?
                     %span.has-tip.tip-top{:title => "Logged By Students", :data => {'tooltip' => true}}
                       %i.fi-pencil
                         %span.sr-only
                           Logged By Students
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.release_necessary?
                     %span.has-tip.tip-top{:title => "Release Required", :data => {'tooltip' => true}}
                       %i.fi-unlock
                         %span.sr-only
                           Release Required
-                  %th{:scope => "col"}
+                %td
+                  - if assignment.notify_released?
                     %span.has-tip.tip-top{:title => "Notify Students on Release", :data => {'tooltip' => true}}
                       %i.fi-mail
                         %span.sr-only
                           Notify Students on Release
-                  %th{:scope => "col"} Grading
-                  %th{:scope => "col"} Points
 
-                  %th{:scope => "col"} Dates
-                  %th{:scope => "col"}
-                    %span.sr-only Actions
-              %tbody
-                - assignments.each do |assignment|
-                  %tr
-                    %td= link_to assignment.name, assignment
-                    %td= raw assignment.description
-                    
-                    %td
-                      - if assignment.grade_select?
-                        %label.sr-only{:for => "score_levels"}
-                          Score Levels
-                        = select_tag(:score_levels, options_from_collection_for_select(assignment.score_levels_set, :value, :name))
-                      - elsif assignment.grade_radio?
-                        - assignment.score_levels_set.each do |asl|
-                          = radio_button_tag(asl.name, asl.value)
-                          %span.not_bold= label_tag(asl.name)
-                          %br
-                      - elsif assignment.grade_checkboxes?
-                        = check_box_tag 'score'
-                      - else
-                        = text_field_tag 'score'
-                    %td= points assignment.point_total
-                    %td
-                      %ul
-                        %li 
-                          Opens:
-                          = assignment.try(:opens_at) || "Always Open"
-                        %li
-                          %a.button{:href => edit_assignment_path(assignment) }
-                            Edit
-                        %li
-                          %a.button{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete } }
-                            Delete
-                          Accepted Until:
-                          = assignment.try(:accept_until) || "Always Accepted"
-                    %td.text-buttons{ :style => "white-space: nowrap" }
-                      %a{:href => edit_assignment_path(assignment) }
-                        Edit
-                        %span.sr-only= assignment.name
-                      %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete } }
-                        Delete
-                        %span.sr-only= assignment.name
+                %td
+                  - if assignment.grade_select?
+                    %label.sr-only{:for => "score_levels"}
+                      Score Levels
+                    = select_tag(:score_levels, options_from_collection_for_select(assignment.score_levels_set, :value, :name))
+                  - elsif assignment.grade_radio?
+                    - assignment.score_levels_set.each do |asl|
+                      = radio_button_tag(asl.name, asl.value)
+                      %span.not_bold= label_tag(asl.name)
+                      %br
+                  - elsif assignment.grade_checkboxes?
+                    = check_box_tag 'score', '', false, :disabled => true
+                  - else
+                    = text_field_tag 'score', '', :disabled => true
+                %td= points assignment.point_total
+                %td
+                  %ul
+                    %li 
+                      Opens:
+                      = assignment.try(:opens_at) || "Always Open"
+                      Accepted Until:
+                      = assignment.try(:accept_until) || "Always Accepted"
+                %td{:width => "15%"}
+                  .button-bar
+                    %ul.button-group.radius.right
+                      %li
+                        %a{:href => edit_assignment_path(assignment),  :class => 'button' }
+                          Edit
+                          %span.sr-only= assignment.name
+                      %li
+                        %a{:href => assignment_path(assignment), :data => { confirm: 'Are you sure?', method: :delete },  :class => 'button' }
+                          Delete
+                          %span.sr-only= assignment.name
+        %br

@@ -1,0 +1,95 @@
+.small-12.columns
+  #rubric-grader(ng-app="gradecraft" ng-controller="GradeRubricCtrl" ng-init="init(#{@rubric[:id]}, #{@metrics}, #{@assignment[:id]}, #{params[:student_id]}, #{@rubric_grades}, \"#{@grade.status if @grade}\", #{@course_badges.html_safe}, #{@assignment.release_necessary?})")
+    .row
+      #rubric-heading.small-7.columns
+        %h3.text-right
+          Grade Assignment by Rubric
+          = link_to "(Edit)", design_assignment_rubric_path(@assignment)
+        %h4.text-right (click to select the level earned for each criterion)
+        %br
+
+      #points-overview-floating(ng-cloak ng-hide="angular.element('#points-overview').isOnscreen()")
+        %h4#points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
+          \/{{pointsPossible | number:0}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+
+      .clear
+
+    #grade-status(ng-cloak)
+
+    #rubric-grader-splash.large-12.columns.text-center(ng-cloak)
+      Loading assignment...
+      %br
+      %br
+
+    %table#grade-rubric-table(ng-cloak)
+      %thead
+        %tr
+          %td.metric.heading
+            %label.larger
+              <strong>Criterion</strong>:&nbsp;Max&nbsp;points
+
+          %td.tier.heading(colspan="#{@rubric.max_tier_count}")
+            %label.larger
+              %strong Level:
+              Point value
+          %td.comments.heading(ng-show="tiersSelected().length > 0")
+            %label.larger
+              Comments
+
+      %tbody
+        %tr(ng-repeat="metric in metrics")
+          %td.metric
+            .metric-heading
+              .metric-name {{metric.name.replace(' ','&nbsp;')}}
+              .metric-points
+                {{(metric.max_points || 0) | number:0}}&nbsp;Points
+            .metric-description {{metric.description}}
+
+          %td.tier(ng-repeat="tier in metric.tiers" ng-click="metric.gradeWithTier(tier)" ng-class="{selected: metric.isUsingTier(tier)}")
+            .tier-heading
+              .tier-name {{tier.name.replace(' ','&nbsp;')}}
+              .tier-points
+                {{tier.points | number:0}}&nbsp;Points
+                %input(class="tier-select" type='radio' name="metric_tier_{{metric.id}}" ng-checked="metric.isUsingTier(tier)")
+            .clear
+            .tier-description
+              {{tier.description}}
+            .row.badge-row
+              .tier-badge-image(ng-repeat="(tierBadgeId, tierBadge) in tier.badges")
+                %img(src="{{tierBadge.badge.icon}}" height="50px")
+              .clear
+          %td.filler(ng-show="metric.tiers.length < #{@rubric.max_tier_count}" colspan="{{#{@rubric.max_tier_count} - metric.tiers.length}}")
+          %td.comments
+            %textarea(ng-model="metric.comments")
+
+    %br
+    .row.text-center.points-given
+      .points-overview.bottom(ng-cloak)
+        %h4.points-legend
+          %span.points-assigned(ng-class="{'points-missing': pointsMissing(), 'points-satisfied': pointsSatisfied(), 'points-overage': pointsOverage()}") {{pointsGiven() | number:0}}
+          \/{{pointsPossible | number:0}} Points Allocated
+        %h4.notice(ng-hide="pointsSatisfied() || pointsMissing()") You have not yet allocated any points
+        %h4.notice(ng-show="pointsMissing()") {{pointsRemaining() | number:0}} point{{pointsRemaining() > 1 ? "s" : ""}} have not been assigned 
+        %h4.notice(ng-show="pointsSatisfied()") You have allocated all possible points
+      .clear
+
+
+    - if @assignment.release_necessary?
+      .small-12.large-4.columns
+
+      .row
+        - if current_user_is_gsi?
+          %select(ng-model="gradeStatus" ng-options="status for status in gsiGradeStatuses")
+            %option(value="" disabled) Select grade status for this submission...
+          .form_label Is this grade ready to be reviewed? 
+        - else
+          %select(ng-model="gradeStatus" ng-options="status for status in professorGradeStatuses")
+            %option(value="" disabled) Select grade status for this submission...
+          .form_label Can the student see this grade?
+      
+    .row.text-center
+      %button#submit-grade(ng-click="submitGrade()" ng-disabled="selectedTiers().length == 0") Submit Grade

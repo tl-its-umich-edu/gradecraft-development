@@ -1,9 +1,12 @@
+- if current_user_is_staff?
+  .small-12.medium-3.columns
+    %img{:src => "/images/GradeCraft_Logo_Stacked_White_Blue.png", :width => "200" }
+
 .small-12.medium-2.columns
   %h5 Explore
   %ul
     %li= link_to_unless_current "Features", features_path
-    %li= link_to_unless_current "See the Demo", "http://staging.gradecraft.com"
-  .clearfix
+  .clear
   %hr.show-for-small-only
 
 .small-12.medium-2.columns
@@ -11,8 +14,9 @@
   %ul
     %li= link_to_unless_current "Apply to Use", using_gradecraft_path
     %li= link_to "Documentation", "http://gradecraft.freshdesk.com/support/home"
+    %li= link_to "Video Tutorials", "https://www.youtube.com/channel/UC5fz1gQxcOF9Rn1Qs_mq06g/videos"
     %li= link_to "Submit a Bug", "http://gradecraft.freshdesk.com/support/tickets/new"
-  .clearfix
+  .clear
   %hr.show-for-small-only
 
 .small-12.medium-2.columns
@@ -22,18 +26,25 @@
     %li= link_to_unless_current "People", "http://blog.gradecraft.com/the-team"
     %li= link_to_unless_current "Codebase", "https://github.com/UM-USElab/gradecraft-development"
     %li= link_to_unless_current "Blog", "http://blog.gradecraft.com"
-  .clearfix
+  .clear
   %hr.show-for-small-only
 
-.small-12.medium-2.columns
+.small-12.medium-3.columns
   %h5 Talk to Us
   %ul
     %li= mail_to 'help@gradecraft.com', 'Help'
-    %li= mail_to 'gradecraft@gmail.com', 'Email'
-    %li= link_to_unless_current "Twitter", "https://twitter.com/gradecraft"
-  .clearfix
-  %hr.show-for-small-only
+    %li= mail_to 'help@gradecraft.com', 'Email'
+    %li= link_to "Twitter", "https://twitter.com/gradecraft"
+    %li= link_to "Facebook", "https://facebook.com/gradecraft"
+  .clear
 
-.small-12.medium-4.columns
+- if current_user_is_student?
+  .small-12.medium-2.columns
+    %img.center{:src => "/images/GradeCraft_Logo_Stacked_White_Blue.png", :width => "200" }
 
-%h6 &copy; 2012-14 Regents of the University of Michigan
+.clear
+
+.small-12.center
+  %br
+  .uppercase &copy; 2012-14 Regents of the University of Michigan
+  %br

@@ -8,7 +8,9 @@
   .navbar-nav
     display: inline
     li
+      font-size: .75rem
       height: 2rem
+      color: #FFF !important
       background-color: $primary-color
       border-top-left-radius: $global-radius
       border-top-right-radius: $global-radius
@@ -17,6 +19,7 @@
       text-transform: capitalize
       a
         padding: 1em !important
+        color: #FFF !important
     li.active 
       padding: .5rem !important
 
@@ -25,13 +28,23 @@
 
 /* Setting the active tab and hover styles to be the dark green */
 .navbar-nav li.active, .sub-nav .navbar-nav li:hover
-  background-color: $secondary-color
+  background-color: $primary-color-3
   color: #eee
 
 /* Reducing padding and font size for small screens */
-@media (max-width: 1000px) 
-  .sub-nav .navbar-nav li
-    padding: .5rem .25rem
-    font-size: .35rem
-    a
-      padding: .5rem 0 !important
+@media (max-width: 1000px)
+  .sub-nav 
+    .navbar-nav
+      margin-left: 0em 
+      li
+        font-size: 90%
+        padding: 0.25rem
+        border: 1px solid $primary-color-4
+        margin: 0
+        padding: 0.35rem
+        a 
+          padding: 1em 0 !important
+
+      li.active 
+        padding: .35rem !important
+

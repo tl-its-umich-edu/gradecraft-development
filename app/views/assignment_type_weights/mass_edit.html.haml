@@ -4,40 +4,42 @@
   %h3.pagetitle= @title
 
   .small-12.columns
-    .panel.assignment_weights
-      - if current_course.assignment_weight_open? || current_user_is_staff?
-        %h4.bold Rules of The Game
-        %ul 
-          - if current_course.assignment_weight_close_at?
-            %li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision
-          - if current_course.max_assignment_weight?
-            %li You may place up to #{current_course.max_assignment_weight} #{ ( term_for :weights).titleize } on a single #{ (term_for :assignment_type).downcase}
-          - if current_course.max_assignment_types_weighted?
-            %li You may work on up to #{ current_course.max_assignment_types_weighted} #{ (term_for :assignment_types).downcase}
-          - if current_course.default_assignment_weight
-            %li Any #{(term_for :assignment_types).downcase} you do not place #{ ( term_for :weights).titleize } on but have grades for will be multiplied by #{current_course.default_assignment_weight}. For example, this would adjust a 1000 point Essay to be worth #{ (1000 * current_course.default_assignment_weight).to_i } points.
+    - if current_course.assignment_weight_open? || current_user_is_staff?
+      = simple_form_for @form, as: :student, url: assignment_type_weights_path, method: :put do |f|
+        .panel.assignment_weights
+          %h4 RULES OF THE GAME
+          %ul 
+            - if current_course.assignment_weight_close_at?
+              %li You have until #{current_course.try(:assignment_weight_close_at).strftime("%A, %B %d, %Y, at %H:%M%p")} to make your #{(term_for :weight).titleize} decision
+            - if current_course.max_assignment_weight?
+              %li You may place up to #{current_course.max_assignment_weight} #{ ( term_for :weights).titleize } on a single #{ (term_for :assignment_type).downcase}
+            - if current_course.max_assignment_types_weighted?
+              %li You may work on up to #{ current_course.max_assignment_types_weighted} #{ (term_for :assignment_types).downcase}
+            - if current_course.default_assignment_weight
+              %li Any #{(term_for :assignment_types).downcase} you do not place #{ ( term_for :weights).titleize } on but have grades for will be multiplied by #{current_course.default_assignment_weight}. For example, this would adjust a 1000 point Essay to be worth #{ (1000 * current_course.default_assignment_weight).to_i } points.
 
-        = simple_form_for @form, as: :student, url: assignment_type_weights_path, method: :put do |f|
-          = hidden_field_tag :student_id, current_student.id
-          - if @form.errors.has_key?(:base)
-            = f.error :base
-          %hr
-          = f.simple_fields_for :assignment_type_weights do |atwf|
-            .small-12.columns.medium-4.panel.callout
-              = atwf.hidden_field :assignment_type_id
-              %h4.bold= atwf.object.assignment_type.name
-              .italic= "Raw Points: #{points atwf.object.assignment_type.raw_score_for_student(current_student)}"
-              = atwf.input :weight, :label => "#{term_for :weight}", :as => :integer
-          .right
-            = f.button :submit, "Update #{term_for :weights}", :class => "button radius alert"
-            = link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button radius transparent'
+            
+            = hidden_field_tag :student_id, current_student.id
+            - if @form.errors.has_key?(:base)
+              = f.error :base
+            %hr
+            = f.simple_fields_for :assignment_type_weights do |atwf|
+              .small-12.columns.medium-4.panel.callout
+                = atwf.hidden_field :assignment_type_id
+                %h4.bold= atwf.object.assignment_type.name
+                .italic= "Raw Points: #{points atwf.object.assignment_type.raw_score_for_student(current_student)}"
+                = atwf.input :weight, :label => "#{term_for :weight}", :as => :integer
+        .button-bar
+          %ul.button-group.radius.right
+            %li= f.button :submit, "Update #{term_for :weights}"
+            %li= link_to 'Cancel', current_user_is_student? ? dashboard_path : choices_students_path, class: 'button'
 
 
-      - else
-        %h3 Your #{term_for :weight} choices:
-        %hr
-        - @assignment_types.each do |at|
-          - if at.student_weightable?
-            %h5
-              = at.name
-              = "- #{current_student_data.weight_for_assignment_type(at)} #{term_for :weight}"
+    - else
+      %h3 Your #{term_for :weight} choices:
+      %hr
+      - @assignment_types.each do |at|
+        - if at.student_weightable?
+          %h5
+            = at.name
+            = "- #{current_student_data.weight_for_assignment_type(at)} #{term_for :weight}"

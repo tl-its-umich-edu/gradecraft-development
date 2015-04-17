@@ -1,0 +1,25 @@
+/* Add the sprite to the assignment expand */ 
+h3.collapse a
+  background: image-url("sprite.png") .5rem .5rem no-repeat
+  padding: .5rem 1.7rem
+  margin: 0.25rem 0rem
+  border-radius: .5rem
+  /*float: left */
+  clear: both  
+
+h3.collapse
+  line-height: 1.5
+
+h3.collapse.open a
+  background-position: 8px -55px
+
+.collapse-hidden table
+  margin-bottom: 2rem
+
+/* Pre hide sections with JavaScript on */
+h3.collapse+div
+  display: none
+  padding: 0px 0 1rem
+
+h3.collapse.open a, h3.collapse a:active
+  color: $primary-color-3
